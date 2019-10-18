@@ -1,4 +1,4 @@
-class Motor
+class MotorControl
 {
     Motor(int leftDIR,int leftPWM,int rightDIR,rightPWM)
     {
