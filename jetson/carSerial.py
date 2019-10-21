@@ -11,7 +11,12 @@
 import serial
 class carSerial:
 
-
+    def __init__(self,port,bautRate):
+        self.Port=port
+        self.BautRate=bautRate
+        self.ser=serial.Serial(self.Port,self.BautRate)
+    def write(self,text):
+        self.ser.write(text.encode('utf-8'))
 
 if __name__=='__main__':
     pass
