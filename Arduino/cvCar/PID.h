@@ -1,8 +1,10 @@
 #define PID_MAX_INTEGRAL         2000
-#define ZUMO_BASE_DEADBAND       10
-public class PID
+#define ZUMO_BASE_DEADBAND       5
+class PID
 {
-    public PID(int32_t pgain, int32_t igain, int32_t dgain)
+public:
+
+    PID(int32_t pgain, int32_t igain, int32_t dgain)
     {
         m_pgain = pgain;
         m_igain = igain;
@@ -17,7 +19,7 @@ public class PID
         m_prevError = 0x80000000L;
     }
 
-    public void update(int32_t error)
+    void update(int32_t error)
     {
         int32_t pid;
 
@@ -48,7 +50,7 @@ public class PID
         m_prevError = error;
     }
 
-    public int32_t m_command;
+    int32_t m_command;
 
     private:
         int32_t m_pgain;

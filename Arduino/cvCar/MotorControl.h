@@ -1,18 +1,19 @@
 class MotorControl
 {
-    Motor(int leftDIR,int leftPWM,int rightDIR,rightPWM)
+public:
+    MotorControl(int leftDIR,int leftPWM,int rightDIR,int rightPWM)
     {
         pinMode(leftDIR,OUTPUT);
         pinMode(rightDIR,OUTPUT);
         leftdir=leftDIR;
         leftpwm=leftPWM;
-        rightdir=rightdir;
-        rightpwm=rightpwm;
+        rightdir=rightDIR;
+        rightpwm=rightPWM;
     }
 
-    public void Motor(int left,int right)
+    void Motor(int left,int right)
     {
-      setMotor(left,leftdir,Leftpwm);
+      setMotor(left,leftdir,leftpwm);
       setMotor(right,rightdir,rightpwm);
     }
     void setMotor(int mSpeed,int DIR,int PWM)
