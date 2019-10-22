@@ -9,6 +9,7 @@
 @desc:CV Car
 '''
 import serial
+import time
 class carSerial:
 
     def __init__(self,port,bautRate):
@@ -19,4 +20,11 @@ class carSerial:
         self.ser.write(text.encode('utf-8'))
 
 if __name__=='__main__':
-    pass
+    cs=carSerial("com9",9600)
+    time.sleep(1)
+    n=0
+    while n>-255:
+        cs.write(str(n))
+        print(n)
+        n=n-5
+        time.sleep(1)
