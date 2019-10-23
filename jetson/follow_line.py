@@ -1,6 +1,9 @@
 
 from line_base import *
 import io
+from carSerial import carSerial
+
+ser=carSerial("",9600)
 
 IM_WIDTH = 320
 IM_HEIGHT = 240
@@ -98,15 +101,8 @@ while(True):
     cv2.imshow("grey", grey_image)
     cv2.imshow("dis", display_image)
 
-    # Start scanning the arcs
-    # This allows us to look ahead further ahead at the line and work out an angle to steer
-    # From the intersection point of the line, scan in an arc to find the line
-    # The scan data contains an array
-    #   - pixel value
-    #   - x co-ordinate
-    #   - y co-ordinate
-
-    #vout.write(frame)
+    #通知小车修正方向
+    ser.write(offCenter(last_point))
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1

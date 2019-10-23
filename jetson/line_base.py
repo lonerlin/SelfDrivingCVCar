@@ -179,11 +179,13 @@ def findInCircle(display_image, scan_data):
 
     return position
 
-
+#计算偏离的角度
 def lineAngle(point1, point2):
     angle = round(math.atan2((point2[1] - point1[1]), -(point2[0] - point1[0])) * 180 / math.pi)
     return angle
-
+#计算白线偏离中心的距离
+def offCenter(point):
+    return point[0]-(RESOLUTION_X/2)
 
 def onScanRadiusChange(newValue):
     global SCAN_RADIUS_REG
