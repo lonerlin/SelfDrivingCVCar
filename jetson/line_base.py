@@ -69,11 +69,13 @@ def findLine(display_image, scan_data, x, y, radius):
     right = [0, 0]
 
     for index in range(0, len(data)):
-        if data[index] < left[1]:
+        #if data[index] < left[1]: #黑色线
+        if data[index] > left[1]:   #白色线
             left[1] = data[index]
             left[0] = index
 
-        if data[index] > right[1]:
+        #if data[index] < right[1]: #黑色线
+        if data[index] < right[1]:  #白色线
             right[1] = data[index]
             right[0] = index
 
@@ -171,11 +173,11 @@ def findInCircle(display_image, scan_data):
     position = [int(scan_data[centre_index][1]), int(scan_data[centre_index][2])]
 
     # mid point, where we believe is the centre of the line
-    cv2.circle(display_image, (position[0], position[1]), 5, (0, 0, 0), -1, 8, 0)
+    cv2.circle(display_image, (position[0], position[1]), 5, (255, 255, 255), -1, 8, 0)
     # left boundrary dot on the line
-    cv2.circle(display_image, (leftx, lefty), 2, (0, 0, 102), 2, 8, 0)
+    cv2.circle(display_image, (leftx, lefty), 2, (255, 255, 0), 2, 8, 0)
     # right boundrary dot on the line
-    cv2.circle(display_image, (rightx, righty), 2, (0, 0, 102), 2, 8, 0)
+    cv2.circle(display_image, (rightx, righty), 2, (255, 255, 0), 2, 8, 0)
 
     return position
 
