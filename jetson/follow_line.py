@@ -102,7 +102,7 @@ while(True):
     cv2.imshow("dis", display_image)
 
     #通知小车修正方向
-    ser.write(offCenter(last_point))
+    ser.write(str(offCenter(last_point)))
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
@@ -110,5 +110,6 @@ while(True):
     if cv2.waitKey(1) == ord('q'):
         break
 #vout.release()
+ser.close()
 camera.release()
 cv2.destroyAllWindows()

@@ -18,7 +18,8 @@ class carSerial:
         self.ser=serial.Serial(self.Port,self.BautRate)
     def write(self,text):
         self.ser.write(text.encode('utf-8'))
-
+    def close(self):
+        self.ser.close()
 if __name__=='__main__':
     cs=carSerial("com9",9600)
     time.sleep(1)

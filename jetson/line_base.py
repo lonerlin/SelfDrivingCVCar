@@ -185,7 +185,7 @@ def lineAngle(point1, point2):
     return angle
 #计算白线偏离中心的距离
 def offCenter(point):
-    return point[0]-(RESOLUTION_X/2)
+    return int(point[0]-(RESOLUTION_X/2))
 
 def onScanRadiusChange(newValue):
     global SCAN_RADIUS_REG
