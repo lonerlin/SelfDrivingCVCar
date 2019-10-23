@@ -14,12 +14,13 @@ MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
   Serial.begin(9600);
-  
+  pinMode(13,0);
 
 }
 
 void loop() {
    int left,right;
+  
    while(digitalRead(Switch))
   {
       mc.Motor(0,0);
@@ -27,7 +28,9 @@ void loop() {
 
  if(Serial.available())
   {
+    
     cur=Serial.parseInt();
+    
     Serial.println(cur);
     pid.update(cur);
     left=pid.m_command + BASE_SPEED;
