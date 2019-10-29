@@ -5,8 +5,8 @@ from carSerial import carSerial
 
 ser = carSerial("/dev/ttyACM0", 115200)
 
-IM_WIDTH = 320
-IM_HEIGHT = 240
+IM_WIDTH = 240
+IM_HEIGHT = 180
 #test
 camera = cv2.VideoCapture(0)
 ret = camera.set(3, IM_WIDTH)
@@ -27,19 +27,19 @@ freq = cv2.getTickFrequency()
 stream = io.BytesIO()
 
 # Create a window
-cv2.namedWindow(WINDOW_DISPLAY_IMAGE)
+#cv2.namedWindow(WINDOW_DISPLAY_IMAGE)
 # position the window
-cv2.moveWindow(WINDOW_DISPLAY_IMAGE, 0, 35)
+#cv2.moveWindow(WINDOW_DISPLAY_IMAGE, 0, 35)
 
 # Add some controls to the window
-cv2.createTrackbar(CONTROL_SCAN_RADIUS, WINDOW_DISPLAY_IMAGE, 5, 50, onScanRadiusChange)
-cv2.setTrackbarPos(CONTROL_SCAN_RADIUS, WINDOW_DISPLAY_IMAGE, SCAN_RADIUS_REG)
+#cv2.createTrackbar(CONTROL_SCAN_RADIUS, WINDOW_DISPLAY_IMAGE, 5, 50, onScanRadiusChange)
+#cv2.setTrackbarPos(CONTROL_SCAN_RADIUS, WINDOW_DISPLAY_IMAGE, SCAN_RADIUS_REG)
 
-cv2.createTrackbar(CONTROL_NUMBER_OF_CIRCLES, WINDOW_DISPLAY_IMAGE, 0, 7, onCircleScanChange)
-cv2.setTrackbarPos(CONTROL_NUMBER_OF_CIRCLES, WINDOW_DISPLAY_IMAGE, NUMBER_OF_CIRCLES)
+#cv2.createTrackbar(CONTROL_NUMBER_OF_CIRCLES, WINDOW_DISPLAY_IMAGE, 0, 7, onCircleScanChange)
+#cv2.setTrackbarPos(CONTROL_NUMBER_OF_CIRCLES, WINDOW_DISPLAY_IMAGE, NUMBER_OF_CIRCLES)
 
-cv2.createTrackbar(CONTROL_LINE_WIDTH, WINDOW_DISPLAY_IMAGE, 0, RESOLUTION_X, onLineWidthChange)
-cv2.setTrackbarPos(CONTROL_LINE_WIDTH, WINDOW_DISPLAY_IMAGE, SCAN_RADIUS * 2)
+#cv2.createTrackbar(CONTROL_LINE_WIDTH, WINDOW_DISPLAY_IMAGE, 0, RESOLUTION_X, onLineWidthChange)
+#cv2.setTrackbarPos(CONTROL_LINE_WIDTH, WINDOW_DISPLAY_IMAGE, SCAN_RADIUS * 2)
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (4, 4))
 
@@ -49,7 +49,7 @@ while(True):
 
 
     # 修改图片尺寸，缩小图片
-    image = cv2.resize(frame, (320, 240))
+    image = cv2.resize(frame, (240, 180))
     cv2.imshow("line", image)
     # Empty and return the in-memory stream to beginning
     stream.seek(0)
@@ -102,7 +102,11 @@ while(True):
     cv2.imshow("dis", display_image)
 
     #通知小车修正方向
-    ser.write(str(offCenter(last_point)))
+    oc = offCenter(last_point)
+    print(oc)
+    if oc > 6 or oc < -6:
+        ser.write(str(offCenter(last_point)))
+
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1

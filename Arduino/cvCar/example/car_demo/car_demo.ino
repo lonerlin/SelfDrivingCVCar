@@ -5,12 +5,12 @@
 #define RightDIRPin 7
 #define RightPWMPin 6
 #define Switch 2
-#define BASE_SPEED 50
+#define BASE_SPEED 60
 
 int cur=0;
  int left,right;
 
-PID pid(500,0,0);
+PID pid(800,0,0);
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
@@ -29,13 +29,16 @@ void loop() {
     //Serial.println(cur);
     else{
       pid.update(cur);
-      left=pid.m_command + BASE_SPEED;
-      right=-pid.m_command +BASE_SPEED;
-
-      if(left>150)left=150;
+      Serial.println(cur);
+      //left=pid.m_command + BASE_SPEED;
+      //right=-pid.m_command +BASE_SPEED;
+      left=BASE_SPEED+cur;
+      right=BASE_SPEED-cur;
+      if (left>150)left=150;
       if(right>150)right=150;
       if(left<-150)left=-150;
       if(right<-150)right=-150;
+      
       mc.Motor(left,right);
       }
   }

@@ -10,22 +10,36 @@
 '''
 import serial
 import time
+import threading
+
+
 class carSerial:
 
-    def __init__(self,port,bautRate):
-        self.Port=port
-        self.BautRate=bautRate
-        self.ser=serial.Serial(self.Port,self.BautRate)
-    def write(self,text):
+    def __init__(self, port, bautRate):
+        self.Port = port
+        self.BautRate = bautRate
+        self.ser = serial.Serial(self.Port, self.BautRate)
+        t = threading.Thread(target=self.listen,daemon=True)
+        t.start()
+
+
+    def write(self, text):
         self.ser.write(text.encode('utf-8'))
+
     def close(self):
         self.ser.close()
-if __name__=='__main__':
-    cs=carSerial("com9",9600)
+
+    def listen(self):
+        while 1:
+            print("read:",self.ser.readline().decode('utf-8'))
+
+
+if __name__ == '__main__':
+    cs = carSerial("/dev/ttyACM0", 115200)
     time.sleep(1)
-    n=0
-    while n>-255:
+    n = 0
+    while n > -255:
         cs.write(str(n))
-        print(n)
-        n=n-5
-        time.sleep(1)
+        print("write:",n)
+        n = n-5
+        time.sleep(0.05)

@@ -19,8 +19,8 @@ CONTROL_LINE_WIDTH = 'Line Width'
 #   640 x 480
 #   800 x 600
 # etc...
-RESOLUTION_X = 320
-RESOLUTION_Y = 240
+RESOLUTION_X = 240
+RESOLUTION_Y = 180
 
 # This is half the width of the line at the bottom of the screen that we start looking for
 # the line we want to follow.
@@ -35,7 +35,7 @@ SCAN_RADIUS_REG = 24
 # The number of itterations we scan to allow us to look ahead and give us more time
 # to make better choices
 NUMBER_OF_CIRCLES = 5
-
+LAST_POINT_X = -1
 
 def scanLine(image, display_image, point, radius):
     x = point[0]
@@ -187,7 +187,8 @@ def lineAngle(point1, point2):
     return angle
 #计算白线偏离中心的距离
 def offCenter(point):
-    return int(point[0]-(RESOLUTION_X/2))
+    return int(point[0] - (RESOLUTION_X/2))
+
 
 def onScanRadiusChange(newValue):
     global SCAN_RADIUS_REG
