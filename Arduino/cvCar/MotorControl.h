@@ -13,7 +13,7 @@ public:
 
     void Motor(int left,int right)
     {
-      setMotor(left,leftdir,leftpwm);
+      setMotor(-left,leftdir,leftpwm);
       setMotor(right,rightdir,rightpwm);
     }
     void setMotor(int mSpeed,int DIR,int PWM)
