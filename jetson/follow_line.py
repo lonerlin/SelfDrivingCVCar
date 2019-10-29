@@ -3,7 +3,7 @@ from line_base import *
 import io
 from carSerial import carSerial
 
-ser=carSerial("/dev/ttyACM0",115200)
+ser = carSerial("/dev/ttyACM0", 115200)
 
 IM_WIDTH = 320
 IM_HEIGHT = 240
