@@ -63,7 +63,7 @@ while(True):
     #填充
     display_image = cv2.copyMakeBorder(image, 0, 0, 0, 0, cv2.BORDER_REPLICATE)
 
-
+    #ret, binary = cv2.threshold(grey_image, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     center_point = (SCAN_POS_X, SCAN_HEIGHT)
 
     # San a horizontal line based on the centre point
@@ -98,19 +98,18 @@ while(True):
     # Draw a line from the centre point to the end point where we last found the line we are following
     cv2.line(display_image, (center_point[0], center_point[1]), (last_point[0], last_point[1]), (0, 0, 255), 1)
 
-    cv2.imshow("grey", grey_image)
+    #cv2.imshow("grey", grey_image)
     cv2.imshow("dis", display_image)
 
     #通知小车修正方向
     oc = offCenter(last_point)
-    print(oc)
-    if oc > 6 or oc < -6:
-        ser.write(str(offCenter(last_point)))
+    print("offCenter:",oc)
+    ser.write(str(offCenter(last_point)))
 
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
-    print(frame_rate_calc)
+    #print(frame_rate_calc)
     if cv2.waitKey(1) == ord('q'):
         break
 #vout.release()

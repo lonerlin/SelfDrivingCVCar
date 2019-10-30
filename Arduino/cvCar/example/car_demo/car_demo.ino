@@ -5,41 +5,64 @@
 #define RightDIRPin 7
 #define RightPWMPin 6
 #define Switch 2
-#define BASE_SPEED 60
-
+#define BASE_SPEED 35
+#define FAST_SPEED 60
+int SPEED=0;
 int cur=0;
- int left,right;
-
-PID pid(800,0,0);
+int left,right;
+String inStr="";
+PID pid(1250,0,0);
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
   Serial.begin(115200);
-  pinMode(2,INPUT);
+  while(!Serial){;}
   left=0;
   right=0;
 }
 
 void loop() {
- if(Serial.available())
-  {
-    
-    cur=Serial.parseInt();
-    if(cur==200)mc.Motor(0,0);
-    //Serial.println(cur);
+ inStr="";
+ while (Serial.available()>0){
+    int inChar = Serial.read();
+    Serial.println(inChar);
+    if(inStr=="" && (char)inChar=='-')inStr="-";
+    if (isDigit(inChar)) {
+      // convert the incoming byte to a char and add it to the string:
+    inStr += (char)inChar;
+    }
+    // if you get a newline, print the string, then the string's value:
+    if (inChar == '\n') {
+        break;
+    }
+ }
+   
+    if(inStr!="")cur=inStr.toInt();
+    Serial.println(cur);
+    if(cur==200)
+    {
+      mc.Motor(0,0);
+    }
     else{
+      if(abs(cur)<15)SPEED=FAST_SPEED;
+      else SPEED=BASE_SPEED;
       pid.update(cur);
-      Serial.println(cur);
-      //left=pid.m_command + BASE_SPEED;
-      //right=-pid.m_command +BASE_SPEED;
-      left=BASE_SPEED+cur;
-      right=BASE_SPEED-cur;
-      if (left>150)left=150;
-      if(right>150)right=150;
-      if(left<-150)left=-150;
-      if(right<-150)right=-150;
+     
+      left=pid.m_command + SPEED;
+      right=-pid.m_command + SPEED;
+      //left=BASE_SPEED+cur;
+      Serial.print("left:");
+      Serial.println(left);
+      //right=BASE_SPEED-cur;
+      Serial.print("right:");
+      Serial.println(right);
+      if (left>150)left=180;
+      if(right>150)right=180;
+      if(left<-150)left=-180;
+      if(right<-150)right=-180;
       
       mc.Motor(left,right);
+      
       }
-  }
+  
 }

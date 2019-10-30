@@ -24,22 +24,29 @@ class carSerial:
 
 
     def write(self, text):
-        self.ser.write(text.encode('utf-8'))
+        #print("text:", text.encode("utf-8"))
+        text += "\n"
+        self.ser.write(text.encode("utf-8"))
 
     def close(self):
         self.ser.close()
 
     def listen(self):
         while 1:
-            print("read:",self.ser.readline().decode('utf-8'))
+            print("read:",self.ser.readline())
 
 
 if __name__ == '__main__':
     cs = carSerial("/dev/ttyACM0", 115200)
     time.sleep(1)
     n = 0
-    while n > -255:
+    while n > -150:
         cs.write(str(n))
-        print("write:",n)
+        print("write:", n)
         n = n-5
-        time.sleep(0.05)
+        time.sleep(0.2)
+    while n < 150:
+        cs.write(str(n))
+        print("write:", n)
+        n = n+5
+        time.sleep(0.2)

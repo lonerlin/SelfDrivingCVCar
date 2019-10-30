@@ -24,7 +24,7 @@ RESOLUTION_Y = 180
 
 # This is half the width of the line at the bottom of the screen that we start looking for
 # the line we want to follow.
-SCAN_RADIUS = int(RESOLUTION_X / 4)
+SCAN_RADIUS = int(RESOLUTION_X / 3)
 # Start the scan height 10 pixels from the bottom.
 SCAN_HEIGHT = int(RESOLUTION_Y - 10)
 # This is our centre. We assume that we want to try and track the line in relation to this point
@@ -34,7 +34,7 @@ SCAN_POS_X = int(RESOLUTION_X / 2)
 SCAN_RADIUS_REG = 24
 # The number of itterations we scan to allow us to look ahead and give us more time
 # to make better choices
-NUMBER_OF_CIRCLES = 5
+NUMBER_OF_CIRCLES = 4
 LAST_POINT_X = -1
 
 def scanLine(image, display_image, point, radius):
