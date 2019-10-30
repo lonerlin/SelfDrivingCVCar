@@ -2,7 +2,7 @@
 from line_base import *
 import io
 from carSerial import carSerial
-
+from videoWriter import videoWriter
 ser = carSerial("/dev/ttyACM0", 115200)
 
 IM_WIDTH = 240
@@ -22,6 +22,7 @@ freq = cv2.getTickFrequency()
 #vout = cv2.VideoWriter()
 #vout.open('sample.avi', fourcc, fps, sz)
 
+vw = videoWriter('test_one', 240, 180)
 
 # Create the in-memory stream
 stream = io.BytesIO()
@@ -100,6 +101,8 @@ while(True):
 
     #cv2.imshow("grey", grey_image)
     cv2.imshow("dis", display_image)
+    vw.write(display_image)
+
 
     #通知小车修正方向
     oc = offCenter(last_point)
@@ -109,10 +112,12 @@ while(True):
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
-    #print(frame_rate_calc)
+    print(frame_rate_calc)
     if cv2.waitKey(1) == ord('q'):
         break
 #vout.release()
+ser.write(str(200))
 ser.close()
+vw.release()
 camera.release()
 cv2.destroyAllWindows()

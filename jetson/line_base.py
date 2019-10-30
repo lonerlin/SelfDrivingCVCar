@@ -24,7 +24,7 @@ RESOLUTION_Y = 180
 
 # This is half the width of the line at the bottom of the screen that we start looking for
 # the line we want to follow.
-SCAN_RADIUS = int(RESOLUTION_X / 3)
+SCAN_RADIUS = int(RESOLUTION_X / 2.1)
 # Start the scan height 10 pixels from the bottom.
 SCAN_HEIGHT = int(RESOLUTION_Y - 10)
 # This is our centre. We assume that we want to try and track the line in relation to this point

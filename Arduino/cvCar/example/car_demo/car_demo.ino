@@ -11,7 +11,7 @@ int SPEED=0;
 int cur=0;
 int left,right;
 String inStr="";
-PID pid(1250,0,0);
+PID pid(1300,0,0);
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
@@ -30,6 +30,7 @@ void loop() {
     if (isDigit(inChar)) {
       // convert the incoming byte to a char and add it to the string:
     inStr += (char)inChar;
+    delay(1);
     }
     // if you get a newline, print the string, then the string's value:
     if (inChar == '\n') {
@@ -56,13 +57,13 @@ void loop() {
       //right=BASE_SPEED-cur;
       Serial.print("right:");
       Serial.println(right);
-      if (left>150)left=180;
-      if(right>150)right=180;
-      if(left<-150)left=-180;
-      if(right<-150)right=-180;
+      //if (left>150)left=180;
+      //if(right>150)right=180;
+      //if(left<-150)left=-180;
+      //if(right<-150)right=-180;
       
       mc.Motor(left,right);
-      
+      delay(5);
       }
   
 }
