@@ -19,8 +19,8 @@ class carSerial:
         self.Port = port
         self.BautRate = bautRate
         self.ser = serial.Serial(self.Port, self.BautRate)
-        t = threading.Thread(target=self.listen,daemon=True)
-        t.start()
+        #t = threading.Thread(target=self.listen,daemon=True)
+        #t.start()
 
 
     def write(self, text):

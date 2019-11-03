@@ -3,10 +3,15 @@ from line_base import *
 import io
 from carSerial import carSerial
 from videoWriter import videoWriter
+from objcet_detection import object_detection
 ser = carSerial("/dev/ttyACM0", 115200)
-
+obd = object_detection("tmp.jpg")
 IM_WIDTH = 240
 IM_HEIGHT = 180
+
+count=5
+frequency=5
+
 #test
 camera = cv2.VideoCapture(0)
 ret = camera.set(3, IM_WIDTH)
@@ -50,8 +55,16 @@ while(True):
 
 
     # 修改图片尺寸，缩小图片
+
+    if count == frequency:
+        count = 0
+        obd_image = cv2.resize(frame, (320, 240))
+        cv2.imwrite("tmp.jpg", obd_image)
+    else:
+        count = count+1
+
     image = cv2.resize(frame, (240, 180))
-    cv2.imshow("line", image)
+    cv2.imshow("line", obd_image)
     # Empty and return the in-memory stream to beginning
     stream.seek(0)
     stream.truncate(0)
@@ -108,7 +121,8 @@ while(True):
     oc = offCenter(last_point)
     print("offCenter:",oc)
     ser.write(str(offCenter(last_point)))
-
+    if count == 0:
+        obd.detect()
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
