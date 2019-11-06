@@ -115,14 +115,16 @@ while(True):
     #cv2.imshow("grey", grey_image)
     cv2.imshow("dis", display_image)
     vw.write(display_image)
-
+    if count==0:
+        detections = obd.detect()
+        for detection in detections:
+            print(detection.ClassID)
 
     #通知小车修正方向
     oc = offCenter(last_point)
     print("offCenter:",oc)
     ser.write(str(offCenter(last_point)))
-    if count == 0:
-        obd.detect()
+    # ccv
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1

@@ -12,4 +12,5 @@ class object_detection():
         detections = self.net.Detect(img, width, height)
         for detection in detections:
             print(detection)
+        return detections
 

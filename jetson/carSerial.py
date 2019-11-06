@@ -15,12 +15,13 @@ import threading
 
 class carSerial:
 
-    def __init__(self, port, bautRate):
+    def __init__(self, port, bautRate,recive = False):
         self.Port = port
         self.BautRate = bautRate
         self.ser = serial.Serial(self.Port, self.BautRate)
-        #t = threading.Thread(target=self.listen,daemon=True)
-        #t.start()
+        if recive:
+            t = threading.Thread(target=self.listen,daemon=True)
+            t.start()
 
 
     def write(self, text):
