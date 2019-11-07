@@ -20,7 +20,7 @@ ret, frame = camera.read()
 
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
-
+exit_flag=False
 #fps = 15
 #fourcc = cv2.VideoWriter_fourcc('h', '2', '6', '4')
 #sz = (int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)), int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
@@ -58,7 +58,7 @@ while(True):
 
     if count == frequency:
         count = 0
-        obd_image = cv2.resize(frame, (320, 240))
+        obd_image = cv2.resize(frame, (400, 300))
         cv2.imwrite("tmp.jpg", obd_image)
     else:
         count = count+1
@@ -118,8 +118,13 @@ while(True):
     if count==0:
         detections = obd.detect()
         for detection in detections:
-            print(detection.ClassID)
-
+            id = int(detection.ClassID)
+            print("classID:",id)
+            if id == 74:
+                print("Car stop!")
+                exit_flag=True
+    if exit_flag:
+        break
     #通知小车修正方向
     oc = offCenter(last_point)
     print("offCenter:",oc)
