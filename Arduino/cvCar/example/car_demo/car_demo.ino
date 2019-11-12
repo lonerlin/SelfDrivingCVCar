@@ -5,13 +5,13 @@
 #define RightDIRPin 7
 #define RightPWMPin 6
 #define Switch 2
-#define BASE_SPEED 40
-#define FAST_SPEED 80
+#define BASE_SPEED 45
+#define FAST_SPEED 70
 int SPEED=0;
 int cur=0;
 int left,right;
 String inStr="";
-PID pid(1500,0,0);
+PID pid(1600,0,0);
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
@@ -46,7 +46,6 @@ void loop() {
     }
     else{
       if(abs(cur)<25)SPEED=FAST_SPEED;
-      else if(abs(cur)>60 )SPEED=20;
       else SPEED=BASE_SPEED;
       pid.update(cur);
      
