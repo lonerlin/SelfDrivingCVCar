@@ -13,7 +13,7 @@ count=5
 frequency=5
 
 #test
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 ret = camera.set(3, IM_WIDTH)
 ret = camera.set(4, IM_HEIGHT)
 ret, frame = camera.read()
@@ -59,7 +59,7 @@ while(True):
     if count == frequency:
         count = 0
         obd_image = cv2.resize(frame, (400, 300))
-        cv2.imwrite("tmp.jpg", obd_image)
+        #cv2.imwrite("tmp.jpg", obd_image)
     else:
         count = count+1
 
@@ -115,16 +115,16 @@ while(True):
     #cv2.imshow("grey", grey_image)
     cv2.imshow("dis", display_image)
     vw.write(display_image)
-    if count==0:
-        detections = obd.detect()
-        for detection in detections:
-            id = int(detection.ClassID)
-            print("classID:",id)
-            if id == 74:
-                print("Car stop!")
-                exit_flag=True
-    if exit_flag:
-        break
+    # if count==0:
+    #     detections = obd.detect()
+    #     for detection in detections:
+    #         id = int(detection.ClassID)
+    #         print("classID:",id)
+    #         if id == 74:
+    #             print("Car stop!")
+    #             exit_flag=True
+    # if exit_flag:
+    #     break
     #通知小车修正方向
     oc = offCenter(last_point)
     print("offCenter:",oc)
