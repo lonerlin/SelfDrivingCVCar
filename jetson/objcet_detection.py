@@ -16,13 +16,13 @@ class object_detection():
             print(detection)
         return detections
     def camera_detect(self):
-        self.net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
-        camera = jetson.utils.gstCamera(640, 480, "/dev/video1")  # using V4L2
+        net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
+        camera = jetson.utils.gstCamera(640, 480, "0")  # using V4L2
         display = jetson.utils.glDisplay()
 
         while display.IsOpen():
             img, width, height = camera.CaptureRGBA()
-            detections = self.net.Detect(img, width, height)
+            detections = net.Detect(img, width, height)
             for detection in detections:
                 print(detection)
             #display.RenderOnce(img, width, height)
