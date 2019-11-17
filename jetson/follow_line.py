@@ -3,9 +3,9 @@ from line_base import *
 import io
 from carSerial import carSerial
 from videoWriter import videoWriter
-from objcet_detection import object_detection
+#from objcet_detection import object_detection
 ser = carSerial("/dev/ttyACM0", 115200)
-obd = object_detection("tmp.jpg")
+#obd = object_detection("tmp.jpg")
 IM_WIDTH = 240
 IM_HEIGHT = 180
 
@@ -26,7 +26,6 @@ exit_flag=False
 #sz = (int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)), int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)))
 #vout = cv2.VideoWriter()
 #vout.open('sample.avi', fourcc, fps, sz)
-
 vw = videoWriter('test_one', 240, 180)
 
 # Create the in-memory stream
