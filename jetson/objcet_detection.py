@@ -31,4 +31,4 @@ class object_detection():
 
 if __name__ == '__main__':
     od = object_detection("")
-
+    od.camera_detect()
