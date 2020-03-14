@@ -1,32 +1,46 @@
 import jetson.inference
 import jetson.utils
-import threading
+from multiprocessing import Process,Pipe
+import time
 
-class object_detection():
 
-    def __init__(self, file_path):
-        self.path = file_path
-        self.net=None
-        t = threading.Thread(target=self.camera_detect(), daemon=True)
-        t.start()
-    def detect(self):
-        img, width, height = jetson.utils.loadImageRGBA(self.path)
-        detections = self.net.Detect(img, width, height)
-        for detection in detections:
-            print(detection)
-        return detections
+class object_detection(Process):
+
+    def __init__(self, conn1, conn2, frequency=10, device="/dev/video0", network="ssd-mobilenet-v2", threshold=0.5):
+        super(object_detection, self).__init__()
+        self.device = device
+        self.network = network
+        self.frequency = frequency
+        self.threshold =threshold
+        self.conn1 = conn1
+        self.conn2 = conn2
+        self.interval = time.time()
+       # t = threading.Thread(target=self.camera_detect(), daemon=True)
+       #t.start()
+
+    def run(self):
+        self.conn2.close()
+        self.camera_detect()
+
     def camera_detect(self):
-        net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
-        camera = jetson.utils.gstCamera(640, 480, "0")  # using V4L2
+        net = jetson.inference.detectNet(self.network, threshold=self.threshold)
+        camera = jetson.utils.gstCamera(640, 480, self.device)  # using V4L2
         display = jetson.utils.glDisplay()
 
         while display.IsOpen():
             img, width, height = camera.CaptureRGBA()
-            detections = net.Detect(img, width, height)
-            for detection in detections:
-                print(detection)
-            #display.RenderOnce(img, width, height)
-            #display.SetTitle("Object Detection | Network {:.0f} FPS".format(self.net.GetNetworkFPS()))
+
+            if time.time() - self.interval >= 1/self.frequency:
+                self.interval = time.time()
+                detections = net.Detect(img, width, height)
+                detections_list = []
+                for d in detections:
+                    detections_list.append(
+                            [d.ClassID, d.Confidence, d.Left, d.Right, d.Top, d.Bottom, d.Area, d.Center])
+                self.conn1.send(detections_list)
+
+
+
 
 
 if __name__ == '__main__':

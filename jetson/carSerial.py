@@ -34,7 +34,7 @@ class carSerial:
 
     def listen(self):
         while 1:
-            print("read:",self.ser.readline())
+            print("read:", self.ser.readline())
 
 
 if __name__ == '__main__':

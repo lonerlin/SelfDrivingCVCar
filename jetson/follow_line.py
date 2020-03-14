@@ -1,4 +1,4 @@
-
+import cv2
 from line_base import *
 import io
 from carSerial import carSerial

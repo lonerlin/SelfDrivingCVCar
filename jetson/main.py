@@ -1,18 +1,10 @@
-#!/usr/bin/env python
-# encoding: utf-8
-'''
-@author: LinJungui
-@contact: linjungui@126.com
-@software: garner
-@file: main.py
-@time: 2019/11/17 0017 16:35
-@desc:CV Car
-'''
-from multiprocessing import Process, Manager, Lock
+from multiprocessing import Process,Pipe
+from objcet_detection import object_detection
 
 
 def main():
-  pass
+    conn1,conn2 = Pipe()
+    od = object_detection(conn1, conn2, 15)
 
 
 
