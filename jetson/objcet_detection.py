@@ -29,15 +29,16 @@ class object_detection(Process):
 
         while display.IsOpen():
             img, width, height = camera.CaptureRGBA()
-
+            display.RenderOnce(img, width, height)
             if time.time() - self.interval >= 1/self.frequency:
                 self.interval = time.time()
                 detections = net.Detect(img, width, height)
-                detections_list = []
-                for d in detections:
-                    detections_list.append(
-                            [d.ClassID, d.Confidence, d.Left, d.Right, d.Top, d.Bottom, d.Area, d.Center])
-                self.conn1.send(detections_list)
+                if len(detections) > 0:
+                    detections_list = []
+                    for d in detections:
+                        detections_list.append(
+                                [d.ClassID, d.Confidence, d.Left, d.Right, d.Top, d.Bottom, d.Area, d.Center])
+                    self.conn1.send(detections_list)
 
 
 
