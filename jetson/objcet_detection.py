@@ -24,22 +24,24 @@ class object_detection(Process):
 
     def camera_detect(self):
         net = jetson.inference.detectNet(self.network, threshold=self.threshold)
-        camera = jetson.utils.gstCamera(640, 480, self.device)  # using V4L2
+        camera = jetson.utils.gstCamera(320, 240, self.device)  # using V4L2
         display = jetson.utils.glDisplay()
 
         while display.IsOpen():
             img, width, height = camera.CaptureRGBA()
-            display.RenderOnce(img, width, height)
+
             if time.time() - self.interval >= 1/self.frequency:
                 self.interval = time.time()
                 detections = net.Detect(img, width, height)
+                display.RenderOnce(img, width, height)
                 if len(detections) > 0:
                     detections_list = []
                     for d in detections:
                         detections_list.append(
                                 [d.ClassID, d.Confidence, d.Left, d.Right, d.Top, d.Bottom, d.Area, d.Center])
                     self.conn1.send(detections_list)
-
+            else:
+                self.conn1.send([])
 
 
 

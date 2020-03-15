@@ -20,7 +20,7 @@ ret, frame = camera.read()
 
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
-exit_flag=False
+exit_flag = False
 #fps = 15
 #fourcc = cv2.VideoWriter_fourcc('h', '2', '6', '4')
 #sz = (int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)), int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)))

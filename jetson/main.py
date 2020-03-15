@@ -6,7 +6,7 @@ import time
 
 def main():
     conn1, conn2 = Pipe()
-    od = object_detection(conn1, conn2, 15)
+    od = object_detection(conn1, conn2, 10)
 
     od.start()
     begin = time.time()
@@ -21,6 +21,8 @@ def main():
         except:
             pass
 
+    #od.close()
+    od.join()
 
 if __name__ == "__main__":
     main()
