@@ -1,8 +1,7 @@
-import cv2
-from line_base import *
+from discards.line_base import *
 import io
 from carSerial import carSerial
-from videoWriter import videoWriter
+from discards.videoWriter import videoWriter
 #from objcet_detection import object_detection
 ser = carSerial("/dev/ttyACM0", 115200)
 #obd = object_detection("tmp.jpg")

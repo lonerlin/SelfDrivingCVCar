@@ -15,17 +15,15 @@ import threading
 
 class carSerial:
 
-    def __init__(self, port, bautRate,recive = False):
+    def __init__(self, port, baud_rate, receive=False):
         self.Port = port
-        self.BautRate = bautRate
-        self.ser = serial.Serial(self.Port, self.BautRate)
-        if recive:
-            t = threading.Thread(target=self.listen,daemon=True)
+        self.Baud_rate = baud_rate
+        self.ser = serial.Serial(self.Port, self.Baud_rate)
+        if receive:
+            t = threading.Thread(target=self.listen, daemon=True)
             t.start()
 
-
     def write(self, text):
-        #print("text:", text.encode("utf-8"))
         text += "\n"
         self.ser.write(text.encode("utf-8"))
 
@@ -35,6 +33,21 @@ class carSerial:
     def listen(self):
         while 1:
             print("read:", self.ser.readline())
+
+    @staticmethod
+    def build_motors_string(left, right):
+        tmp_str = ""
+        if left < 0:
+            tmp_str += "1"
+        else:
+            tmp_str += "0"
+        tmp_str += str(abs(left))
+        if right < 0:
+            tmp_str += "1"
+        else:
+            tmp_str += "0"
+        tmp_str += str(abs(right))
+        return tmp_str
 
 
 if __name__ == '__main__':
