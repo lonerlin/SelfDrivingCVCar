@@ -1,14 +1,14 @@
 import cv2
 
 
-def image_processing(frame, width, height, type = "GARY", threshold=150, bitwise_not=False):
+def image_processing(frame, width, height, convert_type="GARY", threshold=150, bitwise_not=False):
     """
     本函数用于对图像进行大小，灰度，二值，反转等转换。默认输入为灰度，如果需要转换为二值图，需输入阈值，如果需要反转需
     把bitwise_not 设置为true
     :param frame: 需要处理的图像
     :param width: 需要输出的宽度
     :param height: 需要输出的高度
-    :param type: 默认为“GARY”，二值图为“BINARY”
+    :param convert_type: 默认为“GARY”，二值图为“BINARY”
     :param threshold: 阈值，在二值图时生效
     :param bitwise_not: 是否反转
     :return: 返回处理后的mat
@@ -16,7 +16,7 @@ def image_processing(frame, width, height, type = "GARY", threshold=150, bitwise
     size = (width, height)                              #尺寸
     image = cv2.resize(frame, size)                     #修改尺寸
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)     #转换为灰度
-    if type == "BINARY":
+    if convert_type == "BINARY":
         _, image = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)     #转换为二值图
     if bitwise_not:
         image = cv2.bitwise_not(image)                                                           #黑白翻转
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     capture = cv2.VideoCapture(0)
     while True:
         ret, frame = capture.read()
-        image = image_processing(frame, 320, 240, type="BINARY", threshold=120, bitwise_not=False)
+        image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
         image2 =remove_noise(image, iterations=3)
         cv2.imshow("1", image)
         cv2.imshow('frame', image2)

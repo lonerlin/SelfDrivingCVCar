@@ -45,7 +45,7 @@ void loop() {
           break;
       }
     }
-    //如果传送出错，立刻停止
+    //如果传送出错，立刻停止 
     if(inStr!="" && inStr.length()== 8 )
     {
        int tmp;

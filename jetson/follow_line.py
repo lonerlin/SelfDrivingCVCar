@@ -19,7 +19,7 @@ class FollowLine:
             if white_count == 0:
                 white_count = 1
             self.center = (white_index[0][white_count - 1] + white_index[0][0]) / 2
-            self._offset = self.center - self.width/2
+            self._offset = (self.center - self.width/2) / self.width/2
         except:
             pass
         if self.rander:
@@ -28,7 +28,7 @@ class FollowLine:
             return self._offset, None
 
     def rander_image(self, frame):
-        return self._arrowed_line(frame, (self.height-10, self.width/2), (self.height/2, self.center))
+        return self._arrowed_line(frame, (self.width/2, self.height-10), (self.center, self.height/2))
 
     def _arrowed_line(self, frame, start_point, end_point):
         arrow_image = cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0), line_type=cv2.LINE_4, thickness=3,

@@ -6,17 +6,16 @@ import time
 
 class object_detection(Process):
 
-    def __init__(self, conn1, conn2, frequency=10, device="/dev/video0", network="ssd-mobilenet-v2", threshold=0.5):
+    def __init__(self, conn1, conn2, stop_process, frequency=10, device="/dev/video0", network="ssd-mobilenet-v2", threshold=0.5):
         super(object_detection, self).__init__()
         self.device = device
         self.network = network
         self.frequency = frequency
-        self.threshold =threshold
+        self.threshold = threshold
         self.conn1 = conn1
         self.conn2 = conn2
         self.interval = time.time()
-       # t = threading.Thread(target=self.camera_detect(), daemon=True)
-       #t.start()
+        self.stop = stop_process
 
     def run(self):
         self.conn2.close()
@@ -27,7 +26,7 @@ class object_detection(Process):
         camera = jetson.utils.gstCamera(320, 240, self.device)  # using V4L2
         display = jetson.utils.glDisplay()
 
-        while display.IsOpen():
+        while display.IsOpen() and self.stop == 0:
             img, width, height = camera.CaptureRGBA()
 
             if time.time() - self.interval >= 1/self.frequency:

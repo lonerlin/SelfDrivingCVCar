@@ -1,5 +1,5 @@
 
-class Detection:
+class Object:
 
     def __init__(self, detection):
         self.Names = ['unlabeled', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
@@ -34,8 +34,12 @@ class Detection:
         self.width = self.right - self.left
         self.height = self.bottom - self.top
 
-    def test(self):
-        pass
+    @staticmethod
+    def get_list(detections):
+        package = []
+        for det in detections:
+            package.append(Object(det))
+        return package
 
 
 if __name__ == 'main()':
