@@ -1,0 +1,23 @@
+import cv2
+from image_init import image_processing,remove_noise
+from find_key_point import FindKeyPoint
+from hough_line_transform import HoughLines
+
+capture = cv2.VideoCapture(0)
+fkp = FindKeyPoint(False, True)
+hl =HoughLines(draw=True)
+while True:
+    ret, frame = capture.read()
+    image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
+    image2 = remove_noise(image, iterations=3)
+    _, image3 = fkp.get_key_point(image2)
+    lines, image4 = hl.get_lines(image2)
+    print(lines)
+    cv2.imshow("1", image)
+    cv2.imshow('frame', image2)
+    cv2.imshow("fkp", image3)
+    cv2.imshow("hl",image4)
+    if cv2.waitKey(1) == ord('q'):
+        break
+capture.release()
+cv2.destroyAllWindows()
