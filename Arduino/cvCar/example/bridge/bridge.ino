@@ -15,7 +15,7 @@
 #define BASE_SPEED 45
 #define FAST_SPEED 70
 int SPEED=0;
-int cur=0;
+
 int left,right;
 String inStr="";
 
@@ -30,7 +30,7 @@ void setup() {
 }
 
 void loop() {
-    inStr="";
+   
     while (Serial.available()>0){
       int inChar = Serial.read();
       //Serial.println(inChar);
@@ -44,30 +44,36 @@ void loop() {
       if (inChar == '\n') {
           break;
       }
+      
+      
     }
+    
     //如果传送出错，立刻停止 
-    if(inStr!="" && inStr.length()== 8 )
+    if(inStr!="" && inStr.length()==8 )
     {
        int tmp;
-       cur=inStr.toInt();
+       Serial.print("string:");
+       Serial.println(inStr);
+       inStr = inStr + "";
        
-       //左边整除
-       tmp =cur/10000;
+      
+       tmp =inStr.substring(0,4).toInt();
        if(tmp /1000 >0)left=-tmp%1000;
        else left=tmp%1000;
 
        //右边取余
-       tmp =cur %10000;
+       tmp =inStr.substring(4,8).toInt();
        if(tmp/1000>0)right=-tmp%1000;
        else  right=tmp%1000;
        
        mc.Motor(left,right);
-       
+       Serial.print("left:");
+       Serial.println(left);
+       Serial.print("right:");
+       Serial.println(right);
+       inStr="";
     }
-    else
-    {
-      mc.Motor(0,0);  
-    }
+    
     delay(5);
     
  }
