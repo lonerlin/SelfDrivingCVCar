@@ -18,7 +18,7 @@ class FollowLine:
             if white_count == 0:
                 white_count = 1
             self.center = (white_index[0][white_count - 1] + white_index[0][0]) / 2
-            self._offset = (self.center - self.width/2) / self.width/2
+            self._offset = (self.center - self.width/2)
         except:
             pass
         if not (rander_image is None):
