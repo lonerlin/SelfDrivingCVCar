@@ -18,7 +18,7 @@ ret = camera.set(3, LINE_CAMERA_WIDTH)
 ret = camera.set(4, LINE_CAMERA_HEIGHT)
 ret, frame = camera.read()
 f_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, rander=True)
-
+serial = carSerial()
 freq = cv2.getTickFrequency()
 
 
@@ -30,7 +30,7 @@ while True:
     offset, line_image = f_line(image)
     cv2.imshow("line", line_image)
     print(offset)
-
+    #serial.drive_motor()
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
