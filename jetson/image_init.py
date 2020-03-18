@@ -41,7 +41,7 @@ if __name__ == '__main__':
         ret, frame = capture.read()
         image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
         image2 =remove_noise(image, iterations=3)
-        cv2.imshow("1", image)
+        cv2.imshow("1", frame)
         cv2.imshow('frame', image2)
         if cv2.waitKey(1) == ord('q'):
             break

@@ -3,15 +3,14 @@ import cv2
 
 
 class FollowLine:
-    def __init__(self, width, height, image_type="BINARY", rander=False):
+    def __init__(self, width, height, image_type="BINARY"):
         self.width = width
         self.height = height
         self.image_type = image_type
-        self.rander = rander
         self._offset = 0
         self.center = 0
 
-    def get_offset(self, frame):
+    def get_offset(self, frame, rander_image=None):
         color = frame[self.height/2]
         try:
             white_count = np.sum(color == 255)
@@ -22,8 +21,8 @@ class FollowLine:
             self._offset = (self.center - self.width/2) / self.width/2
         except:
             pass
-        if self.rander:
-            return self._offset, self.rander_image(frame)
+        if not (rander_image is None):
+            return self._offset, self.rander_image(rander_image)
         else:
             return self._offset, None
 
