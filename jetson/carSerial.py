@@ -47,6 +47,7 @@ class carSerial:
         else:
             tmp_str += "0"
         tmp_str += str(abs(right)).zfill(3)
+        #print(tmp_str)
         return tmp_str
 
     def drive_motor(self, left, right):
@@ -57,18 +58,8 @@ if __name__ == '__main__':
     cs = carSerial("/dev/ttyUSB0", 115200,receive=True)
     time.sleep(1)
     n = 0
-    while n > -150:
-        send_value = cs.build_motors_string(n,-n)
-        print("send_value %s" % send_value)
-        cs.write(send_value)
-        print("write:", n)
-        n = n-5
-        time.sleep(0.4)
-    while n < 150:
-        send_value = cs.build_motors_string(n, n)
-        print("send_value %s" %send_value)
-        cs.write(send_value)
-        print("write:", n)
-        n = n+5
-        time.sleep(0.4)
-    cs.write(cs.build_motors_string(0,0))
+    begin = time.time()
+    while time.time()-begin < 20:
+        cs.drive_motor(50,50)
+        time.sleep(0.1)
+    cs.drive_motor(0,0)

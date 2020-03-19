@@ -58,11 +58,13 @@ void loop() {
        
       
        tmp =inStr.substring(0,4).toInt();
+       Serial.println(tmp);
        if(tmp /1000 >0)left=-tmp%1000;
        else left=tmp%1000;
 
        //右边取余
        tmp =inStr.substring(4,8).toInt();
+       Serial.println(tmp);
        if(tmp/1000>0)right=-tmp%1000;
        else  right=tmp%1000;
        
