@@ -49,6 +49,9 @@ class carSerial:
         tmp_str += str(abs(right)).zfill(3)
         return tmp_str
 
+    def drive_motor(self, left, right):
+        self.write(cs.build_motors_string(left, right))
+
 
 if __name__ == '__main__':
     cs = carSerial("/dev/ttyUSB0", 115200,receive=True)
