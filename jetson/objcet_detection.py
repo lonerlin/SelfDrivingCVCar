@@ -26,7 +26,7 @@ class object_detection(Process):
 
     def camera_detect(self):
         net = jetson.inference.detectNet(self.network, threshold=self.threshold)
-        camera = jetson.utils.gstCamera(320, 240, self.device)  # using V4L2
+        camera = jetson.utils.gstCamera(self.width, self.height, self.device)  # using V4L2
         display = jetson.utils.glDisplay()
 
         while display.IsOpen() and self.stop.value == 0:

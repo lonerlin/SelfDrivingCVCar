@@ -15,7 +15,7 @@ import threading
 
 class carSerial:
 
-    def __init__(self, port, baud_rate, receive=False):
+    def __init__(self, port, baud_rate=115200, receive=False):
         self.Port = port
         self.Baud_rate = baud_rate
         self.ser = serial.Serial(self.Port, self.Baud_rate)
