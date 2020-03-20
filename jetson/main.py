@@ -30,6 +30,7 @@ while True:
     ret, frame = camera.read()
     cv2.imshow("cammer", frame)
     image = image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", bitwise_not=True)
+    cv2.imshow("test", image)
     # offset, line_image = f_line(image)
     # cv2.imshow("line", line_image)
     # print(offset)

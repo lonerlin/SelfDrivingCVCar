@@ -36,14 +36,17 @@ def remove_noise(frame, kennel=(3, 3), iterations=1):
     return dilate
 
 if __name__ == '__main__':
-    capture = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(0)
+    ret = camera.set(3, 320)
+    ret = camera.set(4, 240)
+    ret, frame = camera.read()
     while True:
-        ret, frame = capture.read()
+        ret, frame = camera.read()
         image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
-        image2 =remove_noise(image, iterations=3)
+        image2 = remove_noise(image, iterations=3)
         cv2.imshow("1", frame)
         cv2.imshow('frame', image2)
         if cv2.waitKey(1) == ord('q'):
             break
-    capture.release()
+    camera.release()
     cv2.destroyAllWindows()
