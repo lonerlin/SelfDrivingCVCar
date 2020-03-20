@@ -5,27 +5,46 @@ import time
 
 
 class Recognition:
-
-    def __init__(self, device="/dev/video0", width=320, height=240, display_window=True):
+    """
+    该类用于初始化，并启动系统的对象检测进程，返回检测结果。通过PIPE跟子进程通信。通过共享变量控制子进程的退出。
+    此类应该实现单例较为合理。等以后有机会再改。系统必须安装v4l-utils，才能支持USB摄像头
+    帧率受到系统性能和摄像头本身帧速度的限制。
+    """
+    def __init__(self, device="/dev/video0", width=320, height=240, frequency=10, display_window=True):
+        """
+            初始化识别类，此处应注意，如果指定摄像头的宽和高摄像头本身不支持，必定会出现错误。
+            以下语句可以检测摄像头的分辨率：v4l2-ctl --list-formats-ext
+        :param device: 指定摄像头（/dev/video?）
+        :param width: 指定摄像头宽度
+        :param height: 指定摄像头高度
+        :param frequency:检测的频率，默认每秒10帧
+        :param display_window:是否开始监视窗口，默认是
+        """
         self.conn1, self.conn2 = Pipe()
         self._stop_process = Value('i', 0)
         self.od = object_detection(self.conn1, self.conn2, self._stop_process, device=device, width=width,
-                                   height=height, display_window=display_window, frequency=10)
+                                   height=height, display_window=display_window, frequency=frequency)
         self.od.start()
         self.conn1.close()
 
     def get_objects(self):
-        #try:
-            detections = self.conn2.recv()
-            if len(detections) > 0:
-                return Object.get_list(detections)
-                #return detections
-            else:
-                return []
-        # except:
-        #     return ["error"]
+        """
+            在循环中不停的调用本函数来刷新识别到的物体，当刷新速率超过设定的识别帧率（frequency）时，会返回一个空的列表（list）
+        :return: 返回一个包含Object对象的列表。
+        """
+
+        detections = self.conn2.recv()
+        if len(detections) > 0:
+            return Object.get_list(detections)
+
+        else:
+            return []
+
 
     def close(self):
+        """
+        关闭子线程，必须显式关闭，否则识别子进程将不会自动退出。
+        """
         self._stop_process.value = 1
         self.od.join(5)
 

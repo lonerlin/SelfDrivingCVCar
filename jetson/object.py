@@ -1,6 +1,9 @@
 
 class Object:
-
+    """
+        一个识别物体的增强对象。
+        主要是添加了分类的中英文，同时保留了原来的位置，宽、高，面积，中心点等信息。
+    """
     def __init__(self, detection):
         self.Names = ['unlabeled', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
                       'boat', 'traffic light', 'fire hydrant', 'street sign', 'stop sign', 'parking meter', 'bench',
@@ -36,6 +39,11 @@ class Object:
 
     @staticmethod
     def get_list(detections):
+        """
+            接受由子线程传输进来的识别信息，封装成一个Object list。
+        :param detections: 子线程传输过来的原始信息
+        :return: 一个Object对象列表
+        """
         package = []
         for det in detections:
             package.append(Object(det))
