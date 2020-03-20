@@ -10,7 +10,7 @@ class Recognition:
         self.conn1, self.conn2 = Pipe()
         self._stop_process = Value('i', 0)
         self.od = object_detection(self.conn1, self.conn2, self._stop_process, device=device, width=width,
-                                   height=height, display_window=display_window, frequency=15)
+                                   height=height, display_window=display_window, frequency=10)
         self.od.start()
         self.conn1.close()
 
