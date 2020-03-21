@@ -1,5 +1,5 @@
 from multiprocessing import Pipe,Value
-from objcet_detection import object_detection
+from objcet_detection import ObjectDetection
 from object import Object
 import time
 
@@ -22,8 +22,8 @@ class Recognition:
         """
         self.conn1, self.conn2 = Pipe()
         self._stop_process = Value('i', 0)
-        self.od = object_detection(self.conn1, self.conn2, self._stop_process, device=device, width=width,
-                                   height=height, display_window=display_window, frequency=frequency)
+        self.od = ObjectDetection(self.conn1, self.conn2, self._stop_process, device=device, width=width,
+                                  height=height, display_window=display_window, frequency=frequency)
         self.od.start()
         self.conn1.close()
 
@@ -32,14 +32,12 @@ class Recognition:
             在循环中不停的调用本函数来刷新识别到的物体，当刷新速率超过设定的识别帧率（frequency）时，会返回一个空的列表（list）
         :return: 返回一个包含Object对象的列表。
         """
-
         detections = self.conn2.recv()
         if len(detections) > 0:
             return Object.get_list(detections)
 
         else:
             return []
-
 
     def close(self):
         """

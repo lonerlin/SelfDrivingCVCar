@@ -4,7 +4,7 @@ from multiprocessing import Process,Pipe
 import time
 
 
-class object_detection(Process):
+class ObjectDetection(Process):
     """
         物体识别进程类，实际的识别程序
     """
@@ -22,7 +22,7 @@ class object_detection(Process):
         :param threshold: 阈值（就是可信度多少时认定为识别物，一般是0.5）
         :param display_window: 是否显示监视窗口
         """
-        super(object_detection, self).__init__()
+        super(ObjectDetection, self).__init__()
         self.device = device
         self.network = network
         self.frequency = frequency
@@ -51,7 +51,9 @@ class object_detection(Process):
         display = jetson.utils.glDisplay()
 
         while display.IsOpen() and self.stop.value == 0:
+
             img, width, height = camera.CaptureRGBA()
+
 
             if time.time() - self.interval >= 1/self.frequency:
                 self.interval = time.time()
@@ -65,12 +67,12 @@ class object_detection(Process):
                                 [d.ClassID, d.Confidence, d.Left, d.Right, d.Top, d.Bottom, d.Area, d.Center])
                     self.conn1.send(detections_list)
 
-            else:
-                self.conn1.send([])
+                else:
+                    self.conn1.send([])
 
 
 
 
 if __name__ == '__main__':
-    od = object_detection("")
+    od = ObjectDetection("")
     od.camera_detect()

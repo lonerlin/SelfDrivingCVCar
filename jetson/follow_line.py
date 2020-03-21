@@ -11,13 +11,14 @@ class FollowLine:
         self.center = 0
 
     def get_offset(self, frame, rander_image=None):
-        color = frame[self.height/2]
+        color = frame[int(self.height/2)]
+        print("color",color)
         try:
             white_count = np.sum(color == 255)
             white_index = np.where(color == 255)
             if white_count == 0:
                 white_count = 1
-            self.center = (white_index[0][white_count - 1] + white_index[0][0]) / 2
+            self.center =  (white_index[0][white_count - 1] + white_index[0][0]) / 2
             self._offset = (self.center - self.width/2)
         except:
             pass

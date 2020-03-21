@@ -1,10 +1,10 @@
 from multiprocessing import Pipe,Value
-from objcet_detection import object_detection
+from objcet_detection import ObjectDetection
 import time
 
 conn1, conn2 = Pipe()
 stop_process = Value('i', 0)
-ob = object_detection(conn1, conn2, stop_process, 15)
+ob = ObjectDetection(conn1, conn2, stop_process, 15)
 ob.start()
 conn1.close()
 begin = time.time()
