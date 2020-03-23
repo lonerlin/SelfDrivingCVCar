@@ -11,7 +11,7 @@ class FollowLine:
         self.center = 0
 
     def get_offset(self, frame, rander_image=None):
-        color = frame[int(self.height/2)]
+        color = frame[int(self.height/3)]
         print("color",color)
         try:
             white_count = np.sum(color == 255)
@@ -28,7 +28,7 @@ class FollowLine:
             return self._offset, None
 
     def rander_image(self, frame):
-        return self._arrowed_line(frame, (self.width/2, self.height-10), (self.center, self.height/2))
+        return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)), (int(self.center), int(self.height/3)))
 
     def _arrowed_line(self, frame, start_point, end_point):
         arrow_image = cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0), line_type=cv2.LINE_4, thickness=3,

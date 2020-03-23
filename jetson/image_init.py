@@ -17,7 +17,7 @@ def image_processing(frame, width, height, convert_type="GARY", threshold=150, b
     image = cv2.resize(frame, size)                     #修改尺寸
     image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)     #转换为灰度
     if convert_type == "BINARY":
-        _, image = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)     #转换为二值图
+        _, image = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY )     #转换为二值图
     if bitwise_not:
         image = cv2.bitwise_not(image)                                                           #黑白翻转
     return image
