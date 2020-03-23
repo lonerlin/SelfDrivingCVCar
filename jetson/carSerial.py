@@ -81,7 +81,7 @@ class carSerial:
         :param left: 左马达速度（-255,255）
         :param right: 右马达速度（-255,255）
         """
-        self.write(cs.build_motors_string(left, right))
+        self.write(self.build_motors_string(left, right))
 
 
 if __name__ == '__main__':
@@ -90,6 +90,6 @@ if __name__ == '__main__':
     n = 0
     begin = time.time()
     while time.time()-begin < 20:
-        cs.drive_motor(50,50)
+        cs.drive_motor(120,0)
         time.sleep(0.1)
     cs.drive_motor(0,0)

@@ -4,9 +4,9 @@ from  recognition import Recognition
 from carSerial import carSerial
 from image_init import image_processing
 from follow_line import FollowLine
-LINE_CAMERA = '/dev/video1'
-OD_CAMERA = '/dev/video0'
-SERIAL = "/dev/ttyACM0"
+LINE_CAMERA = '/dev/video0'
+OD_CAMERA = '/dev/video1'
+SERIAL = "/dev/ttyUSB0"
 
 LINE_CAMERA_WIDTH = 320
 LINE_CAMERA_HEIGHT = 240
@@ -15,8 +15,8 @@ OD_CAMERA_HEIGHT = 240
 
 
 
-f_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT)
-#serial = carSerial(port=SERIAL)
+qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT)
+serial = carSerial(port=SERIAL)
 freq = cv2.getTickFrequency()
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT)
 camera = cv2.VideoCapture(LINE_CAMERA)
@@ -29,11 +29,11 @@ while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
     cv2.imshow("cammer", frame)
-    image = image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", bitwise_not=True)
+    image = image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", bitwise_not=False)
     cv2.imshow("test", image)
-    # offset, line_image = f_line(image)
-    # cv2.imshow("line", line_image)
-    # print(offset)
+    offset, line_image = f_line(image,frame)
+    cv2.imshow("line", line_image)
+    print(offset)
     # print(rc.get_objects())
     x = rc.get_objects()
     if len(x) > 0:

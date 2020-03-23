@@ -23,9 +23,9 @@ class FollowLine:
         except:
             pass
         if not (rander_image is None):
-            return self._offset, self.rander_image(rander_image)
+            return int(self._offset), self.rander_image(rander_image)
         else:
-            return self._offset, None
+            return int(self._offset), None
 
     def rander_image(self, frame):
         return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)), (int(self.center), int(self.height/3)))

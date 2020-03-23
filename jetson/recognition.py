@@ -48,9 +48,9 @@ class Recognition:
 
 
 if __name__ == '__main__':
-    reco = Recognition(device="/dev/video1",width=640,height=480)
+    reco = Recognition(device="/dev/video0",width=640,height=480)
     begin = time.time()
-    while time.time() - begin < 60:
+    while time.time() - begin < 120:
         objs = reco.get_objects()
         if len(objs) > 0:
             for obj in objs:
