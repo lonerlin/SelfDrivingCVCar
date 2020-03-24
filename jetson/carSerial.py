@@ -81,11 +81,11 @@ class carSerial:
         :param left: 左马达速度（-255,255）
         :param right: 右马达速度（-255,255）
         """
-        self.write(self.build_motors_string(left, right))
+        self.write(self.build_motors_string(int(left), int(right)))
 
 
 if __name__ == '__main__':
-    cs = carSerial("/dev/ttyUSB0", 115200,receive=True)
+    cs = carSerial("/dev/ttyUSB0", 115200, receive=True)
     time.sleep(1)
     n = 0
     begin = time.time()

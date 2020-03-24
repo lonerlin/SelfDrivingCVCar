@@ -32,7 +32,7 @@ def remove_noise(frame, kennel=(3, 3), iterations=1):
     :return: 处理后的图像
     """
     erosion = cv2.erode(frame, kennel, iterations)
-    dilate = cv2.dilate(erosion, kennel, iterations)
+    dilate = cv2.dilate(erosion, kennel, 5)
     return dilate
 
 if __name__ == '__main__':
