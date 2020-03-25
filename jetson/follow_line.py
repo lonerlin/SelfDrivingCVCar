@@ -12,7 +12,7 @@ class FollowLine:
 
     def get_offset(self, frame, rander_image=None):
         color = frame[int(self.height/3)]
-        print("color",color)
+        print("color", color)
         try:
             white_count = np.sum(color == 255)
             white_index = np.where(color == 255)
