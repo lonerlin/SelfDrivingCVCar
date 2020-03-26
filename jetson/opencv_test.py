@@ -12,7 +12,7 @@ from hough_line_transform import HoughLines
 hl = HoughLines()
 fl =FollowLine(width=320, height=240)
 from image_init import image_processing,remove_noise
-cs = carSerial("/dev/ttyUSB0",receive=True)
+cs = carSerial("/dev/ttyUSB0", receive=True)
 while(True):
     # 获取一帧
     ret, frame = camera.read()

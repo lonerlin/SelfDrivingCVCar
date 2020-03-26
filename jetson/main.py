@@ -1,6 +1,6 @@
 import time
 import cv2
-from  recognition import Recognition
+from recognition import Recognition
 from carSerial import carSerial
 from image_init import image_processing
 from follow_line import FollowLine
@@ -14,9 +14,8 @@ OD_CAMERA_WIDTH = 320
 OD_CAMERA_HEIGHT = 240
 
 
-
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT)
-serial = carSerial(port=SERIAL)
+serial = carSerial(port=SERIAL, receive=True)
 freq = cv2.getTickFrequency()
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT)
 camera = cv2.VideoCapture(LINE_CAMERA)
@@ -28,10 +27,10 @@ ret, frame = camera.read()
 while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
-    cv2.imshow("cammer", frame)
+    cv2.imshow("camera", frame)
     image = image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", bitwise_not=False)
     cv2.imshow("test", image)
-    offset, line_image = f_line(image,frame)
+    offset, line_image = qf_line(image, frame)
     cv2.imshow("line", line_image)
     print(offset)
     # print(rc.get_objects())
@@ -39,7 +38,6 @@ while True:
     if len(x) > 0:
         for object in x:
             print(object.chinese,object.class_id,object.width)
-
 
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
