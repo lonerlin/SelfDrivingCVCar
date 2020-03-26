@@ -31,5 +31,5 @@ while(True):
     cv2.imshow('rander_image',rander_image)
     if cv2.waitKey(1) == ord('q'):
         break
-capture.release()
+camera.release()
 cv2.destroyAllWindows()
