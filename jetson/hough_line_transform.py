@@ -62,8 +62,7 @@ if __name__ == '__main__':
         time1 = (t2 - t1) / freq
         frame_rate_calc = 1 / time1
         print(frame_rate_calc)
-        if cv2.waitKey(1) == ord('q'):
-            break
+
 
         if cv2.waitKey(1) == ord('q'):
             break

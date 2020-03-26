@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import math
-
+from image_init import image_processing
 
 def coordinateFromPoint(origin, angle, radius):
     """
@@ -16,11 +16,11 @@ def coordinateFromPoint(origin, angle, radius):
 
     # Work out the co-ordinate for the pixel on the circumference of the circle
     x = xo - radius * math.cos(math.radians(angle))
-    y = yo + radius * math.sin(math.radians(angle))
+    y = yo - radius * math.sin(math.radians(angle))
 
     # We only want whole numbers
-    x = int(round(x))
-    y = int(round(y))
+    x = int(np.round(x))
+    y = int(np.round(y))
     return (x, y)
 
 def inImageBounds(image, x, y):
@@ -49,11 +49,11 @@ def scan_circle(image,  point, radius, look_angle, display_image=None):
         cv2.circle(display_image, (endpoint_left[0], endpoint_left[1]), 5, (255, 100, 100), -1, 8, 0)
         cv2.circle(display_image, (endpoint_right[0], endpoint_right[1]), 5, (100, 255, 100), -1, 8, 0)
         cv2.line(display_image, (endpoint_left[0], endpoint_left[1]), (endpoint_right[0], endpoint_right[1]),
-                    (255, 0, 0), 1)
+                 (255, 0, 0), 1)
         cv2.circle(display_image, (x, y), radius, (100, 100, 100), 1, 8, 0)
 
         # We are only going to scan half the circumference
-    data = np.zeros(shape=(180, 3))
+    data = np.zeros(shape=(180, 4))
 
     # Getting the co-ordinates and value for every degree in the semi circle
     startAngle = look_angle - 90
@@ -65,51 +65,53 @@ def scan_circle(image,  point, radius, look_angle, display_image=None):
 
         if inImageBounds(image, scan_point[0], scan_point[1]):
             imageValue = image[scan_point[1]][scan_point[0]]
-            data[i] = [imageValue, scan_point[0], scan_point[1]]
+            data[i] = [i, imageValue, scan_point[0], scan_point[1]]
         else:
             returnVal = False
             break
     return returnVal, data
 
 
-def findInCircle(display_image, scan_data):
-    data = np.zeros(shape=(len(scan_data) - 1, 1))
-    data[0] = 0
-    data[len(data) - 1] = 0
-    for index in range(1, len(data)):
-        data[index] = scan_data[index - 1][0] - scan_data[index][0]
+def findInCircle(scan_data):
 
-    # left and right should be the boundry values.
-    # first element will be the image value
-    # second element will be the index of the data item
-    left = [0, 0]
-    right = [0, 0]
+    tmp_count = 0
+    angle_list = []
+    for i in range(len(scan_data)):
+        if scan_data[i][1] == 0:
+            if tmp_count > 0:
+                    angle_list.append(scan_data[i-int(tmp_count/2)])
+                    tmp_count = 0
+        else:
+            tmp_count += 1
 
-    for index in range(0, len(data)):
-        if data[index] > left[1]:
-            left[1] = data[index]
-            left[0] = index
+    return angle_list
 
-        if data[index] < right[1]:
-            right[1] = data[index]
-            right[0] = index
 
-    leftx = int(scan_data[left[0]][1])
-    lefty = int(scan_data[left[0]][2])
-    lefti = left[0]
-    rightx = int(scan_data[right[0]][1])
-    righty = int(scan_data[right[0]][2])
-    righti = right[0]
+def find(image, point, rander_image=None):
+    _,scan_data = scan_circle(image, point, radius=150, look_angle=90, display_image=rander_image)
+    road = findInCircle(scan_data)
+    return_value = []
+    for data in road:
+        return_value.append([int(data[0]), int(data[2]), int(data[3])])
+    if len(return_value) > 0 and not (rander_image is None):
+        for end_point in return_value:
+            cv2.arrowedLine(rander_image,point, (end_point[1], end_point[2]), color=(255, 0, 0), thickness=3)
+    return  return_value
 
-    centre_index = int(round((righti + lefti) / 2))
 
-    position = [int(scan_data[centre_index][1]), int(scan_data[centre_index][2])]
+if __name__ == '__main__':
+    image = cv2.imread('h:/3.jpg')
+    image2 = image_processing(image, width=320, height=240, convert_type="BINARY", bitwise_not=True)
+    cv2.imshow("test_one", image2)
 
-    # mid point, where we believe is the centre of the line
-    cv2.circle(display_image, (position[0], position[1]), 5, (255, 255, 255), -1, 8, 0)
-    # left boundrary dot on the line
-    cv2.circle(display_image, (leftx, lefty), 2, (255, 255, 0), 2, 8, 0)
-    # right boundrary dot on the line
-    cv2.circle(display_image, (rightx, righty), 2, (255, 255, 0), 2, 8, 0)
+    #data = find(image2, (160, 230), image)
+    data2 = find(image2, (160, 200), image)
 
-    return position
+    #print(data)
+    print(data2)
+    cv2.imshow("rander_image", image)
+    while True:
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+    cv2.destroyAllWindows()
