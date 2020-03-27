@@ -3,6 +3,11 @@ import time
 import numpy as np
 
 
+
+
+
+
+
 def nothing(x):
     pass
 
@@ -98,9 +103,10 @@ def trackshow(source=1, ksize=5, interv=5 ):
         #         tracker[x, y] += .2
 
         #build a window
+        cv2.imshow('control',tracker)
         cv2.imshow('original', frame)
-        # cv2.imshow('result', res)
-        cv2.imshow('tracker', tracker)
+         # cv2.imshow('result', res)
+        #cv2.imshow('tracker', tracker)
         #
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
