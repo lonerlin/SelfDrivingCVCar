@@ -72,7 +72,7 @@ class carSerial:
         else:
             tmp_str += "0"
         tmp_str += str(abs(right)).zfill(3)
-        #print(tmp_str)
+        print(tmp_str)
         return tmp_str
 
     def drive_motor(self, left, right):
@@ -90,6 +90,6 @@ if __name__ == '__main__':
     n = 0
     begin = time.time()
     while time.time()-begin < 20:
-        cs.drive_motor(120,0)
+        cs.drive_motor(0,50)
         time.sleep(0.1)
     cs.drive_motor(0,0)
