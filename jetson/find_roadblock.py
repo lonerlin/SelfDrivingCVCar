@@ -70,6 +70,7 @@ class FindRoadblock:
     def nothing(self, x):
         pass
 
+
 if __name__ == '__main__':
     fr = FindRoadblock(None, 0, 0, 0, 0, 0, 0.5)
     cap = cv2.VideoCapture(0)
