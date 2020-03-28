@@ -33,9 +33,12 @@ while True:
     offset, line_image = qf_line.get_offset(image, frame)
     cv2.imshow("line", line_image)
     print("offset:", offset)
-    previous_offset = offset
+
     if offset == -1000:
         offset = previous_offset
+    else:
+        previous_offset = offset
+        
     serial.drive_motor(int(100 + offset * 0.5), int(100 - offset * 0.5))
 
     x = rc.get_objects()
