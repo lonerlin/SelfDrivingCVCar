@@ -1,8 +1,8 @@
 import cv2
 
-LINE_CAMERA_WIDTH = 320
-LINE_CAMERA_HEIGHT = 240
-camera = cv2.VideoCapture('/dev/video0')
+LINE_CAMERA_WIDTH = 640
+LINE_CAMERA_HEIGHT = 480
+camera = cv2.VideoCapture('/dev/video1')
 freq = cv2.getTickFrequency()
 ret = camera.set(3, LINE_CAMERA_WIDTH)
 ret = camera.set(4, LINE_CAMERA_HEIGHT)

@@ -89,7 +89,7 @@ if __name__ == '__main__':
     time.sleep(1)
     n = 0
     begin = time.time()
-    while time.time()-begin < 20:
-        cs.drive_motor(0,50)
+    while time.time()-begin < 60:
+        cs.drive_motor(120,120)
         time.sleep(0.1)
     cs.drive_motor(0,0)

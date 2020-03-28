@@ -3,25 +3,40 @@ import cv2
 
 
 class FollowLine:
-    def __init__(self, width, height, image_type="BINARY"):
+    def __init__(self, width, height,threshold=20, image_type="BINARY"):
         self.width = width
         self.height = height
         self.image_type = image_type
         self._offset = 0
         self.center = 0
-
+        self._threshold=threshold
     def get_offset(self, frame, rander_image=None):
         color = frame[int(self.height/3)]
-        print("color", color)
-        try:
-            white_count = np.sum(color == 255)
-            white_index = np.where(color == 255)
-            if white_count == 0:
-                white_count = 1
-            self.center =  (white_index[0][white_count - 1] + white_index[0][0]) / 2
-            self._offset = (self.center - self.width/2)
-        except:
-            pass
+        continuous=0
+        self.center=0
+        for i in range(len(color)):
+            if color[i]==255 :
+                continuous += 1
+            else:
+                if continuous>= self._threshold:
+                    self.center=i-continuous/2
+                    break
+                else:
+                    continuous = 0
+        if self.center == 0:
+            self.center = self.width/2
+        self._offset = int(self.center - self.width / 2)
+        #print("color", color)
+        # try:
+        #     white_count = np.sum(color == 255)
+        #     white_index = np.where(color == 255)
+        #     if white_count == 0:
+        #         white_count = 1
+        #     self.center =  (white_index[0][white_count - 1] + white_index[0][0]) / 2
+        #     self._offset = (self.center - self.width/2)
+        # except:
+        #     pass
+
         if not (rander_image is None):
             return int(self._offset), self.rander_image(rander_image)
         else:
