@@ -13,7 +13,7 @@ LINE_CAMERA_HEIGHT = 240
 OD_CAMERA_WIDTH = 320
 OD_CAMERA_HEIGHT = 240
 
-
+previous_offset=0
 
 serial = carSerial(port=SERIAL, receive=False)
 freq = cv2.getTickFrequency()
@@ -32,15 +32,12 @@ while True:
     cv2.imshow("test", image)
     offset, line_image = qf_line.get_offset(image, frame)
     cv2.imshow("line", line_image)
-    print(offset)
-    if offset > 130:
-        begin =time.time()
-        while time.time()-begin < 0.5:
-            serial.drive_motor(int(100 + offset ), int(100 - offset ))
-
+    print("offset:", offset)
+    previous_offset = offset
+    if offset == -1000:
+        offset = previous_offset
     serial.drive_motor(int(100 + offset * 0.5), int(100 - offset * 0.5))
 
-    # print(rc.get_objects())
     x = rc.get_objects()
     if len(x) > 0:
         for object in x:
@@ -51,7 +48,7 @@ while True:
     frame_rate_calc = 1 / time1
     print("frame_rate:", frame_rate_calc)
     if cv2.waitKey(1) == ord('q'):
-        serial.drive_motor(0,0)
+        serial.drive_motor(0, 0)
         break
 
 camera.release()

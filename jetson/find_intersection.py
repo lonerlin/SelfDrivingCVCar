@@ -5,10 +5,16 @@ from image_init import image_processing
 
 class FindIntersection:
 
-    def __init__(self,radius, angle=90):
+    def __init__(self, radius, angle=90, threshold=5):
+        """
+            初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
+        :param radius: 设置半径
+        :param angle: 朝向角度，一般直接向前是90
+        :param threshold: 连续多少个白点以上认为一一条白线，通过修改阀值，消除噪点
+        """
         self.radius =radius
         self.angle = angle
-
+        self._threshold =threshold
     def coordinate_from_point(self, origin, angle, radius):
         """
             通过圆心位置坐标，角度和半径计算圆上点的坐标
@@ -95,9 +101,11 @@ class FindIntersection:
         angle_list = []
         for i in range(len(scan_data)):
             if scan_data[i][1] == 0:
-                if tmp_count > 0:
+                if tmp_count > self._threshold:
                         angle_list.append(scan_data[i-int(tmp_count/2)])
                         tmp_count = 0
+                else:
+                    tmp_count = 0
             else:
                 tmp_count += 1
 

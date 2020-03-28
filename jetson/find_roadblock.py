@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 class FindRoadblock:
-    def __init__(self,h_low,h_high,s_low,s_high,v_low,v_high,threshold=0.3):
+    def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.3):
         self._hl = h_low
         self._hh = h_high
         self._sl = s_low
