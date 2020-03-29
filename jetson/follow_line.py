@@ -3,7 +3,7 @@ import cv2
 
 
 class FollowLine:
-    def __init__(self, width, height, threshold=20, image_type="BINARY"):
+    def __init__(self, width, height, threshold=20, direction=True, image_type="BINARY"):
         """
             初始化巡线类，这里的阀值是指寻找连续白点的最小值，这样可以有效去除因地图反光产生的干扰。
         :param width: 处理图像的宽
@@ -17,6 +17,7 @@ class FollowLine:
         self._offset = 0
         self.center = 0
         self._threshold=threshold
+        self.direction = direction
 
     def get_offset(self, frame, rander_image=None):
         """
@@ -30,12 +31,21 @@ class FollowLine:
         color = frame[int(self.height/3)]
         continuous = 0
         self.center = 0
-        for i in range(len(color)):
+        if self.direction:
+            start = 0
+            end =len(color)
+            step = 1
+        else:
+            start =len(color)-1
+            end = 0
+            step = -1
+
+        for i in range(start,end,step):
             if color[i] == 255:
                 continuous += 1
             else:
                 if continuous >= self._threshold:
-                    self.center = i-continuous/2
+                    self.center = (i-continuous/2) if self.direction else (i+continuous/2)
                     break
                 else:
                     continuous = 0

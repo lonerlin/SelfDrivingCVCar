@@ -39,12 +39,12 @@ def following(f_image, f_frame):
     else:
         p_offset = offset
     ctrl.forward(offset)
-
+   
 while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
     #cv2.imshow("camera", frame)
-    image = remove_noise( image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", threshold=252, bitwise_not=False))
+    image = remove_noise( image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY", threshold=248, bitwise_not=False))
     cv2.imshow("test", image)
 
     following(image, frame)
