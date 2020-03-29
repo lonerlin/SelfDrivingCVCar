@@ -1,7 +1,7 @@
 import cv2
 
 
-class videoWriter:
+class VideoWriter:
 
     def __init__(self, name, frameWidth, frameHight):
         self.fps = 15
