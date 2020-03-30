@@ -72,7 +72,7 @@ class carSerial:
         else:
             tmp_str += "0"
         tmp_str += str(abs(right)).zfill(3)
-        print(tmp_str)
+        #print(tmp_str)
         return tmp_str
 
     def drive_motor(self, left, right):

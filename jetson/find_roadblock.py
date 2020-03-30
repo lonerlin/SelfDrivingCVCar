@@ -73,7 +73,7 @@ class FindRoadblock:
 
 if __name__ == '__main__':
     fr = FindRoadblock(None, 0, 0, 0, 0, 0, 0.5)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('/dev/video1')
     fr.trackshow(cap)
     cap.release()
     cv2.destroyAllWindows()

@@ -8,17 +8,18 @@ class ControlCar:
         self.proportional = proportional
         self._begin_time = 0
         self._stop_delay_time = 0
-
+        self._is_stop = False
     def forward(self, offset):
 
         if self._begin_time > 0 and time.perf_counter() - self._begin_time < self._stop_delay_time:
             self._serial.drive_motor(0, 0)
         else:
-            self._serial.drive_motor(int(self.base_speed + offset * self.proportional),
-                                     int(self.base_speed - offset * self.proportional))
+            if not self._is_stop:
+                self._serial.drive_motor(int(self.base_speed + offset * self.proportional),
+                                         int(self.base_speed - offset * self.proportional))
             self._begin_time = 0
 
-    def stop(self, delay_time=0):
+    def pause(self, delay_time=0):
         self._serial.drive_motor(0, 0)
         if self._begin_time == 0:
             self._begin_time = time.perf_counter()
@@ -36,3 +37,7 @@ class ControlCar:
         else:
             self._serial.drive_motor(200, -100)
         time.sleep(delay_time)
+
+    def stop(self):
+            self._serial.drive_motor(0, 0)
+            self._is_stop =True
