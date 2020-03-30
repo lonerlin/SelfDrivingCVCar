@@ -34,22 +34,6 @@ fi = FindIntersection(radius=130, threshold=5)
 fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.1)
 vw = VideoWriter(time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
-
-# def following(f_image, f_frame):
-#     global p_offset
-#     offset, line_image = qf_line.get_offset(f_image, f_frame)
-#     cv2.imshow("line", line_image)
-#     print("offset:", offset)
-#     if offset == -1000:
-#         offset = p_offset*1.8
-#     else:
-#         p_offset = offset
-#     ctrl.forward(offset)
-#
-# begin_time=0
-
-
-
 while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
@@ -68,9 +52,7 @@ while True:
     ctrl.forward(offset)
 
     targets = rc.get_objects()
-    # if rc.object_appeared(objcets=targets, appeard_id=13):
-    #     ctrl.pause(delay_time=5)
-    #
+   
     if fi.is_intersection(image, delay_time=8, render_image=line_image):
         if fi.intersection_number == 0:
             pass
