@@ -7,6 +7,7 @@ from follow_line import FollowLine
 from control_car import ControlCar
 from video_writer import VideoWriter
 from find_intersection import FindIntersection
+from find_roadblock import FindRoadblock
 
 LINE_CAMERA = '/dev/video1'
 OD_CAMERA = '/dev/video0'
@@ -30,6 +31,7 @@ ret = camera.set(4, LINE_CAMERA_HEIGHT)
 ret, frame = camera.read()
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=8)
 fi = FindIntersection(radius=130, threshold=5)
+fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.1)
 vw = VideoWriter(time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
 
@@ -69,18 +71,16 @@ while True:
     # if rc.object_appeared(objcets=targets, appeard_id=13):
     #     ctrl.pause(delay_time=5)
     #
-    # if fi.is_intersection(image, delay_time=8, render_image=line_image) and fi.intersection_number == 0:
-    #     ctrl.turn(direction=False, delay_time=2)
-    #     qf_line.direction=True
-    #
-    # if fi.is_intersection(image, delay_time=8, render_image=line_image) and fi.intersection_number == 1:
-    #     ctrl.turn(direction=False, delay_time=2)
-    #     qf_line.direction = False
-    #
-    # if fi.is_intersection(image, delay_time=4, angle=35, render_image=line_image) and fi.intersection_number == 2:
-    #     ctrl.stop()
-        #ctrl.turn(direction=False, delay_time=3)
+    if fi.is_intersection(image, delay_time=8, render_image=line_image):
+        if fi.intersection_number == 0:
+            pass
+        if fi.intersection_number == 1:
+            pass
+        if fi.intersection_number == 2:
+            pass
 
+    if fr.find(frame):
+        ctrl.bypass_obstacle(3, 5)
 
     cv2.imshow("frame", line_image)
     vw.write(line_image)

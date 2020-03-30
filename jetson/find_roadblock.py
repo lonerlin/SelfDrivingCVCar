@@ -28,12 +28,12 @@ class FindRoadblock:
         cv2.namedWindow('control')
         tracker = np.zeros((640, 480))
 
-        cv2.createTrackbar('Hlow', 'control', 0, 255, self.nothing)
-        cv2.createTrackbar('Hhigh', 'control', 60, 255, self.nothing)
-        cv2.createTrackbar('Llow', 'control', 0, 255, self.nothing)
-        cv2.createTrackbar('Lhigh', 'control', 60, 255, self.nothing)
-        cv2.createTrackbar('Slow', 'control', 50, 255, self.nothing)
-        cv2.createTrackbar('Shigh', 'control', 255, 255, self.nothing)
+        cv2.createTrackbar('Hlow', 'control', self._hl, 255, self.nothing)
+        cv2.createTrackbar('Hhigh', 'control', self._hh, 255, self.nothing)
+        cv2.createTrackbar('Slow', 'control', self._sl, 255, self.nothing)
+        cv2.createTrackbar('Shigh', 'control', self._sh, 255, self.nothing)
+        cv2.createTrackbar('Vlow', 'control', self._vl, 255, self.nothing)
+        cv2.createTrackbar('Vhigh', 'control', self._vh, 255, self.nothing)
 
         while True:
             # img_now = cv.QueryFrame(stream)
@@ -55,7 +55,9 @@ class FindRoadblock:
             upper = np.array([hh, sh, vh], dtype=np.uint8)
             mask = cv2.inRange(frame, lower, upper)
             cv2.imshow("mask", mask)
-            print(np.sum(mask == 255))
+            print("size:", mask)
+            print("shape:", mask.shape)
+            print(np.sum(mask == 255)/mask.size)
 
             # build a window
             cv2.imshow('original', frame)
@@ -72,8 +74,8 @@ class FindRoadblock:
 
 
 if __name__ == '__main__':
-    fr = FindRoadblock(None, 0, 0, 0, 0, 0, 0.5)
-    cap = cv2.VideoCapture('/dev/video1')
+    fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.3)
+    cap = cv2.VideoCapture('/dev/video0')
     fr.trackshow(cap)
     cap.release()
     cv2.destroyAllWindows()
