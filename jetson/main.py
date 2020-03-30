@@ -30,7 +30,7 @@ ret = camera.set(3, LINE_CAMERA_WIDTH)
 ret = camera.set(4, LINE_CAMERA_HEIGHT)
 ret, frame = camera.read()
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=8)
-fi = FindIntersection(radius=130, threshold=5)
+fi = FindIntersection(radius=150, threshold=5)
 fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.1)
 vw = VideoWriter(time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
@@ -52,7 +52,7 @@ while True:
     ctrl.forward(offset)
 
     targets = rc.get_objects()
-   
+
     if fi.is_intersection(image, delay_time=8, render_image=line_image):
         if fi.intersection_number == 0:
             pass
