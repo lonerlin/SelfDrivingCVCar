@@ -16,7 +16,7 @@ class FollowLine:
         self.image_type = image_type
         self._offset = 0
         self.center = 0
-        self._threshold=threshold
+        self._threshold = threshold
         self.direction = direction
 
     def get_offset(self, frame, rander_image=None):
@@ -33,14 +33,14 @@ class FollowLine:
         self.center = 0
         if self.direction:
             start = 0
-            end =len(color)
+            end = len(color)
             step = 1
         else:
-            start =len(color)-1
+            start = len(color)-1
             end = 0
             step = -1
 
-        for i in range(start,end,step):
+        for i in range(start, end, step):
             if color[i] == 255:
                 continuous += 1
             else:
@@ -70,7 +70,8 @@ class FollowLine:
             return int(self._offset), None
 
     def rander_image(self, frame):
-        return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)), (int(self.center), int(self.height/3)))
+        return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)),
+                                  (int(self.center if self.center != -1000 else self.width/2), int(self.height/3)))
 
     def _arrowed_line(self, frame, start_point, end_point):
         arrow_image = cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0), line_type=cv2.LINE_4, thickness=3,

@@ -57,14 +57,14 @@ while True:
     if not stop:
         following(image, frame)
     else:
-        if begin_time == 0 :
-            begin_time=time.perf_counter()
-            serial.drive_motor(0,0)
+        if begin_time == 0:
+            begin_time = time.perf_counter()
+            serial.drive_motor(0, 0)
         else:
             if time.perf_counter()-begin_time > 5:
                 following(image, frame)
-            elif time.perf_counter()-begin_time> 10:
-                stop=False
+            elif time.perf_counter()-begin_time > 10:
+                stop = False
                 begin_time = 0
 
     vw.write(frame)
