@@ -27,6 +27,8 @@ class Recognition:
         self.od.start()
         self.conn1.close()
 
+        self._begin_time = 0
+
     def get_objects(self):
         """
             在循环中不停的调用本函数来刷新识别到的物体，当刷新速率超过设定的识别帧率（frequency）时，会返回一个空的列表（list）
@@ -39,12 +41,25 @@ class Recognition:
         else:
             return []
 
+    def object_appeared(self, objcets, appeard_id, object_width=60, delay_time=10):
+        objs = objcets
+        if self._begin_time > 0 and time.perf_counter()-self._begin_time < delay_time:
+            return False
+        else:
+            for obj in objs:
+                if obj.class_id == appeard_id and obj.width > object_width:
+                    self._begin_time = time.perf_counter()
+                    return True
+            self._begin_time = 0
+            return False
+
     def close(self):
         """
         关闭子线程，必须显式关闭，否则识别子进程将不会自动退出。
         """
         self._stop_process.value = 1
         self.od.join(5)
+
 
 
 if __name__ == '__main__':
