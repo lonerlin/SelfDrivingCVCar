@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 class FindRoadblock:
-    def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.3):
+    def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1):
         self._hl = h_low
         self._hh = h_high
         self._sl = s_low
@@ -15,11 +15,14 @@ class FindRoadblock:
     def find(self, image):
         hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower = np.array([self._hl, self._sl, self._vl], dtype=np.uint8)
-        upper = np.array([self._hh, self._sl, self._vl], dtype=np.uint8)
+        upper = np.array([self._hh, self._sh, self._vh], dtype=np.uint8)
         mask = cv2.inRange(image, lower, upper)
+        cv2.imshow("mask", mask)
         rate = np.sum(mask == 255)/mask.size
-
-        return (rate >= self._threshold) and True or False
+        if rate >= self._threshold:
+            return True
+        else:
+            return False
 
     def trackshow(self, cap, ksize=5, interv=5):
         tic = time.time()
@@ -75,7 +78,7 @@ class FindRoadblock:
 
 if __name__ == '__main__':
     fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.3)
-    cap = cv2.VideoCapture('/dev/video0')
+    cap = cv2.VideoCapture('/dev/video1')
     fr.trackshow(cap)
     cap.release()
     cv2.destroyAllWindows()

@@ -7,7 +7,7 @@ import time
 
 class FindIntersection:
 
-    def __init__(self, radius, angle=90, threshold=5, repeate_count =2):
+    def __init__(self, radius, angle=90, threshold=5, delay_time=10,  repeate_count =2):
         """
             初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
         :param radius: 设置半径
@@ -21,7 +21,7 @@ class FindIntersection:
         self._begin_time = 0
         self._repeat_count = repeate_count
         self._counter = 0
-
+        self.delay_time = delay_time
     def coordinate_from_point(self, origin, angle, radius):
         """
             通过圆心位置坐标，角度和半径计算圆上点的坐标
@@ -126,8 +126,8 @@ class FindIntersection:
         for data in road:
             return_value.append([int(data[0]), int(data[2]), int(data[3])])
         if len(return_value) > 0 and not (render_image is None):
-            cv2.putText(render_image, "intersection:" + str(self.intersection_number), (10, 15),
-                        cv2.FONT_HERSHEY_SIMPLEX, 10, (0, 255, 0), 2)
+            cv2.putText(render_image, "i:" + str(self.intersection_number), (10, 50),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
             """           
             cv2.putText(图像, 文字, (x, y), 字体, 大小, (b, g, r), 宽度)
             """
@@ -135,20 +135,23 @@ class FindIntersection:
                 cv2.arrowedLine(render_image, point, (end_point[1], end_point[2]), color=(0, 255, 0), thickness=2)
         return return_value
 
-    def is_intersection(self, find_image, angle=25, delay_time=10, render_image=None):
+    def is_intersection(self, find_image, angle=25, render_image=None):
 
-        if time.perf_counter() - self._begin_time > delay_time:
-            start_height = 220
+        if time.perf_counter() - self._begin_time > self.delay_time:
+            start_height = 230
             tmp_value = True
             for i in range(self._repeat_count):
-                intersections = self.find(find_image, (160, start_height+(i*10)), render_image)
+                intersections = self.find(find_image, (160, start_height-(i*20)), render_image)
+                print(intersections)
+                print("len:", len(intersections))
                 if len(intersections) < 2 or abs(intersections[1][0] - intersections[0][0]) <= angle:
                     tmp_value = False
             if tmp_value:
                 self.intersection_number += 1
                 self._begin_time = time.perf_counter()
                 return True
-        self.find(find_image, (160, 230), render_image)
+        else:
+            self.find(find_image, (160, 230), render_image)
         return False
 
 
