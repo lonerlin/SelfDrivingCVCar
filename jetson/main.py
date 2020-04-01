@@ -45,13 +45,15 @@ while True:
     cv2.imshow("test", image)
 
     offset, line_image = qf_line.get_offset(image, frame)
+
     #cv2.imshow("line", line_image)
-    print("offset:", offset)
+    #print("offset:", offset)
+
     if offset == -1000:
         offset = p_offset*1.7
     else:
         p_offset = offset
-    ctrl.forward(offset)
+    ctrl.offset = offset
 
     targets = rc.get_objects()
 
