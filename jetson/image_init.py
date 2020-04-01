@@ -23,27 +23,29 @@ def image_processing(frame, width, height, convert_type="GARY", threshold=150, b
     return image
 
 
-def remove_noise(frame, kennel=(3, 3), iterations=1):
+def remove_noise(frame, kernel_type=(3, 3), iterations=2):
     """
     通过腐蚀和膨胀消除噪点
     :param frame: 需要处理的图像
-    :param kennel: 核心
+    :param kernel_type: 核心
     :param iterations: 执行多少个轮次
     :return: 处理后的图像
     """
-    erosion = cv2.erode(frame, kennel, iterations)
-    dilate = cv2.dilate(erosion, kennel, 5)
-    return dilate
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, kernel_type)
+    erosion = cv2.erode(frame, kernel, iterations)
+    #dilate = cv2.dilate(erosion, kernel, 2)
+    return erosion
+
 
 if __name__ == '__main__':
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture('/dev/video1')
     ret = camera.set(3, 320)
     ret = camera.set(4, 240)
     ret, frame = camera.read()
     while True:
         ret, frame = camera.read()
-        image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
-        image2 = remove_noise(image, iterations=3)
+        image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=250, bitwise_not=False)
+        image2 = remove_noise(image,kernel_type=(5, 5), iterations=3)
         cv2.imshow("1", frame)
         cv2.imshow('frame', image2)
         if cv2.waitKey(1) == ord('q'):

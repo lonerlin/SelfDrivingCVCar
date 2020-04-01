@@ -30,43 +30,46 @@ ret = camera.set(3, LINE_CAMERA_WIDTH)
 ret = camera.set(4, LINE_CAMERA_HEIGHT)
 ret, frame = camera.read()
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
-fi = FindIntersection(radius=150, threshold=5, repeate_count=3)
-fr = FindRoadblock(100,197, 150, 213, 255, 255, 0.1)
-vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
+fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
+fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.08)
+#vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
 while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
     #cv2.imshow("camera", frame)
     image = remove_noise(image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY",
-                                          threshold=252, bitwise_not=False))
+                                          threshold=251, bitwise_not=False), kernel_type=(4, 4))
     cv2.imshow("test", image)
 
     offset, line_image = qf_line.get_offset(image, frame)
     #cv2.imshow("line", line_image)
     print("offset:", offset)
     if offset == -1000:
-        offset = p_offset*1.8
+        offset = p_offset*1.9
     else:
         p_offset = offset
     ctrl.forward(offset)
 
     targets = rc.get_objects()
+    if rc.object_appeared(targets, 1, 10):
+        ctrl.pause(5)
 
-    # if fi.is_intersection(image,  render_image=line_image):
-    #     if fi.intersection_number == 1:
-    #         ctrl.turn(False, 0.3)
-    #     if fi.intersection_number == 2:
-    #         ctrl.turn(False, 0.1)
-    #         fi.delay_time = 3
-    #     if fi.intersection_number == 3:
-    #         ctrl.turn(False, 1)
+    if fi.is_intersection(image,  render_image=line_image):
+        if fi.intersection_number == 1:
+            ctrl.turn(False, 0.3)
+        if fi.intersection_number == 2:
+            ctrl.turn(False, 0.1)
+            fi.delay_time = 3
+        if fi.intersection_number == 3:
+            ctrl.turn(False, 1)
 
-    if fr.find(frame):
-        ctrl.bypass_obstacle(0.8, 2)
+    if fi.intersection_number == 3 and fr.find(frame):
+        ctrl.byPass_state = True
+    ctrl.bypass_obstacle(0.8, 2.6)
 
     cv2.imshow("frame", line_image)
-    vw.write(line_image)
+    #vw.write(line_image)
     t2 = cv2.getTickCount()
     time1 = (t2 - t1) / freq
     frame_rate_calc = 1 / time1
@@ -76,7 +79,7 @@ while True:
 
 serial.drive_motor(0, 0)
 rc.close()
-vw.release()
+#vw.release()
 camera.release()
 cv2.destroyAllWindows()
 rc.close()

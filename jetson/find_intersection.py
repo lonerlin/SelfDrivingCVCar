@@ -7,7 +7,7 @@ import time
 
 class FindIntersection:
 
-    def __init__(self, radius, angle=90, threshold=5, delay_time=10,  repeate_count =2):
+    def __init__(self, radius, angle=90, threshold=3, delay_time=10,  repeate_count =2):
         """
             初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
         :param radius: 设置半径
@@ -108,7 +108,7 @@ class FindIntersection:
         angle_list = []
         for i in range(len(scan_data)):
             if scan_data[i][1] == 0:
-                if tmp_count > self._threshold:
+                if tmp_count >= self._threshold:
                     angle_list.append(scan_data[i - int(tmp_count / 2)])
                     tmp_count = 0
                 else:
@@ -141,7 +141,7 @@ class FindIntersection:
             start_height = 230
             tmp_value = True
             for i in range(self._repeat_count):
-                intersections = self.find(find_image, (160, start_height-(i*20)), render_image)
+                intersections = self.find(find_image, (160, start_height-(i*10)), render_image)
                 print(intersections)
                 print("len:", len(intersections))
                 if len(intersections) < 2 or abs(intersections[1][0] - intersections[0][0]) <= angle:
