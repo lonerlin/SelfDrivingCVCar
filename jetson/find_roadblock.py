@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 
+
 class FindRoadblock:
     def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1):
         self._hl = h_low

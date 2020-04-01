@@ -8,6 +8,7 @@ from control_car import ControlCar
 from video_writer import VideoWriter
 from find_intersection import FindIntersection
 from find_roadblock import FindRoadblock
+from find_zebra_crossing import FindZebraCrossing
 
 LINE_CAMERA = '/dev/video1'
 OD_CAMERA = '/dev/video0'
@@ -32,6 +33,7 @@ ret, frame = camera.read()
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.08)
+fzc = FindZebraCrossing()
 #vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
 while True:
@@ -52,21 +54,25 @@ while True:
     ctrl.forward(offset)
 
     targets = rc.get_objects()
-    if rc.object_appeared(targets, 1, 10):
+    if rc.object_appeared(targets, 1, 5):
         ctrl.pause(5)
 
-    if fi.is_intersection(image,  render_image=line_image):
-        if fi.intersection_number == 1:
-            ctrl.turn(False, 0.3)
-        if fi.intersection_number == 2:
-            ctrl.turn(False, 0.1)
-            fi.delay_time = 3
-        if fi.intersection_number == 3:
-            ctrl.turn(False, 1)
+    # if fi.is_intersection(image,  render_image=line_image):
+    #     if fi.intersection_number == 1:
+    #         ctrl.turn(False, 0.3)
+    #     if fi.intersection_number == 2:
+    #         ctrl.turn(False, 0.1)
+    #         fi.delay_time = 3
+    #     if fi.intersection_number == 3:
+    #         ctrl.turn(False, 1)
+    #
+    # if fi.intersection_number == 3 and fr.find(frame):
+    #     ctrl.byPass_state = True
+    # ctrl.bypass_obstacle(0.8, 2.6)
 
-    if fi.intersection_number == 3 and fr.find(frame):
-        ctrl.byPass_state = True
-    ctrl.bypass_obstacle(0.8, 2.6)
+    if fzc.find(image):
+        ctrl.pause(5)
+        ctrl.go_straight(8)
 
     cv2.imshow("frame", line_image)
     #vw.write(line_image)
