@@ -24,6 +24,8 @@ class ControlCar:
             if not self._is_stop:
                 self._serial.drive_motor(int(self.base_speed + offset * self.proportional),
                                          int(self.base_speed - offset * self.proportional))
+            # else:
+            #     self._serial.drive_motor(0,0)
             self._pause_begin_time = 0
             self._straight_begin_time = 0
 
