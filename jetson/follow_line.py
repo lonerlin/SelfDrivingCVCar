@@ -19,13 +19,13 @@ class FollowLine:
         self._threshold = threshold
         self.direction = direction
 
-    def get_offset(self, frame, rander_image=None):
+    def get_offset(self, frame, render_image=None):
         """
             寻找白线偏离图像中心的位置，为了简化，只寻找在图像2/3的部分。通过阀值来控制连续白点的区域，
             这样可以有效减少地图反光对中心点的影响。虽然不完美，也是一种解决办法。
             当找不到线时，返回-1000，告知调用程序找不到白点。
         :param frame: 输入的图像二值图
-        :param rander_image: 需要渲染的图像，在上面画出一个蓝色的箭头。
+        :param render_image: 需要渲染的图像，在上面画出一个蓝色的箭头。
         :return: 返回偏离中心点的距离，如果早不到偏置，返回-1000
         """
         color = frame[int(self.height/3)]
@@ -64,12 +64,12 @@ class FollowLine:
         # except:
         #     pass
 
-        if not (rander_image is None):
-            return int(self._offset), self.rander_image(rander_image)
+        if not (render_image is None):
+            return int(self._offset), self.render_image(render_image)
         else:
             return int(self._offset), None
 
-    def rander_image(self, frame):
+    def render_image(self, frame):
         return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)),
                                   (int(self.center if self.center != -1000 else self.width/2), int(self.height/3)))
 

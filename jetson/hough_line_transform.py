@@ -10,20 +10,20 @@ class HoughLines:
         self.min_line_length = min_line_length
         self.max_line_gap = max_line_gap
 
-    def get_lines(self, frame, rander_image=None):
+    def get_lines(self, frame, render_image=None):
         lines = cv2.HoughLinesP(frame, self.rho, self.theta, self.threshold, self.min_line_length, self.max_line_gap)
-        if not (rander_image is None):
+        if not (render_image is None):
             if not (lines is None) > 0:
                 for two_point in lines:
                     for x1, y1, x2, y2 in two_point:
-                        cv2.line(rander_image, (x1, y1,), (x2, y2), (0, 255, 0), 2)
+                        cv2.line(render_image, (x1, y1,), (x2, y2), (0, 255, 0), 2)
         return lines
 
 
 if __name__ == '__main__':
 
     import cv2
-    from image_init import image_processing,remove_noise
+    from image_init import image_processing, remove_noise
 
     LINE_CAMERA_WIDTH = 320
     LINE_CAMERA_HEIGHT = 240

@@ -19,7 +19,7 @@ while(True):
     dram_frame = frame.copy()
     tmp_frame =remove_noise(image_processing(frame=frame, width=320, height=240, convert_type="BINARY",threshold=250))
 
-    offset,rander_image = fl.get_offset(tmp_frame,dram_frame)
+    offset, render_image = fl.get_offset(tmp_frame, dram_frame)
    # _,line_iname = hl.get_lines(remove_noise(image_processing(frame, width=320, height=240, convert_type="BINARY")), dram_frame)
     # 将这帧转换为灰度图
     #image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -28,7 +28,7 @@ while(True):
     cs.drive_motor(int(100+offset*0.4),int(100-offset*0.4))
     cv2.imshow("tmp", tmp_frame)
     cv2.imshow('frame', frame)
-    cv2.imshow('rander_image',rander_image)
+    cv2.imshow('render_image', render_image)
     if cv2.waitKey(1) == ord('q'):
         break
 camera.release()
