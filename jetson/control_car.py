@@ -64,8 +64,9 @@ class ControlCar:
         a_list.sort(key=lambda t: t.priority)
         if len(a_list) > 0:
             task = a_list[0]
-            if not (task.timer.time_slice is None):
-                task.work_function(task.timer.time_slice)
+            print(task.name)
+            if not (task.timer is None) and not (task.timer.time_slice is None):
+                task.work_function(task.timer)
             else:
                 task.work_function()
         self.task_list = a_list

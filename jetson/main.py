@@ -57,33 +57,35 @@ while True:
 
     targets = rc.get_objects()
 
-    if fi.intersection_number == 1 and rc.object_appeared(targets, 1, 5):
-        ctrl.pause(5)
+    # if fi.intersection_number == 1 and rc.object_appeared(targets, 1, 5):
+    #     ctrl.pause(5)
+    #
+    # if fi.is_intersection(image,  render_image=line_image):
+    #     if fi.intersection_number == 1:
+    #         ctrl.turn(False, 0.3)
+    #     if fi.intersection_number == 2:
+    #         ctrl.turn(False, 0.1)
+    #         fi.delay_time = 3
+    #     # if fi.intersection_number == 3:
+    #     #     ctrl.turn(False, 1)
+    #
+    # if fi.intersection_number >= 3:
+    #     if fzc.find(image):
+    #         ctrl.pause(5)
+    #         ctrl.go_straight(8)
+    #         section = 1
+    #
+    # if section == 1:
+    #     if fr.find(frame):
+    #         ctrl.byPass_state = True
+    #         section += 1
+    #
+    # ctrl.bypass_obstacle(0.6, 2)
+    #
+    # if section == 2 and rc.object_appeared(targets, 13, object_width=75):
+    #     ctrl.stop()
 
-    if fi.is_intersection(image,  render_image=line_image):
-        if fi.intersection_number == 1:
-            ctrl.turn(False, 0.3)
-        if fi.intersection_number == 2:
-            ctrl.turn(False, 0.1)
-            fi.delay_time = 3
-        # if fi.intersection_number == 3:
-        #     ctrl.turn(False, 1)
-
-    if fi.intersection_number >= 3:
-        if fzc.find(image):
-            ctrl.pause(5)
-            ctrl.go_straight(8)
-            section = 1
-
-    if section == 1:
-        if fr.find(frame):
-            ctrl.byPass_state = True
-            section += 1
-
-    ctrl.bypass_obstacle(0.6, 2)
-
-    if section == 2 and rc.object_appeared(targets, 13, object_width=75):
-        ctrl.stop()
+    ctrl.update()
 
     cv2.imshow("frame", line_image)
     vw.write(line_image)
