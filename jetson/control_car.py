@@ -1,5 +1,7 @@
 import time
 
+from car_timer import CarTimer
+
 
 class ControlCar:
     def __init__(self, car_serial, base_speed=100, proportional=0.4, integral=0, diff=0):
@@ -37,7 +39,7 @@ class ControlCar:
 
     def bypass_obstacle(self, first_delay_time, second_delay_time):
         slice_list = [first_delay_time, second_delay_time]
-        ct = CarTimer(start_time=time.perf_counter(), duration=first_delay_time+second_delay_time+1,
+        ct = CarTimer(start_time=time.perf_counter(), duration=first_delay_time + second_delay_time + 1,
                       time_slice=slice_list)
         self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct,
                                       work=self._bypass_obstacle))
@@ -86,14 +88,3 @@ class CarTask:
         self.name = name
 
 
-class CarTimer:
-    def __init__(self, start_time=0.0, duration=0.0, time_slice=None):
-        self.start_time = start_time
-        self.duration = duration
-        self.time_slice = time_slice
-
-    def timeout(self):
-        if time.perf_counter()-self.start_time >= self.duration:
-            return True
-        else:
-            return False
