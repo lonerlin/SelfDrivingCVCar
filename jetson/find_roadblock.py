@@ -14,18 +14,18 @@ class FindRoadblock:
         self._threshold = threshold
 
     def find(self, image):
-        hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        #hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower = np.array([self._hl, self._sl, self._vl], dtype=np.uint8)
         upper = np.array([self._hh, self._sh, self._vh], dtype=np.uint8)
         mask = cv2.inRange(image, lower, upper)
-        cv2.imshow("mask", mask)
+        #cv2.imshow("mask", mask)
         rate = np.sum(mask == 255)/mask.size
         if rate >= self._threshold:
             return True
         else:
             return False
 
-    def trackshow(self, cap, ksize=5, interv=5):
+    def track_show(self, cap, ksize=5, interv=5):
         tic = time.time()
         tic1 = time.time()
         coords = []
@@ -80,6 +80,6 @@ class FindRoadblock:
 if __name__ == '__main__':
     fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.3)
     cap = cv2.VideoCapture('/dev/video1')
-    fr.trackshow(cap)
+    fr.track_show(cap)
     cap.release()
     cv2.destroyAllWindows()

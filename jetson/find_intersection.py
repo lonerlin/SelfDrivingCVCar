@@ -2,10 +2,12 @@ import cv2
 import numpy as np
 import math
 from image_init import image_processing
+from car_timer import CarTimer
 import time
 
 
 class FindIntersection:
+
 
     def __init__(self, radius, angle=90, threshold=3, delay_time=10,  repeate_count =2):
         """

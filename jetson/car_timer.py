@@ -12,3 +12,6 @@ class CarTimer:
             return True
         else:
             return False
+
+    def restart(self):
+        self.start_time = time.perf_counter()
