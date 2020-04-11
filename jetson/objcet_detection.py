@@ -32,7 +32,7 @@ class ObjectDetection(Process):
         self.width = width
         self.height = height
         self.display_window = display_window
-        self.interval = time.time()
+        self.interval = time.perf_counter()
         self.stop = stop_process
 
     def run(self):
@@ -54,9 +54,8 @@ class ObjectDetection(Process):
 
             img, width, height = camera.CaptureRGBA()
 
-
-            if time.time() - self.interval >= 1/self.frequency:
-                self.interval = time.time()
+            if time.perf_counter() - self.interval >= 1/self.frequency:
+                self.interval = time.perf_counter()
                 detections = net.Detect(img, width, height)
                 if self.display_window:
                     display.RenderOnce(img, width, height)
@@ -69,6 +68,8 @@ class ObjectDetection(Process):
 
                 else:
                     self.conn1.send([])
+            else:
+                self.conn1.send([])
 
 
 

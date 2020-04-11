@@ -10,7 +10,7 @@ class Recognition:
     此类应该实现单例较为合理。等以后有机会再改。系统必须安装v4l-utils，才能支持USB摄像头
     帧率受到系统性能和摄像头本身帧速度的限制。
     """
-    def __init__(self, device="/dev/video0", width=320, height=240, frequency=10, display_window=True):
+    def __init__(self, device="/dev/video0", width=320, height=240, frequency=40, display_window=True):
         """
             初始化识别类，此处应注意，如果指定摄像头的宽和高摄像头本身不支持，必定会出现错误。
             以下语句可以检测摄像头的分辨率：v4l2-ctl --list-formats-ext
@@ -65,9 +65,12 @@ class Recognition:
 if __name__ == '__main__':
     reco = Recognition(device="/dev/video0",width=640,height=480)
     begin = time.time()
-    while time.time() - begin < 120:
+
+    while time.time() - begin < 60:
+        f =time.perf_counter()
         objs = reco.get_objects()
         if len(objs) > 0:
             for obj in objs:
                 print(obj.chinese)
+        print("Frame Rate:{}".format(1.0/(time.perf_counter()-f)))
     reco.close()

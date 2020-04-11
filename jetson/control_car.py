@@ -34,12 +34,12 @@ class ControlCar:
 
     def pause(self, delay_time=0):
         self.task_list.append(CarTask(name="pause", activated=True, priority=1,
-                                      timer=CarTimer(start_time=time.perf_counter(), duration=delay_time),
+                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
                                       work=self._pause))
 
     def bypass_obstacle(self, first_delay_time, second_delay_time):
         slice_list = [first_delay_time, second_delay_time]
-        ct = CarTimer(start_time=time.perf_counter(), duration=first_delay_time + second_delay_time + 1,
+        ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1,
                       time_slice=slice_list)
         self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct,
                                       work=self._bypass_obstacle))
@@ -58,7 +58,7 @@ class ControlCar:
 
     def go_straight(self, delay_time=8):
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
-                                      timer=CarTimer(time.perf_counter(), duration=delay_time),
+                                      timer=CarTimer(time.perf_counter(), interval=delay_time),
                                       work=self._go_straight))
 
     def update(self):
