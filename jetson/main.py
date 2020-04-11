@@ -2,7 +2,7 @@ import time
 import cv2
 from od.recognition import Recognition
 from car.car_serial import CarSerial
-from cv.image_init import image_processing,remove_noise
+from cv.image_init import ImageInit
 from cv.follow_line import FollowLine
 from car.control_car import ControlCar
 from cv.video_writer import VideoWriter
@@ -25,11 +25,11 @@ p_offset = 0
 serial = CarSerial(port=SERIAL, receive=False)
 ctrl = ControlCar(car_serial=serial, base_speed=80)
 freq = cv2.getTickFrequency()
-rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=15)
+rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=20)
 camera = cv2.VideoCapture(LINE_CAMERA)
-ret = camera.set(3, LINE_CAMERA_WIDTH)
-ret = camera.set(4, LINE_CAMERA_HEIGHT)
+
 ret, frame = camera.read()
+img_init = ImageInit(LINE_CAMERA_WIDTH,LINE_CAMERA_HEIGHT, threshold=251,kernel_type=(4,4), iterations=3)
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
@@ -40,8 +40,7 @@ while True:
     t1 = cv2.getTickCount()
     ret, frame = camera.read()
     cv2.imshow("camera", frame)
-    image = remove_noise(image_processing(frame, LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, convert_type="BINARY",
-                                          threshold=251, bitwise_not=False), kernel_type=(4, 4))
+    image = img_init.processing(frame)
     cv2.imshow("test", image)
 
     offset, line_image = qf_line.get_offset(image, frame)
