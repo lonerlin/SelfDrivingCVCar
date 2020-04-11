@@ -1,5 +1,6 @@
 import time
 
+from car.car_task import CarTask
 from car.car_timer import CarTimer
 
 
@@ -23,14 +24,23 @@ class ControlCar:
     def _go_straight(self):
         self._serial.drive_motor(self.base_speed, self.base_speed)
 
-    def _bypass_obstacle(self, timer):
-        t = time.perf_counter() - timer.start_time
-        if t < timer.time_slice[0]:
+    def _bypass_obstacle(self, **kwargs):
+        first_delay_time = kwargs['first_delay_time']
+        second_delay_time = kwargs['second_delay_time']
+        timer = CarTimer(first_delay_time+second_delay_time+1)
+        if timer.duration() < timer.time_slice[0]:
             self._serial.drive_motor(50, -200)
-        elif timer.time_slice[0] < t < timer.time_slice[0] + 1:
+        elif first_delay_time < timer.duration() < first_delay_time+1:
             self._serial.drive_motor(100, 100)
         else:
             self._serial.drive_motor(50, 200)
+
+    def _turn(self, **kwargs):
+        direction = kwargs['direction']
+        if direction:
+            self._serial.drive_motor(0, 250)
+        else:
+            self._serial.drive_motor(250, 0)
 
     def pause(self, delay_time=0):
         self.task_list.append(CarTask(name="pause", activated=True, priority=1,
@@ -38,21 +48,19 @@ class ControlCar:
                                       work=self._pause))
 
     def bypass_obstacle(self, first_delay_time, second_delay_time):
-        slice_list = [first_delay_time, second_delay_time]
-        ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1,
-                      time_slice=slice_list)
-        self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct,
-                                      work=self._bypass_obstacle))
+
+        ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1)
+        self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct,work=self._bypass_obstacle,
+                                      first_delay_time=first_delay_time, second_delay_time=second_delay_time))
 
     def turn(self, direction=True, delay_time=1):
-        if direction:
-            self._serial.drive_motor(0, 250)
-        else:
-            self._serial.drive_motor(250, 0)
-        time.sleep(delay_time)
+
+        self.task_list.append(CarTask(name="turn", activated=True, priority=1,
+                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                      direction=direction))
 
     def stop(self):
-        self.task_list.append(CarTask(name="stop", activated=False, priority=0))
+        self.task_list.append(CarTask(name="stop", activated=True, priority=0))
         # self._serial.drive_motor(0, 0)
         # self._is_stop = True
 
@@ -67,8 +75,8 @@ class ControlCar:
         if len(a_list) > 0:
             task = a_list[0]
             print(task.name)
-            if not (task.timer is None) and not (task.timer.time_slice is None):
-                task.work_function(task.timer)
+            if not (task.args is None):
+                task.work_function(**task.args)
             else:
                 task.work_function()
         self.task_list = a_list
@@ -77,14 +85,5 @@ class ControlCar:
             if not (task.timer is None):
                 if task.timer.timeout():
                     task.activated = False
-
-
-class CarTask:
-    def __init__(self, name="", activated=False, priority=3, timer=None, work=None):
-        self.priority = priority
-        self.timer = timer
-        self.work_function = work
-        self.activated = activated
-        self.name = name
 
 

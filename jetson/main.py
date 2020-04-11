@@ -29,7 +29,7 @@ rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGH
 camera = cv2.VideoCapture(LINE_CAMERA)
 
 ret, frame = camera.read()
-img_init = ImageInit(LINE_CAMERA_WIDTH,LINE_CAMERA_HEIGHT, threshold=251,kernel_type=(4,4), iterations=3)
+img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=251, kernel_type=(4,4), iterations=3)
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
