@@ -1,4 +1,4 @@
-from image_init import image_processing, remove_noise
+from cv.image_init import image_processing, remove_noise
 import cv2
 
 

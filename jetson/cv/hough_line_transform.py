@@ -1,4 +1,3 @@
-import cv2
 import numpy as np
 
 
@@ -23,7 +22,7 @@ class HoughLines:
 if __name__ == '__main__':
 
     import cv2
-    from image_init import image_processing, remove_noise
+    from cv.image_init import image_processing, remove_noise
 
     LINE_CAMERA_WIDTH = 320
     LINE_CAMERA_HEIGHT = 240

@@ -1,7 +1,7 @@
 import cv2
-from image_init import image_processing,remove_noise
-from find_key_point import FindKeyPoint
-from hough_line_transform import HoughLines
+from cv.image_init import image_processing,remove_noise
+from cv.find_key_point import FindKeyPoint
+from cv.hough_line_transform import HoughLines
 
 capture = cv2.VideoCapture(0)
 fkp = FindKeyPoint(True)

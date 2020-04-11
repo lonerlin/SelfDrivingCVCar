@@ -1,9 +1,9 @@
 from discards.line_base import *
 import io
-from carSerial import carSerial
-from video_writer import videoWriter
+from car.car_serial import CarSerial
+from cv.video_writer import videoWriter
 #from objcet_detection import object_detection
-ser = carSerial("/dev/ttyACM0", 115200)
+ser = CarSerial("/dev/ttyACM0", 115200)
 #obd = object_detection("tmp.jpg")
 IM_WIDTH = 240
 IM_HEIGHT = 180

@@ -1,5 +1,5 @@
-from multiprocessing import Pipe,Value
-from objcet_detection import ObjectDetection
+from multiprocessing import Pipe, Value
+from od.objcet_detection import ObjectDetection
 import time
 
 conn1, conn2 = Pipe()

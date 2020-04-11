@@ -13,7 +13,7 @@ import time
 import threading
 
 
-class carSerial:
+class CarSerial:
     """
         封装了与Arduino间的串口通信
     """
@@ -85,7 +85,7 @@ class carSerial:
 
 
 if __name__ == '__main__':
-    cs = carSerial("/dev/ttyUSB0", 115200, receive=True)
+    cs = CarSerial("/dev/ttyUSB0", 115200, receive=True)
     time.sleep(1)
     n = 0
     begin = time.time()

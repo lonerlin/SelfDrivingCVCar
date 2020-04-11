@@ -1,6 +1,6 @@
 from multiprocessing import Pipe,Value
-from objcet_detection import ObjectDetection
-from object import Object
+from od.objcet_detection import ObjectDetection
+from od.object import Object
 import time
 
 

@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
 import math
-from image_init import image_processing
-from car_timer import CarTimer
+from cv.image_init import image_processing
 import time
 
 

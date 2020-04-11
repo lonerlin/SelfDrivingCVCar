@@ -1,6 +1,6 @@
 import time
 
-from car_timer import CarTimer
+from car.car_timer import CarTimer
 
 
 class ControlCar:

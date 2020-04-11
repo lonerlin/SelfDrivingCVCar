@@ -1,14 +1,14 @@
 import time
 import cv2
-from recognition import Recognition
-from carSerial import carSerial
-from image_init import image_processing,remove_noise
-from follow_line import FollowLine
-from control_car import ControlCar
-from video_writer import VideoWriter
-from find_intersection import FindIntersection
-from find_roadblock import FindRoadblock
-from find_zebra_crossing import FindZebraCrossing
+from od.recognition import Recognition
+from car.car_serial import CarSerial
+from cv.image_init import image_processing,remove_noise
+from cv.follow_line import FollowLine
+from car.control_car import ControlCar
+from cv.video_writer import VideoWriter
+from cv.find_intersection import FindIntersection
+from cv.find_roadblock import FindRoadblock
+from cv.find_zebra_crossing import FindZebraCrossing
 
 LINE_CAMERA = '/dev/video1'
 OD_CAMERA = '/dev/video0'
@@ -22,7 +22,7 @@ stop = False
 section = 0
 p_offset = 0
 
-serial = carSerial(port=SERIAL, receive=False)
+serial = CarSerial(port=SERIAL, receive=False)
 ctrl = ControlCar(car_serial=serial, base_speed=80)
 freq = cv2.getTickFrequency()
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=15)

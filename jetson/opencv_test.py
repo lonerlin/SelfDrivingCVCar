@@ -1,18 +1,17 @@
 # 打开摄像头并灰度化显示
-import cv2
-from follow_line import FollowLine
-from image_init import *
-from carSerial import carSerial
+from cv.follow_line import FollowLine
+from cv.image_init import *
+from car.car_serial import CarSerial
 LINE_CAMERA_WIDTH = 320
 LINE_CAMERA_HEIGHT = 240
 camera = cv2.VideoCapture('/dev/video1')
 ret = camera.set(3, LINE_CAMERA_WIDTH)
 ret = camera.set(4, LINE_CAMERA_HEIGHT)
-from hough_line_transform import HoughLines
+from cv.hough_line_transform import HoughLines
 hl = HoughLines()
 fl =FollowLine(width=320, height=240,threshold=20)
-from image_init import image_processing,remove_noise
-cs = carSerial("/dev/ttyUSB0", receive=True)
+from cv.image_init import image_processing,remove_noise
+cs = CarSerial("/dev/ttyUSB0", receive=True)
 while(True):
     # 获取一帧
     ret, frame = camera.read()
