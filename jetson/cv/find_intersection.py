@@ -160,14 +160,14 @@ if __name__ == '__main__':
     LINE_CAMERA_WIDTH = 320
     LINE_CAMERA_HEIGHT = 240
     camera = cv2.VideoCapture(LINE_CAMERA)
-    #ret = camera.set(3, LINE_CAMERA_WIDTH)
-    #ret = camera.set(4, LINE_CAMERA_HEIGHT)
+    # ret = camera.set(3, LINE_CAMERA_WIDTH)
+    # ret = camera.set(4, LINE_CAMERA_HEIGHT)
     im_p = ImageInit(320, 240)
     while True:
         ret, image = camera.read()
         cv2.imshow("image", image)
         image2 = im_p.processing(image)
-            #= image_processing(image, width=320, height=240, threshold=248, convert_type="BINARY")
+        # image_processing(image, width=320, height=240, threshold=248, convert_type="BINARY")
         cv2.imshow("test_one", image2)
         fi = FindIntersection(150)
         # data = find(image2, (160, 230), image)
