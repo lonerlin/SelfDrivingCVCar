@@ -11,36 +11,47 @@ from cv.find_roadblock import FindRoadblock
 from cv.find_zebra_crossing import FindZebraCrossing
 from car.car_timer import CarTimer
 
-LINE_CAMERA = '/dev/video1'
-OD_CAMERA = '/dev/video0'
-SERIAL = "/dev/ttyUSB0"
 
-LINE_CAMERA_WIDTH = 320
-LINE_CAMERA_HEIGHT = 240
-OD_CAMERA_WIDTH = 320
-OD_CAMERA_HEIGHT = 240
-stop = False
-section = 0
+LINE_CAMERA = '/dev/video1'      # 巡线摄像头
+OD_CAMERA = '/dev/video0'        # 物体检测摄像头
+SERIAL = "/dev/ttyUSB0"          # 串口
+
+LINE_CAMERA_WIDTH = 320          # 巡线视频高度
+LINE_CAMERA_HEIGHT = 240         # 巡线视频宽度
+OD_CAMERA_WIDTH = 320            # 识别视频高度
+OD_CAMERA_HEIGHT = 240           # 识别视频高度
+
+section = 0                      # 分段标识
 p_offset = 0
 
+# 串口通信对象
 serial = CarSerial(port=SERIAL, receive=False)
+# 小车控制器
 ctrl = CarController(car_serial=serial, base_speed=80)
+# 识别对象
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=20)
 
+# cv巡线对象
 camera = cv2.VideoCapture(LINE_CAMERA)
 ret, frame = camera.read()
 
+# 基本图像处理对象
 img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=251, kernel_type=(4, 4), iterations=3)
+# 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
+# 寻找路口对象
 fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
+# 寻找路障对象
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
+# 寻找斑马线对象
 fzc = FindZebraCrossing(threshold=4, floor_line_count=3)
-
+# 保存视频对象
 vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
-
+# 一个计时器，用于计算帧速
 timer = CarTimer()
 
 while True:
+
     timer.restart()
 
     ret, frame = camera.read()
@@ -50,8 +61,8 @@ while True:
 
     offset, line_image = qf_line.get_offset(image, frame)
 
-    #cv2.imshow("line", line_image)
-    #print("offset:", offset)
+    # cv2.imshow("line", line_image)
+    # print("offset:", offset)
 
     if offset == -1000:
         offset = p_offset*1.7

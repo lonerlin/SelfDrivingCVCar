@@ -4,7 +4,20 @@ import time
 
 
 class FindRoadblock:
+    """
+        寻找障碍物（此类是通过OpenCV寻找单一颜色的障碍物）
+    """
     def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1):
+        """
+            初始化HSV数值，设置颜色占图中总面积的比例的阈值
+        :param h_low:
+        :param h_high:
+        :param s_low:
+        :param s_high:
+        :param v_low:
+        :param v_high:
+        :param threshold: 所占比例的阈值
+        """
         self._hl = h_low
         self._hh = h_high
         self._sl = s_low
@@ -14,6 +27,11 @@ class FindRoadblock:
         self._threshold = threshold
 
     def find(self, image):
+        """
+            寻找障碍物（寻找设定颜色的物体）
+        :param image:
+        :return: 找到返回True，否则返回False
+        """
         #hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower = np.array([self._hl, self._sl, self._vl], dtype=np.uint8)
         upper = np.array([self._hh, self._sh, self._vh], dtype=np.uint8)
@@ -26,6 +44,12 @@ class FindRoadblock:
             return False
 
     def track_show(self, cap, ksize=5, interv=5):
+        """
+        显示HSV可调窗口，以寻找可用HSV数值
+        :param cap: cv2 VideoCapture对象
+        :param ksize:
+        :param interv:
+        """
         tic = time.time()
         tic1 = time.time()
         coords = []

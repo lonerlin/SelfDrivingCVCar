@@ -3,6 +3,7 @@ class Object:
     """
         一个识别物体的增强对象。
         主要是添加了分类的中英文，同时保留了原来的位置，宽、高，面积，中心点等信息。
+        对应COCO数据集
     """
     def __init__(self, detection):
         self.Names = ['unlabeled', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
