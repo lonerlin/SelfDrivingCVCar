@@ -1,4 +1,4 @@
-from cv.image_init import image_processing, remove_noise
+from cv.image_init import ImageInit
 import cv2
 
 
@@ -22,11 +22,12 @@ class FindKeyPoint:
 if __name__ == '__main__':
     fkp = FindKeyPoint(False)
     capture = cv2.VideoCapture(0)
+    im_p =ImageInit()
     while True:
         ret, frame = capture.read()
         render_image = frame.copy()
-        image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
-        image2 = remove_noise(image, iterations=3)
+
+        image2 = im_p.processing(frame)
         _, rimg = fkp.get_key_point(image2, render_image)
         cv2.imshow("1", rimg)
         cv2.imshow('frame', render_image)

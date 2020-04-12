@@ -4,11 +4,12 @@ from od.recognition import Recognition
 from car.car_serial import CarSerial
 from cv.image_init import ImageInit
 from cv.follow_line import FollowLine
-from car.control_car import ControlCar
+from car.car_controller import CarController
 from cv.video_writer import VideoWriter
 from cv.find_intersection import FindIntersection
 from cv.find_roadblock import FindRoadblock
 from cv.find_zebra_crossing import FindZebraCrossing
+from car.car_timer import CarTimer
 
 LINE_CAMERA = '/dev/video1'
 OD_CAMERA = '/dev/video0'
@@ -23,21 +24,25 @@ section = 0
 p_offset = 0
 
 serial = CarSerial(port=SERIAL, receive=False)
-ctrl = ControlCar(car_serial=serial, base_speed=80)
-freq = cv2.getTickFrequency()
+ctrl = CarController(car_serial=serial, base_speed=80)
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=20)
-camera = cv2.VideoCapture(LINE_CAMERA)
 
+camera = cv2.VideoCapture(LINE_CAMERA)
 ret, frame = camera.read()
-img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=251, kernel_type=(4,4), iterations=3)
+
+img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=251, kernel_type=(4, 4), iterations=3)
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
 fzc = FindZebraCrossing(threshold=4, floor_line_count=3)
+
 vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
 
+timer = CarTimer()
+
 while True:
-    t1 = cv2.getTickCount()
+    timer.restart()
+
     ret, frame = camera.read()
     cv2.imshow("camera", frame)
     image = img_init.processing(frame)
@@ -52,7 +57,7 @@ while True:
         offset = p_offset*1.7
     else:
         p_offset = offset
-    ctrl.offset = offset
+    ctrl.follow_line(offset)
 
     targets = rc.get_objects()
 
@@ -88,10 +93,10 @@ while True:
 
     cv2.imshow("frame", line_image)
     vw.write(line_image)
-    t2 = cv2.getTickCount()
-    time1 = (t2 - t1) / freq
-    frame_rate_calc = 1 / time1
+
+    frame_rate_calc = 1 / timer.duration()
     print("frame_rate:", frame_rate_calc)
+
     if cv2.waitKey(1) == ord('q'):
         break
 

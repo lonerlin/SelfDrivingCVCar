@@ -15,7 +15,7 @@ import threading
 
 class CarSerial:
     """
-        封装了与Arduino间的串口通信
+        封装了与Arduino之间的串口通信
     """
     def __init__(self, port, baud_rate=115200, receive=False):
         """
@@ -90,6 +90,6 @@ if __name__ == '__main__':
     n = 0
     begin = time.time()
     while time.time()-begin < 60:
-        cs.drive_motor(120,120)
+        cs.drive_motor(120, 120)
         time.sleep(0.1)
-    cs.drive_motor(0,0)
+    cs.drive_motor(0, 0)

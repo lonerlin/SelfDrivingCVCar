@@ -2,6 +2,9 @@ import cv2
 
 
 class ShowImage:
+    """
+        显示OPENCV图像，主要是改变图片的位置，避免图片叠在一起。
+    """
     def __init__(self,):
         self.name_list = []
         self._location = ((420, 0), (100, 260), (420, 260), (740, 0), (740, 260))
@@ -14,6 +17,11 @@ class ShowImage:
         cv2.moveWindow(window_name, self._location[index][0], self._location[index][1])
 
     def show(self, frame, window_name=None):
+        """
+        如果不指定名字，默认提供一个叫none的窗口，但是如果有两个以上不指定名字，将只显示最后一个图片
+        :param frame: 显示的图（帧）
+        :param window_name: 窗口名字
+        """
         if not (frame is None):
             if window_name is None:
                 tmp_name = 'none'
