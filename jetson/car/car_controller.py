@@ -24,7 +24,7 @@ class CarController:
         self.proportional = proportional
         self.__offset = 0
         self.task_list = []
-
+        self.__function_timer = CarTimer()  # 提供一个全局的计时器供函数使用
         self.task_list.append(CarTask(name="follow_line", activated=True, priority=3, work=self.__follow_line))
 
     # region 实际操作函数
@@ -57,13 +57,22 @@ class CarController:
         """
         first_delay_time = kwargs['first_delay_time']
         second_delay_time = kwargs['second_delay_time']
-        timer = CarTimer(first_delay_time+second_delay_time+1)
-        if timer.duration() < timer.time_slice[0]:
+
+        if self.__function_timer.duration() < first_delay_time:
             self.__serial.drive_motor(50, -200)
-        elif first_delay_time < timer.duration() < first_delay_time+1:
+        elif first_delay_time < self.__function_timer.duration() < first_delay_time+1:
             self.__serial.drive_motor(100, 100)
         else:
             self.__serial.drive_motor(50, 200)
+
+    def __group_control(self, **kwargs):
+        bc_list = kwargs['base_control_list']
+        if bc_list:
+            if self.__function_timer.duration() < bc_list[0].delay_time:
+                self.__serial.drive_motor(bc_list[0].left_speed, bc_list[0].right_speed)
+            else:
+                self.__function_timer.restart()
+                bc_list.pop(0)
 
     def __turn(self, **kwargs):
         """
@@ -125,6 +134,7 @@ class CarController:
         :param first_delay_time:偏离主线的运行时间
         :param second_delay_time: 回归主线的运行时间
         """
+        self.__function_timer.restart()
         ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1)
         self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct, work=self.__bypass_obstacle,
                                       first_delay_time=first_delay_time, second_delay_time=second_delay_time))
@@ -155,4 +165,35 @@ class CarController:
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
                                       timer=CarTimer(time.perf_counter(), interval=delay_time),
                                       work=self.__go_straight))
+
+    def group(self, base_control_list):
+        """
+        连续执行BaseControl列表的函数
+        :param base_control_list: 必须提供一个BaseControl对象的List
+        """
+        bc_list = base_control_list
+        delay_time = 0.0
+        for bc in bc_list:
+            delay_time += bc.delay_time
+        self.__function_timer.restart()
+        self.task_list.append(CarTask(name="group_control", activated=True,priority=2,
+                                      timer=CarTimer(interval=delay_time),
+                                      work=self.__group_control,
+                                      base_control_list=base_control_list))
+
     # endregion
+
+    class BaseControl:
+        """
+            一个用于保存马达速度和延迟时间的类
+        """
+        def __init__(self, left_speed=100, right_speed=100, delay_time=1):
+            """
+                初始化
+            :param left_speed: 左马达速度
+            :param right_speed: 右马达速度
+            :param delay_time: 延迟时间
+            """
+            self.left_speed = left_speed
+            self.right_speed = right_speed
+            self.delay_time = delay_time
