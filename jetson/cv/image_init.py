@@ -1,5 +1,6 @@
 import cv2
 
+
 class ImageInit:
     def __init__(self, width=320, height=240, convert_type="BINARY", threshold=250, bitwise_not=False,
                  kernel_type=(3, 3), iterations=2):
@@ -25,19 +26,18 @@ class ImageInit:
 
     def processing(self, frame):
 
-        size = (self.width, self.height)                              #尺寸
-        image = cv2.resize(frame, size)                     #修改尺寸
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)     #转换为灰度
+        size = (self.width, self.height)                              # 尺寸
+        image = cv2.resize(frame, size)                     # 修改尺寸
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)     # 转换为灰度
         if self.convert_type == "BINARY":
-            _, image = cv2.threshold(image, self.threshold, 255, cv2.THRESH_BINARY)     #转换为二值图
+            _, image = cv2.threshold(image, self.threshold, 255, cv2.THRESH_BINARY)     # 转换为二值图
         if self.bitwise_not:
-            image = cv2.bitwise_not(image)   #黑白翻转
+            image = cv2.bitwise_not(image)   # 黑白翻转
 
         image = self.remove_noise(image)
         return image
 
-
-    def remove_noise(self,frame):
+    def remove_noise(self, frame):
         """
         通过腐蚀和膨胀消除噪点
         :param frame: 需要处理的图像
@@ -45,7 +45,7 @@ class ImageInit:
         """
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, self.kernel_type)
         erosion = cv2.erode(frame, kernel, self.iterations)
-        #dilate = cv2.dilate(erosion, kernel, 2)
+        # dilate = cv2.dilate(erosion, kernel, 2)
         return erosion
 
 

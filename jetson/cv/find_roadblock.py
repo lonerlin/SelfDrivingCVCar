@@ -18,13 +18,13 @@ class FindRoadblock:
         :param v_high:
         :param threshold: 所占比例的阈值
         """
-        self._hl = h_low
-        self._hh = h_high
-        self._sl = s_low
-        self._sh = s_high
-        self._vl = v_low
-        self._vh = v_high
-        self._threshold = threshold
+        self.__hl = h_low
+        self.__hh = h_high
+        self.__sl = s_low
+        self.__sh = s_high
+        self.__vl = v_low
+        self.__vh = v_high
+        self.__threshold = threshold
 
     def find(self, image):
         """
@@ -33,12 +33,12 @@ class FindRoadblock:
         :return: 找到返回True，否则返回False
         """
         #hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        lower = np.array([self._hl, self._sl, self._vl], dtype=np.uint8)
-        upper = np.array([self._hh, self._sh, self._vh], dtype=np.uint8)
+        lower = np.array([self.__hl, self.__sl, self.__vl], dtype=np.uint8)
+        upper = np.array([self.__hh, self.__sh, self.__vh], dtype=np.uint8)
         mask = cv2.inRange(image, lower, upper)
         #cv2.imshow("mask", mask)
         rate = np.sum(mask == 255)/mask.size
-        if rate >= self._threshold:
+        if rate >= self.__threshold:
             return True
         else:
             return False
@@ -56,12 +56,12 @@ class FindRoadblock:
         cv2.namedWindow('control')
         tracker = np.zeros((320, 240))
 
-        cv2.createTrackbar('Hlow', 'control', self._hl, 255, self.nothing)
-        cv2.createTrackbar('Hhigh', 'control', self._hh, 255, self.nothing)
-        cv2.createTrackbar('Slow', 'control', self._sl, 255, self.nothing)
-        cv2.createTrackbar('Shigh', 'control', self._sh, 255, self.nothing)
-        cv2.createTrackbar('Vlow', 'control', self._vl, 255, self.nothing)
-        cv2.createTrackbar('Vhigh', 'control', self._vh, 255, self.nothing)
+        cv2.createTrackbar('Hlow', 'control', self.__hl, 255, self.nothing)
+        cv2.createTrackbar('Hhigh', 'control', self.__hh, 255, self.nothing)
+        cv2.createTrackbar('Slow', 'control', self.__sl, 255, self.nothing)
+        cv2.createTrackbar('Shigh', 'control', self.__sh, 255, self.nothing)
+        cv2.createTrackbar('Vlow', 'control', self.__vl, 255, self.nothing)
+        cv2.createTrackbar('Vhigh', 'control', self.__vh, 255, self.nothing)
 
         while True:
             # img_now = cv.QueryFrame(stream)

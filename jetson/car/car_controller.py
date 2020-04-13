@@ -19,34 +19,34 @@ class CarController:
         :param integral: PID的积分参数
         :param diff: PID的微分参数
         """
-        self._serial = car_serial
+        self.__serial = car_serial
         self.base_speed = base_speed
         self.proportional = proportional
-        self._offset = 0
+        self.__offset = 0
         self.task_list = []
 
-        self.task_list.append(CarTask(name="follow_line", activated=True, priority=3, work=self._follow_line))
+        self.task_list.append(CarTask(name="follow_line", activated=True, priority=3, work=self.__follow_line))
 
-    def _follow_line(self):
+    def __follow_line(self):
         """
         巡线的实际执行函数
         """
-        self._serial.drive_motor(int(self.base_speed + self._offset * self.proportional),
-                                 int(self.base_speed - self._offset * self.proportional))
+        self.__serial.drive_motor(int(self.base_speed + self.__offset * self.proportional),
+                                  int(self.base_speed - self.__offset * self.proportional))
 
-    def _pause(self):
+    def __pause(self):
         """
         暂停实际执行函数
         """
-        self._serial.drive_motor(0, 0)
+        self.__serial.drive_motor(0, 0)
 
-    def _go_straight(self):
+    def __go_straight(self):
         """
         直走实际执行函数
         """
-        self._serial.drive_motor(self.base_speed, self.base_speed)
+        self.__serial.drive_motor(self.base_speed, self.base_speed)
 
-    def _bypass_obstacle(self, **kwargs):
+    def __bypass_obstacle(self, **kwargs):
         """
         避障实际控制函数
         :param kwargs:需要两个参数，第一阶段延时，第二阶段延时
@@ -55,29 +55,29 @@ class CarController:
         second_delay_time = kwargs['second_delay_time']
         timer = CarTimer(first_delay_time+second_delay_time+1)
         if timer.duration() < timer.time_slice[0]:
-            self._serial.drive_motor(50, -200)
+            self.__serial.drive_motor(50, -200)
         elif first_delay_time < timer.duration() < first_delay_time+1:
-            self._serial.drive_motor(100, 100)
+            self.__serial.drive_motor(100, 100)
         else:
-            self._serial.drive_motor(50, 200)
+            self.__serial.drive_motor(50, 200)
 
-    def _turn(self, **kwargs):
+    def __turn(self, **kwargs):
         """
         转弯实际控制函数
         :param kwargs: 方向
         """
         direction = kwargs['direction']
         if direction:
-            self._serial.drive_motor(0, 250)
+            self.__serial.drive_motor(0, 250)
         else:
-            self._serial.drive_motor(250, 0)
+            self.__serial.drive_motor(250, 0)
 
     def follow_line(self, offset):
         """
         巡线接口
         :param offset:
         """
-        self._offset = offset
+        self.__offset = offset
 
     def pause(self, delay_time=0):
         """
@@ -86,7 +86,7 @@ class CarController:
         """
         self.task_list.append(CarTask(name="pause", activated=True, priority=1,
                                       timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
-                                      work=self._pause))
+                                      work=self.__pause))
 
     def bypass_obstacle(self, first_delay_time, second_delay_time):
         """
@@ -95,7 +95,7 @@ class CarController:
         :param second_delay_time: 回归主线的运行时间
         """
         ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1)
-        self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct,work=self._bypass_obstacle,
+        self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct, work=self.__bypass_obstacle,
                                       first_delay_time=first_delay_time, second_delay_time=second_delay_time))
 
     def turn(self, direction=True, delay_time=1):
@@ -123,7 +123,7 @@ class CarController:
         """
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
                                       timer=CarTimer(time.perf_counter(), interval=delay_time),
-                                      work=self._go_straight))
+                                      work=self.__go_straight))
 
     def update(self):
         """

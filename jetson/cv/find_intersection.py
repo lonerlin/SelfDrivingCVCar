@@ -6,8 +6,7 @@ from cv.image_init import ImageInit
 
 class FindIntersection:
 
-
-    def __init__(self, radius, angle=90, threshold=3, delay_time=10,  repeate_count =2):
+    def __init__(self, radius, angle=90, threshold=3, delay_time=10, repeat_count=2):
         """
             初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
         :param radius: 设置半径
@@ -16,12 +15,13 @@ class FindIntersection:
         """
         self.radius = radius
         self.angle = angle
-        self._threshold = threshold
+        self.__threshold = threshold
         self.intersection_number = 0
-        self._begin_time = 0
-        self._repeat_count = repeate_count
-        self._counter = 0
+        self.__begin_time = 0
+        self.__repeat_count = repeat_count
+        self.__counter = 0
         self.delay_time = delay_time
+
     def coordinate_from_point(self, origin, angle, radius):
         """
             通过圆心位置坐标，角度和半径计算圆上点的坐标
@@ -40,7 +40,7 @@ class FindIntersection:
         # We only want whole numbers
         x = int(np.round(x))
         y = int(np.round(y))
-        return (x, y)
+        return x, y
 
     def in_image_bounds(self, image, x, y):
         """
@@ -108,7 +108,7 @@ class FindIntersection:
         angle_list = []
         for i in range(len(scan_data)):
             if scan_data[i][1] == 0:
-                if tmp_count >= self._threshold:
+                if tmp_count >= self.__threshold:
                     angle_list.append(scan_data[i - int(tmp_count / 2)])
                     tmp_count = 0
                 else:
@@ -137,10 +137,10 @@ class FindIntersection:
 
     def is_intersection(self, find_image, angle=25, render_image=None):
 
-        if time.perf_counter() - self._begin_time > self.delay_time:
+        if time.perf_counter() - self.__begin_time > self.delay_time:
             start_height = 230
             tmp_value = True
-            for i in range(self._repeat_count):
+            for i in range(self.__repeat_count):
                 intersections = self.find(find_image, (160, start_height-(i*10)), render_image)
                 print(intersections)
                 print("len:", len(intersections))
@@ -148,7 +148,7 @@ class FindIntersection:
                     tmp_value = False
             if tmp_value:
                 self.intersection_number += 1
-                self._begin_time = time.perf_counter()
+                self.__begin_time = time.perf_counter()
                 return True
         else:
             self.find(find_image, (160, 230), render_image)

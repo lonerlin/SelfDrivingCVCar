@@ -14,9 +14,9 @@ class FollowLine:
         self.width = width
         self.height = height
         self.image_type = image_type
-        self._offset = 0
+        self.__offset = 0
         self.center = 0
-        self._threshold = threshold
+        self.__threshold = threshold
         self.direction = direction
 
     def get_offset(self, frame, render_image=None):
@@ -44,15 +44,15 @@ class FollowLine:
             if color[i] == 255:
                 continuous += 1
             else:
-                if continuous >= self._threshold:
+                if continuous >= self.__threshold:
                     self.center = (i-continuous/2) if self.direction else (i+continuous/2)
                     break
                 else:
                     continuous = 0
         if self.center != 0:
-            self._offset = int(self.center - self.width / 2)
+            self.__offset = int(self.center - self.width / 2)
         else:
-            self._offset = -1000
+            self.__offset = -1000
         #print("color", color)
         # try:
         #     white_count = np.sum(color == 255)
@@ -65,9 +65,9 @@ class FollowLine:
         #     pass
 
         if not (render_image is None):
-            return int(self._offset), self.render_image(render_image)
+            return int(self.__offset), self.render_image(render_image)
         else:
-            return int(self._offset), None
+            return int(self.__offset), None
 
     def render_image(self, frame):
         return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)),

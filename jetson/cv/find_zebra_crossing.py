@@ -15,10 +15,10 @@ class FindZebraCrossing:
         :param floor_line_count: 图片中最少出现白色线的数量
         :param delay_time: 找到后，延迟多长时间再开始寻找
         """
-        self._line_threshold = threshold
+        self.__line_threshold = threshold
         self.width = width
         self.height = height
-        self._begin_time = 0
+        self.__begin_time = 0
         self.delay_time = delay_time
         self.floor_line_count = floor_line_count
 
@@ -28,13 +28,13 @@ class FindZebraCrossing:
         :param image:需要处理的图像
         :return: 是否是斑马线
         """
-        if time.perf_counter()-self._begin_time > self.delay_time:
+        if time.perf_counter()-self.__begin_time > self.delay_time:
             line = image[40]
             tmp_count = 0
             line_count = 0
             for i in range(len(line)):
                 if line[i] == 0:
-                    if tmp_count >= self._line_threshold:
+                    if tmp_count >= self.__line_threshold:
                         line_count += 1
                         tmp_count = 0
                     else:
@@ -42,7 +42,7 @@ class FindZebraCrossing:
                 else:
                     tmp_count += 1
             if line_count >= self.floor_line_count:
-                self._begin_time = time.perf_counter()
+                self.__begin_time = time.perf_counter()
                 return True
         return False
 

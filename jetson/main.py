@@ -40,7 +40,7 @@ img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=251, kerne
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
-fi = FindIntersection(radius=150, threshold=4, repeate_count=3)
+fi = FindIntersection(radius=150, threshold=4, repeat_count=3)
 # 寻找路障对象
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
 # 寻找斑马线对象

@@ -27,7 +27,7 @@ class Recognition:
         self.od.start()
         self.conn1.close()
 
-        self._begin_time = 0
+        self.__begin_time = 0
 
     def get_objects(self):
         """
@@ -43,14 +43,14 @@ class Recognition:
 
     def object_appeared(self, objcets, appeard_id, object_width=60, delay_time=10):
         objs = objcets
-        if self._begin_time > 0 and time.perf_counter()-self._begin_time < delay_time:
+        if self.__begin_time > 0 and time.perf_counter()-self.__begin_time < delay_time:
             return False
         else:
             for obj in objs:
                 if obj.class_id == appeard_id and obj.width > object_width:
-                    self._begin_time = time.perf_counter()
+                    self.__begin_time = time.perf_counter()
                     return True
-            self._begin_time = 0
+            self.__begin_time = 0
             return False
 
     def close(self):
@@ -61,13 +61,12 @@ class Recognition:
         self.od.join(5)
 
 
-
 if __name__ == '__main__':
     reco = Recognition(device="/dev/video0",width=640,height=480)
     begin = time.time()
 
     while time.time() - begin < 60:
-        f =time.perf_counter()
+        f = time.perf_counter()
         objs = reco.get_objects()
         if len(objs) > 0:
             for obj in objs:
