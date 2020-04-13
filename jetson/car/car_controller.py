@@ -39,7 +39,8 @@ class CarController:
         暂停实际执行函数
         """
         self.__serial.drive_motor(0, 0)
-
+    def __stop(self):
+        self.__serial.drive_motor(0, 0)
     def __go_straight(self):
         """
         直走实际执行函数
@@ -106,13 +107,13 @@ class CarController:
         """
         self.task_list.append(CarTask(name="turn", activated=True, priority=1,
                                       timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
-                                      direction=direction))
+                                      work=self.__turn, direction=direction))
 
     def stop(self):
         """
         停车（停车后无法再走了），如果停车后想继续走请使用暂停
         """
-        self.task_list.append(CarTask(name="stop", activated=True, priority=0))
+        self.task_list.append(CarTask(name="stop", activated=True, priority=0,work=self.__stop))
         # self._serial.drive_motor(0, 0)
         # self._is_stop = True
 
@@ -135,7 +136,7 @@ class CarController:
         if len(a_list) > 0:
             task = a_list[0]
             print(task.name)
-            if not task.args:
+            if task.args:
                 task.work_function(**task.args)
             else:
                 task.work_function()
@@ -143,7 +144,9 @@ class CarController:
         self.task_list = a_list
 
         for task in self.task_list:
+            print(task.name)
             if not (task.timer is None):
+                print(task.timer.duration())
                 if task.timer.timeout():
                     task.activated = False
 

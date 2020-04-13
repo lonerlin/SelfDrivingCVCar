@@ -48,6 +48,9 @@ class ImageInit:
         # dilate = cv2.dilate(erosion, kernel, 2)
         return erosion
 
+    def resize(self, frame):
+        size =(self.width,self.height)
+        return cv2.resize(frame,size)
 
 if __name__ == '__main__':
     camera = cv2.VideoCapture('/dev/video1')
