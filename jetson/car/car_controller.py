@@ -27,6 +27,7 @@ class CarController:
 
         self.task_list.append(CarTask(name="follow_line", activated=True, priority=3, work=self.__follow_line))
 
+    # region 实际操作函数
     def __follow_line(self):
         """
         巡线的实际执行函数
@@ -74,6 +75,7 @@ class CarController:
             self.__serial.drive_motor(0, 250)
         else:
             self.__serial.drive_motor(250, 0)
+    # endregion
 
     def update(self):
         """
@@ -99,7 +101,8 @@ class CarController:
 
         self.task_list = a_list  # 这里相当于删除队列中超时的任务
 
-    # 以下为接口函数
+    # region 以下为接口函数
+
     def follow_line(self, offset):
         """
         巡线接口
@@ -152,3 +155,4 @@ class CarController:
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
                                       timer=CarTimer(time.perf_counter(), interval=delay_time),
                                       work=self.__go_straight))
+    # endregion
