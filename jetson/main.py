@@ -12,6 +12,7 @@ from cv.find_zebra_crossing import FindZebraCrossing
 from car.car_timer import CarTimer
 from cv.show_images import ShowImage
 
+# region 设置参数
 LINE_CAMERA = '/dev/video1'      # 巡线摄像头
 OD_CAMERA = '/dev/video0'        # 物体检测摄像头
 SERIAL = "/dev/ttyUSB0"          # 串口
@@ -23,7 +24,9 @@ OD_CAMERA_HEIGHT = 240           # 识别视频高度
 
 section = 0                      # 分段标识
 p_offset = 0
+# endregion
 
+# region 新立需要的各种对象
 # 串口通信对象
 serial = CarSerial(port=SERIAL, receive=False)
 # 小车控制器
@@ -49,41 +52,50 @@ fzc = FindZebraCrossing(threshold=4, floor_line_count=3)
 # vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
 # 一个计时器，用于计算帧速
 timer = CarTimer()
+# 显示图片的对象
 si = ShowImage()
-while True:
+# endregion
 
+while True:
+    # 帧计时开始
     timer.restart()
 
+    # 通过摄像头读入一帧
     ret, frame = camera.read()
-    frame = img_init.resize(frame)
-    si.show(frame,"camera")
-    image = img_init.processing(frame)
-    si.show(image,"image")
 
+    # 改变图像的大小
+    frame = img_init.resize(frame)
+    si.show(frame, "camera")
+
+    # 把图片二值化，并去噪
+    image = img_init.processing(frame)
+    si.show(image, "image")
+
+    # 巡线
     offset, line_image = qf_line.get_offset(image, frame)
 
-    # cv2.imshow("line", line_image)
-    # print("offset:", offset)
-
+    # 处理巡线的偏置问题，可以写成一个函数，或者调用PID对象进行处理
     if offset == -1000:
         offset = p_offset*1.7
     else:
         p_offset = offset
     ctrl.follow_line(offset)
 
+    # 物体探测
     targets = rc.get_objects()
 
-    # if fi.intersection_number == 1 and rc.object_appeared(targets, 1, 5):
+    # if fi.intersection_number == 1 and rc.object_appeared(targets, 1, 5):      # 看见人的处理程序
     #     ctrl.pause(1)
-    #
+
+    # 路口处理程序
     if fi.is_intersection(image,  render_image=line_image):
         if fi.intersection_number == 5:
-            ctrl.turn(False,1)
+            ctrl.turn(False, 1)
         if fi.intersection_number == 6:
-            ctrl.turn(True,1.3)
+            ctrl.turn(True, 1.3)
         if fi.intersection_number == 10:
-            ctrl.turn(False,1)
-        if fi.intersection_number ==11:
+            ctrl.turn(False, 1)
+        if fi.intersection_number == 11:
             ctrl.stop()
     #     if fi.intersection_number == 1:
     #         ctrl.turn(False, 0.3)
@@ -93,36 +105,44 @@ while True:
     #     # if fi.intersection_number == 3:
     #     #     ctrl.turn(False, 1)
     #
-    # if fi.intersection_number >= 3:
-    #     if fzc.find(image):
-    #         ctrl.pause(5)
-    #         ctrl.go_straight(8)
-    #         section = 1
     #
+
+    # # 找到斑马线
+    # if fzc.find(image):
+    #     ctrl.pause(5)
+    #     ctrl.go_straight(8)
+    #     section = 1
+    #
+    # 找到障碍物
     # if section == 1:
     #     if fr.find(frame):
     #         ctrl.byPass_state = True
     #         section += 1
     #
-    # ctrl.bypass_obstacle(0.6, 2)
-    #
+
+    # 看见停车标志
     # if section == 2 and rc.object_appeared(targets, 13, object_width=75):
     #     ctrl.stop()
 
+    # 这个是动作的实际执行程序，每一帧必须调用
     ctrl.update()
 
-    si.show(line_image)
+    si.show(line_image, "line")
+    # 录像
     # vw.write(line_image)
 
+    # 打印帧速率
     frame_rate_calc = 1 / timer.duration()
     print("frame_rate:", frame_rate_calc)
 
+    # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
         break
 
+# 收尾工作
 serial.drive_motor(0, 0)
 rc.close()
 # vw.release()
 camera.release()
 cv2.destroyAllWindows()
-rc.close()
+

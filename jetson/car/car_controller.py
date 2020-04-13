@@ -39,8 +39,10 @@ class CarController:
         暂停实际执行函数
         """
         self.__serial.drive_motor(0, 0)
+
     def __stop(self):
         self.__serial.drive_motor(0, 0)
+
     def __go_straight(self):
         """
         直走实际执行函数
@@ -73,6 +75,31 @@ class CarController:
         else:
             self.__serial.drive_motor(250, 0)
 
+    def update(self):
+        """
+        在每一个帧中执行这个函数来选择优先级最高的一项控制动作，并执行该动作。
+        同时删除超时的动作。
+        """
+        a_list = [one for one in self.task_list if one.activated]   # 筛选出活的任务
+        a_list.sort(key=lambda t: t.priority)                       # 按任务的优先级排序
+        if len(a_list) > 0:
+            task = a_list[0]                                        # 选择优先级最高的任务
+            print(task.name)
+            if task.args:                                           # 如果带参数，调用实际函数，传送参数
+                task.work_function(**task.args)
+            else:
+                task.work_function()                                # 没有参数的调用没有参数的函数
+
+        for task in a_list:                                         # 检测是否已经超时，超时的activated设置为False
+            print(task.name)
+            if not (task.timer is None):
+                print(task.timer.duration())
+                if task.timer.timeout():
+                    task.activated = False
+
+        self.task_list = a_list  # 这里相当于删除队列中超时的任务
+
+    # 以下为接口函数
     def follow_line(self, offset):
         """
         巡线接口
@@ -113,7 +140,7 @@ class CarController:
         """
         停车（停车后无法再走了），如果停车后想继续走请使用暂停
         """
-        self.task_list.append(CarTask(name="stop", activated=True, priority=0,work=self.__stop))
+        self.task_list.append(CarTask(name="stop", activated=True, priority=0, work=self.__stop))
         # self._serial.drive_motor(0, 0)
         # self._is_stop = True
 
@@ -125,29 +152,3 @@ class CarController:
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
                                       timer=CarTimer(time.perf_counter(), interval=delay_time),
                                       work=self.__go_straight))
-
-    def update(self):
-        """
-        在每一个帧中执行这个函数来选择优先级最高的一项控制动作，并执行该动作。
-        同时删除超时的动作。
-        """
-        a_list = [one for one in self.task_list if one.activated]
-        a_list.sort(key=lambda t: t.priority)
-        if len(a_list) > 0:
-            task = a_list[0]
-            print(task.name)
-            if task.args:
-                task.work_function(**task.args)
-            else:
-                task.work_function()
-
-        self.task_list = a_list
-
-        for task in self.task_list:
-            print(task.name)
-            if not (task.timer is None):
-                print(task.timer.duration())
-                if task.timer.timeout():
-                    task.activated = False
-
-
