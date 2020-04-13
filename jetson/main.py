@@ -40,7 +40,7 @@ img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=80, kernel
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
-fi = FindIntersection(radius=150, threshold=4, repeat_count=2)
+fi = FindIntersection(radius=150, threshold=4, repeat_count=2,delay_time=1.7)
 # 寻找路障对象
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
 # 寻找斑马线对象
@@ -77,11 +77,14 @@ while True:
     #     ctrl.pause(1)
     #
     if fi.is_intersection(image,  render_image=line_image):
-        if fi.intersection_number == 2:
+        if fi.intersection_number == 5:
             ctrl.turn(False,1)
         if fi.intersection_number == 6:
-            ctrl.turn(True,1)
-
+            ctrl.turn(True,1.3)
+        if fi.intersection_number == 10:
+            ctrl.turn(False,1)
+        if fi.intersection_number ==11:
+            ctrl.stop()
     #     if fi.intersection_number == 1:
     #         ctrl.turn(False, 0.3)
     #     if fi.intersection_number == 2:
