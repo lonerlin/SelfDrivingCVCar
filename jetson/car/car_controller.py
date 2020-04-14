@@ -67,7 +67,7 @@ class CarController:
 
     def __group_control(self, **kwargs):
         bc_list = kwargs['base_control_list']
-        print(len(bc_list))
+
         if bc_list:
             if self.__function_timer.duration() < bc_list[0].delay_time:
                 self.__serial.drive_motor(bc_list[0].left_speed, bc_list[0].right_speed)
@@ -96,16 +96,16 @@ class CarController:
         a_list.sort(key=lambda t: t.priority)                       # 按任务的优先级排序
         if len(a_list) > 0:
             task = a_list[0]                                        # 选择优先级最高的任务
-            print(task.name)
+            # print(task.name)
             if task.args:                                           # 如果带参数，调用实际函数，传送参数
                 task.work_function(**task.args)
             else:
                 task.work_function()                                # 没有参数的调用没有参数的函数
 
         for task in a_list:                                         # 检测是否已经超时，超时的activated设置为False
-            print(task.name)
+            # print(task.name)
             if not (task.timer is None):
-                print(task.timer.duration())
+                # print(task.timer.duration())
                 if task.timer.timeout():
                     task.activated = False
 

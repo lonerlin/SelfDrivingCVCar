@@ -142,8 +142,8 @@ class FindIntersection:
             tmp_value = True
             for i in range(self.__repeat_count):
                 intersections = self.find(find_image, (160, start_height-(i*10)), render_image)
-                print(intersections)
-                print("len:", len(intersections))
+                # print(intersections)
+                # print("len:", len(intersections))
                 if len(intersections) < 2 or abs(intersections[1][0] - intersections[0][0]) <= angle:
                     tmp_value = False
             if tmp_value:
