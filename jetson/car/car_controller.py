@@ -67,6 +67,7 @@ class CarController:
 
     def __group_control(self, **kwargs):
         bc_list = kwargs['base_control_list']
+        print(len(bc_list))
         if bc_list:
             if self.__function_timer.duration() < bc_list[0].delay_time:
                 self.__serial.drive_motor(bc_list[0].left_speed, bc_list[0].right_speed)
@@ -177,23 +178,24 @@ class CarController:
             delay_time += bc.delay_time
         self.__function_timer.restart()
         self.task_list.append(CarTask(name="group_control", activated=True,priority=2,
-                                      timer=CarTimer(interval=delay_time),
+                                      timer=CarTimer(interval=delay_time+0.2),
                                       work=self.__group_control,
                                       base_control_list=base_control_list))
 
     # endregion
 
-    class BaseControl:
+
+class BaseControl:
+    """
+        一个用于保存马达速度和延迟时间的类
+    """
+    def __init__(self, left_speed=100, right_speed=100, delay_time=1):
         """
-            一个用于保存马达速度和延迟时间的类
+            初始化
+        :param left_speed: 左马达速度
+        :param right_speed: 右马达速度
+        :param delay_time: 延迟时间
         """
-        def __init__(self, left_speed=100, right_speed=100, delay_time=1):
-            """
-                初始化
-            :param left_speed: 左马达速度
-            :param right_speed: 右马达速度
-            :param delay_time: 延迟时间
-            """
-            self.left_speed = left_speed
-            self.right_speed = right_speed
-            self.delay_time = delay_time
+        self.left_speed = left_speed
+        self.right_speed = right_speed
+        self.delay_time = delay_time

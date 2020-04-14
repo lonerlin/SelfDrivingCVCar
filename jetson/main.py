@@ -4,7 +4,7 @@ from od.recognition import Recognition
 from car.car_serial import CarSerial
 from cv.image_init import ImageInit
 from cv.follow_line import FollowLine
-from car.car_controller import CarController
+from car.car_controller import CarController, BaseControl
 from cv.video_writer import VideoWriter
 from cv.find_intersection import FindIntersection
 from cv.find_roadblock import FindRoadblock
@@ -39,7 +39,7 @@ camera = cv2.VideoCapture(LINE_CAMERA)
 ret, frame = camera.read()
 
 # 基本图像处理对象
-img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=80, kernel_type=(3, 3), iterations=2,bitwise_not=True)
+img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=60, kernel_type=(3, 3), iterations=2,bitwise_not=True)
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
@@ -89,10 +89,24 @@ while True:
 
     # 路口处理程序
     if fi.is_intersection(image,  render_image=line_image):
+        if fi.intersection_number == 1:
+            fi.delay_time = 3
+            ctrl.turn(True, 1.2)
+            # l = []
+            # l.append(BaseControl(0, 0, 1.5))
+            # l.append(BaseControl(200, 0, 2))
+            # l.append(BaseControl(0, 0, 11.5))
+            # l.append(BaseControl(0, 200, 2))
+            # ctrl.group(l)
+        if fi.intersection_number == 2 or fi.intersection_number == 3 or fi.intersection_number == 4:
+            ctrl.go_straight(0.2)
         if fi.intersection_number == 5:
             ctrl.turn(False, 1)
+            fi.delay_time = 1.7
         if fi.intersection_number == 6:
+
             ctrl.turn(True, 1.3)
+
         if fi.intersection_number == 10:
             ctrl.turn(False, 1)
         if fi.intersection_number == 11:
