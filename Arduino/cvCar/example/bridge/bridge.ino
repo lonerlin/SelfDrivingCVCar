@@ -5,7 +5,7 @@
     每个四位，如果第四位等于1代表马达向后，0代表马达向前（既是1代表负）
     左边四位是左马达，右边四位是右马达
 */
-
+#include <Servo.h>
 #include<MotorControl.h>
 #define LeftDIRPin 4
 #define LeftPWMPin 5
@@ -15,10 +15,11 @@
 #define BASE_SPEED 45
 #define FAST_SPEED 70
 int SPEED=0;
-
+int angle = 90;
 int left,right;
 String inStr="";
 
+Servo servo1;
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
@@ -26,7 +27,8 @@ void setup() {
   while(!Serial){;}
   left=0;
   right=0;
-
+   servo1.attach( 9, 600, 2400 );
+   servo1.write(90);
 }
 
 void loop() {
@@ -55,27 +57,40 @@ void loop() {
        Serial.print("string:");
        Serial.println(inStr);
        inStr = inStr + "";
-       
-      
-       tmp =inStr.substring(0,4).toInt();
-       Serial.println(tmp);
-       if(tmp /1000 >0)left=-tmp%1000;
-       else left=tmp%1000;
 
-       //右边取余
-       tmp =inStr.substring(4,8).toInt();
-       Serial.println(tmp);
-       if(tmp/1000>0)right=-tmp%1000;
-       else  right=tmp%1000;
-       
-       mc.Motor(left,right);
-       Serial.print("left:");
-       Serial.println(left);
-       Serial.print("right:");
-       Serial.println(right);
+       if(inStr.substring(0,1)=="2")
+       {
+          angle = inStr.substring(1,3).toInt();
+          servo_move(angle);
+       }
+       else
+       {
+         tmp =inStr.substring(0,4).toInt();
+         Serial.println(tmp);
+         if(tmp /1000 >0)left=-tmp%1000;
+         else left=tmp%1000;
+  
+         //右边取余
+         tmp =inStr.substring(4,8).toInt();
+         Serial.println(tmp);
+         if(tmp/1000>0)right=-tmp%1000;
+         else  right=tmp%1000;
+         
+         mc.Motor(left,right);
+         Serial.print("left:");
+         Serial.println(left);
+         Serial.print("right:");
+         Serial.println(right);
+       }
        inStr="";
     }
     
     delay(5);
     
  }
+
+ void servo_move(int angle){
+    if (angle<10)angle=10;
+    if(angle>170)angle=170;
+    servo1.write(angle);
+  }

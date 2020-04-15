@@ -55,7 +55,7 @@ timer = CarTimer()
 # 显示图片的对象
 si = ShowImage()
 # endregion
-
+serial.drive_servo(75)
 while True:
     # 帧计时开始
     timer.restart()
@@ -100,6 +100,7 @@ while True:
             # ctrl.group(l)
         if fi.intersection_number == 2 or fi.intersection_number == 3 or fi.intersection_number == 4:
             ctrl.go_straight(0.2)
+
         if fi.intersection_number == 5:
             ctrl.turn(False, 1)
             fi.delay_time = 1.7

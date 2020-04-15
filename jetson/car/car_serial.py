@@ -83,13 +83,19 @@ class CarSerial:
         """
         self.write(self.build_motors_string(int(left), int(right)))
 
+    def drive_servo(self, angle):
+        tmp_str = "2"
+        tmp_str += str(abs(angle)).zfill(3)
+        tmp_str += "2090"
+        self.write(tmp_str)
+
 
 if __name__ == '__main__':
     cs = CarSerial("/dev/ttyUSB0", 115200, receive=True)
     time.sleep(1)
     n = 0
     begin = time.time()
-    while time.time()-begin < 60:
-        cs.drive_motor(120, 120)
-        time.sleep(0.1)
-    cs.drive_motor(0, 0)
+    angle = 45
+    cs.drive_servo(60)
+
+
