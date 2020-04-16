@@ -1,8 +1,12 @@
-from multiprocessing import Pipe,Value
+from multiprocessing import Pipe, Value
 from od.objcet_detection import ObjectDetection
 from od.object import Object
-import time
 
+import time
+import sys
+
+sys.path.append("..")
+from car.car_timer import CarTimer
 
 class Recognition:
     """
@@ -27,7 +31,7 @@ class Recognition:
         self.od.start()
         self.conn1.close()
 
-        self.__begin_time = 0
+        self.__timer = CarTimer()
 
     def get_objects(self):
         """
@@ -42,16 +46,15 @@ class Recognition:
             return []
 
     def object_appeared(self, objcets, appeard_id, object_width=60, delay_time=10):
-        objs = objcets
-        if self.__begin_time > 0 and time.perf_counter()-self.__begin_time < delay_time:
-            return False
-        else:
+
+        self.__timer.interval = delay_time
+        if self.__timer.timeout():
+            objs = objcets
             for obj in objs:
                 if obj.class_id == appeard_id and obj.width > object_width:
-                    self.__begin_time = time.perf_counter()
+                    self.__timer.start_time = time.perf_counter()
                     return True
-            self.__begin_time = 0
-            return False
+        return False
 
     def close(self):
         """

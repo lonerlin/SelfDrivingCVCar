@@ -4,6 +4,7 @@ import math
 import time
 from cv.image_init import ImageInit
 
+
 class FindIntersection:
 
     def __init__(self, radius, angle=90, threshold=3, delay_time=10, repeat_count=2):

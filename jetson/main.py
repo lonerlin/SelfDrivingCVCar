@@ -39,7 +39,8 @@ camera = cv2.VideoCapture(LINE_CAMERA)
 ret, frame = camera.read()
 
 # 基本图像处理对象
-img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=60, kernel_type=(3, 3), iterations=2,bitwise_not=True)
+img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=60, kernel_type=(3, 3),
+                     iterations=2, bitwise_not=True)
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
@@ -84,8 +85,11 @@ while True:
     # 物体探测
     targets = rc.get_objects()
 
-    # if fi.intersection_number == 1 and rc.object_appeared(targets, 1, 5):      # 看见人的处理程序
-    #     ctrl.pause(1)
+    if fi.intersection_number == 2 and rc.object_appeared(targets, 1, object_width=40, delay_time=10):  # 看见人的处理程序
+        ctrl.stop(3)
+
+    if fi.intersection_number == 3 and rc.object_appeared(targets, 44, object_width=58, delay_time=10):      # 看见人的处理程序
+        ctrl.bypass_obstacle(0.8, 2.4)
 
     # 路口处理程序
     if fi.is_intersection(image,  render_image=line_image):
@@ -98,7 +102,7 @@ while True:
             # l.append(BaseControl(0, 0, 11.5))
             # l.append(BaseControl(0, 200, 2))
             # ctrl.group(l)
-        if fi.intersection_number == 2 or fi.intersection_number == 3 or fi.intersection_number == 4:
+        if fi.intersection_number == 2 or fi.intersection_number == 4:
             ctrl.go_straight(0.2)
 
         if fi.intersection_number == 5:
