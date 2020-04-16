@@ -16,6 +16,7 @@
 #define FAST_SPEED 70
 int SPEED=0;
 int angle = 90;
+int start_angle=angle;
 int left,right;
 String inStr="";
 
@@ -60,8 +61,12 @@ void loop() {
 
        if(inStr.substring(0,1)=="2")
        {
-          angle = inStr.substring(1,3).toInt();
-          servo_move(angle);
+          angle = inStr.substring(1,4).toInt();
+          Serial.print("angle:");
+          Serial.print(angle);
+          servo_move(servo1,start_angle,angle);
+          start_angle=angle;
+          
        }
        else
        {
@@ -89,8 +94,20 @@ void loop() {
     
  }
 
- void servo_move(int angle){
-    if (angle<10)angle=10;
-    if(angle>170)angle=170;
-    servo1.write(angle);
+
+void servo_move(Servo servo,int start_angle,int end_angle){
+  if (angle<10)angle=20;
+  if(angle>170)angle=160;
+  
+  if(start_angle<end_angle){
+    for(int i=start_angle;i<=end_angle;i=i+2){
+      servo.write(i);
+      delay(20);
+    }
+  }else{
+    for(int i=start_angle;i>=end_angle;i=i-2){
+      servo.write(i);
+      delay(20);
+    }
   }
+}

@@ -35,12 +35,6 @@ class CarController:
         self.__serial.drive_motor(int(self.base_speed + self.__offset * self.proportional),
                                   int(self.base_speed - self.__offset * self.proportional))
 
-    def __pause(self):
-        """
-        暂停实际执行函数
-        """
-        self.__serial.drive_motor(0, 0)
-
     def __stop(self):
         self.__serial.drive_motor(0, 0)
 
@@ -85,6 +79,13 @@ class CarController:
             self.__serial.drive_motor(0, 250)
         else:
             self.__serial.drive_motor(250, 0)
+
+    def __servo_move(self):
+        """
+        纯属占位置，不需要动作
+        """
+        pass
+
     # endregion
 
     def update(self):
@@ -120,15 +121,6 @@ class CarController:
         """
         self.__offset = offset
 
-    def pause(self, delay_time=0):
-        """
-        暂停函数
-        :param delay_time: 暂停时间
-        """
-        self.task_list.append(CarTask(name="pause", activated=True, priority=1,
-                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
-                                      work=self.__pause))
-
     def bypass_obstacle(self, first_delay_time, second_delay_time):
         """
         避障函数，第一个时间段主要通过右轮的倒转，快速旋转，第二个时间段，通过缓慢的偏转回归到主线上
@@ -146,17 +138,21 @@ class CarController:
         :param direction: 方向（True为左，False为右）
         :param delay_time: 转弯延迟时间
         """
-        self.task_list.append(CarTask(name="turn", activated=True, priority=1,
+        self.task_list.append(CarTask(name="turn", activated=True, priority=2,
                                       timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
                                       work=self.__turn, direction=direction))
 
-    def stop(self):
+    def stop(self, delay_time=0):
         """
-        停车（停车后无法再走了），如果停车后想继续走请使用暂停
+        如果delay_time = 0 将完全停止，如果delay_time> 0 将会暂停几秒
+        :param delay_time: 暂停的时间，0将无限时暂停
         """
-        self.task_list.append(CarTask(name="stop", activated=True, priority=0, work=self.__stop))
-        # self._serial.drive_motor(0, 0)
-        # self._is_stop = True
+        if delay_time == 0:
+            self.task_list.append(CarTask(name="stop", activated=True, priority=0, work=self.__stop))
+        else:
+            self.task_list.append(CarTask(name="pause", activated=True, priority=1,
+                                          timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                          work=self.__stop))
 
     def go_straight(self, delay_time=8):
         """
@@ -177,11 +173,22 @@ class CarController:
         for bc in bc_list:
             delay_time += bc.delay_time
         self.__function_timer.restart()
-        self.task_list.append(CarTask(name="group_control", activated=True,priority=2,
+        self.task_list.append(CarTask(name="group_control", activated=True, priority=2,
                                       timer=CarTimer(interval=delay_time+0.2),
                                       work=self.__group_control,
                                       base_control_list=base_control_list))
 
+    def servo_move(self, angle, delay_time=1):
+        """
+        旋转舵机到指定的角度，舵机的旋转需要一定的时间，在这段时间内Arduino将不会响应nano的传输的命令
+        delay_time用于指定这一段时间，同时本函数应该避免在这段时间内反复调用，否则会出现Arduino因为无法响应指令而出错。
+        :param angle: 转向角度
+        :param delay_time: 延迟时间
+        """
+        self.__serial.drive_servo(angle) # 向发一个指令给Arduino，然后用下面的任务占着时间，不给其他任务执行
+        self.task_list.append(CarTask(name="servo_move", activated=True, priority=1,
+                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                      work=self.__sevo_move))
     # endregion
 
 
