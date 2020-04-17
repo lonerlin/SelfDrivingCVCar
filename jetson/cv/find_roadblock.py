@@ -32,11 +32,11 @@ class FindRoadblock:
         :param image:
         :return: 找到返回True，否则返回False
         """
-        #hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        # hls = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower = np.array([self.__hl, self.__sl, self.__vl], dtype=np.uint8)
         upper = np.array([self.__hh, self.__sh, self.__vh], dtype=np.uint8)
         mask = cv2.inRange(image, lower, upper)
-        #cv2.imshow("mask", mask)
+        # cv2.imshow("mask", mask)
         rate = np.sum(mask == 255)/mask.size
         if rate >= self.__threshold:
             return True

@@ -1,4 +1,6 @@
 import cv2
+import numpy as np
+from cv.show_images import ShowImage
 
 
 class ImageInit:
@@ -49,8 +51,34 @@ class ImageInit:
         return erosion
 
     def resize(self, frame):
-        size =(self.width,self.height)
-        return cv2.resize(frame,size)
+        size = (self.width, self.height)
+        return cv2.resize(frame, size)
+
+    def resize_threshold(self, capture):
+        """
+            这是一个类的辅助方法，通过调整self.threshold这个二值图转换阈值的值，使图像更适合于巡线
+        :param capture: 输入一个VideoCapture对象
+        """
+        si = ShowImage()
+        tracker = np.zeros((320, 240))
+        si.show(tracker, "control")
+        cv2.createTrackbar('Threshold', 'control', 0, 255, self.nothing)
+
+        while True:
+            _, img1 = capture.read()
+
+            self.threshold = cv2.getTrackbarPos('Threshold', 'control')
+            si.show(tracker, "control")
+            img2 = self.processing(img1)
+            si.show(img2, "Output Frame")
+            si.show(img1, "Input Frame")
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        capture.release
+
+    def nothing(self, x):
+        pass
+
 
 if __name__ == '__main__':
     camera = cv2.VideoCapture('/dev/video1')
