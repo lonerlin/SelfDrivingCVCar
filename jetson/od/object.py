@@ -50,6 +50,18 @@ class Object:
             package.append(Object(det))
         return package
 
+    def get_object_id(self, name):
+        """
+            根据名称查询对象的id，如果对象不存在列表中，返回-1。
+        :param name: 中文或者英文名
+        :return: id
+        """
+        if name in self.Names:
+            return self.Names.index(name)
+        if name in self.Chinese_names:
+            return self.Chinese_names.index(name)
+        return -1
+
 
 if __name__ == 'main()':
         pass
