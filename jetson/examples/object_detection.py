@@ -15,7 +15,7 @@ OD_CAMERA_HEIGHT = 240           # 识别视频高度
 # 指定设备，指定窗口的宽度和高度，是否打开识别显示窗口（默认是打开）
 recognition = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, display_window=True)
 
-# 新建一个计时器对象，用于程序结束的计时
+# 新建一个计时器对象，用于程序结束的计时，设置时间为60秒
 timer = CarTimer(interval=60)
 
 # 计时没有结束之前一直循环
