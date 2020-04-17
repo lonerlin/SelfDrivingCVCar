@@ -1,4 +1,6 @@
 import cv2
+import sys
+sys.path.append('..')
 from cv.show_images import ShowImage
 import time
 from cv.image_init import ImageInit
@@ -10,7 +12,8 @@ show_image = ShowImage()
 
 init = ImageInit(320, 240)
 ret, frame = camera.read()
-while(True):
+
+while True:
     t1 = time.perf_counter()
     # 获取一帧
     ret, frame = camera.read()
@@ -28,3 +31,4 @@ while(True):
 
 camera.release()
 cv2.destroyAllWindows()
+

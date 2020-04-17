@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from car.car_task import CarTask
 from car.car_timer import CarTimer
 import time
@@ -14,7 +16,6 @@ def do(direction=True, delay=3):
     task_list.append(CarTask(name="hello", activated=True, priority=1,
                              timer=CarTimer(start_time=time.perf_counter(), interval=delay),
                              work=_do_work, direction=direction))
-
 
 
 def update():

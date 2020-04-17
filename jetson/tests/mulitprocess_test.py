@@ -1,4 +1,7 @@
 from multiprocessing import Pipe, Value
+import sys
+sys.path.append('..')
+
 from od.objcet_detection import ObjectDetection
 import time
 

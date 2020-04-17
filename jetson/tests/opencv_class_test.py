@@ -1,19 +1,22 @@
 import cv2
-from cv.image_init import image_processing,remove_noise
+import sys
+sys.path.append('..')
+from cv.image_init import ImageInit
 from cv.find_key_point import FindKeyPoint
 from cv.hough_line_transform import HoughLines
 
+image_p = ImageInit(320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
 capture = cv2.VideoCapture(0)
 fkp = FindKeyPoint(True)
-hl =HoughLines()
+hl = HoughLines()
 while True:
     ret, frame = capture.read()
-    image = image_processing(frame, 320, 240, convert_type="BINARY", threshold=120, bitwise_not=False)
-    image2 = remove_noise(image, iterations=3)
+
+    image2 = image_p.processing(frame)
     _, image3 = fkp.get_key_point(image2, frame)
     lines = hl.get_lines(image2, frame)
     print(lines)
-    cv2.imshow("1", image)
+
     cv2.imshow('frame', image2)
     cv2.imshow("fkp", image3)
     cv2.imshow("hl",frame)
