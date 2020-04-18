@@ -8,8 +8,9 @@ class FollowLine:
             初始化巡线类，这里的阀值是指寻找连续白点的最小值，这样可以有效去除因地图反光产生的干扰。
         :param width: 处理图像的宽
         :param height: 处理图像的高
-        :param threshold: 阀值
-        :param image_type: 其实这个类暂时只能处理二值图
+        :param threshold: 阈值，只有连续的白色像素个数超过阈值才认为是白色线
+        :param direction:True意味着寻找白色中心点是从左边开始，False是从右边开始
+        :param image_type: 其实这个类暂时只能处理二值图，所以这个参数暂时没有作用
         """
         self.width = width
         self.height = height
@@ -70,11 +71,10 @@ class FollowLine:
             return int(self.__offset), None
 
     def render_image(self, frame):
-        return self._arrowed_line(frame, (int(self.width/2), int(self.height-10)),
-                                  (int(self.center if self.center != -1000 else self.width/2), int(self.height/3)))
+        start_point = (int(self.width/2), int(self.height-10))
+        end_point = (int(self.center if self.center != -1000 else self.width/2), int(self.height/3))
+        cv2.circle(frame, end_point, 2, color=(0, 255, 255))
+        return cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0),
+                               line_type=cv2.LINE_4, thickness=3, tipLength=0.1)
 
-    def _arrowed_line(self, frame, start_point, end_point):
-        arrow_image = cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0), line_type=cv2.LINE_4, thickness=3,
-                                      tipLength=0.1)
-        return arrow_image
 
