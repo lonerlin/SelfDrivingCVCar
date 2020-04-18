@@ -8,6 +8,7 @@ import sys
 sys.path.append("..")
 from car.car_timer import CarTimer
 
+
 class Recognition:
     """
     该类用于初始化，并启动系统的对象检测进程，返回检测结果。通过PIPE跟子进程通信。通过共享变量控制子进程的退出。
@@ -65,7 +66,7 @@ class Recognition:
 
 
 if __name__ == '__main__':
-    reco = Recognition(device="/dev/video0",width=640,height=480)
+    reco = Recognition(device="/dev/video0", width=640, height=480)
     begin = time.time()
 
     while time.time() - begin < 60:
