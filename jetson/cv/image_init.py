@@ -63,11 +63,16 @@ class ImageInit:
         tracker = np.zeros((320, 240))
         si.show(tracker, "control")
         cv2.createTrackbar('Threshold', 'control', 0, 255, self.nothing)
-
+        cv2.createTrackbar('Kernel', 'control', 1, 8, self.nothing)
+        cv2.createTrackbar('Iterations', 'control', 1, 5, self.nothing)
         while True:
             _, img1 = capture.read()
 
             self.threshold = cv2.getTrackbarPos('Threshold', 'control')
+            self.iterations = cv2.getTrackbarPos('Kernel', 'control')
+            k_value = cv2.getTrackbarPos('Iterations', 'control')
+            self.kernel_type = (k_value, k_value)
+
             si.show(tracker, "control")
             img2 = self.processing(img1)
             si.show(img2, "Output Frame")
