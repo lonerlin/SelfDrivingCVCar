@@ -38,12 +38,14 @@ class CarSerial:
         """
         text += "\n"
         self.ser.write(text.encode("utf-8"))
+        self.ser.flush()
 
     def close(self):
         """
             关闭串口通信，必须显性操作。
         """
-        self.ser.close()
+        if self.ser.isOpen():
+            self.ser.close()
 
     def listen(self):
         """

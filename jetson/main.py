@@ -56,7 +56,7 @@ timer = CarTimer()
 # 显示图片的对象
 si = ShowImage()
 # endregion
-serial.drive_servo(75)
+serial.drive_servo(90)
 while True:
     # 帧计时开始
     timer.restart()
