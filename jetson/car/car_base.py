@@ -14,11 +14,11 @@ class CarBase:
         self._line_camera = line_camera
         self._od_camera = od_camera
         self._serial_port = serial_port
-        self._line_camera_width = 320
-        self._line_camera_height = 240
-        self._od_camera_width = 320
-        self._od_camera_width = 240
-        self.recognition = Recognition(device=od_camera, width=self._od_camera_width, height=self._line_camera_height)
+        self.line_camera_width = 320
+        self.line_camera_height = 240
+        self.od_camera_width = 320
+        self.od_camera_height = 240
+        self.recognition = Recognition(device=od_camera, width=self.od_camera_width, height=self.od_camera_height)
         self._serial = CarSerial(self._serial_port)
         self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
@@ -30,15 +30,19 @@ class CarBase:
 
     def base_loop(self):
         # 通过摄像头读入一帧
-        ret, self.original_frame = self.line_camera_capture.read()
-        size = (self._line_camera_width, self._line_camera_height)
-        self.render_frame = cv2.resize(self.original_frame, size)
-        for task in CarBase.task_list:
-            if isinstance(task, ImageInit):
-                task.execute(self.original_frame, [self.available_frame])
-            else:
-                task.execute(self.available_frame, [self.render_frame])
-        self.car_controller.update()
+        while True:
+            ret, self.original_frame = self.line_camera_capture.read()
+            size = (self.line_camera_width, self.line_camera_height)
+            self.render_frame = cv2.resize(self.original_frame, size)
+            for task in CarBase.task_list:
+                if isinstance(task, ImageInit):
+                    task.execute(self.original_frame, [self.available_frame])
+                else:
+                    task.execute(self.available_frame, [self.render_frame])
+            self.car_controller.update()
+            # 检测键盘，发现按下 q 键 退出循环
+            if cv2.waitKey(1) == ord('q'):
+                break
 
     def display_window(self):
         self.display.show(self.original_frame, '原始')
