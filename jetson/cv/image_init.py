@@ -1,9 +1,12 @@
 import cv2
+import sys
 import numpy as np
 from cv.show_images import ShowImage
+sys.path.append("..")
+from car.base import Base
 
 
-class ImageInit:
+class ImageInit(Base):
     def __init__(self, width=320, height=240, convert_type="BINARY", threshold=250, bitwise_not=False,
                  kernel_type=(3, 3), iterations=2):
         """
@@ -25,6 +28,9 @@ class ImageInit:
         self.bitwise_not = bitwise_not
         self.kernel_type = kernel_type
         self.iterations = iterations
+
+    def execute(self, frame, render_frame):
+        render_frame = self.processing(frame)
 
     def processing(self, frame):
 

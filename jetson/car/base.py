@@ -1,9 +1,10 @@
 
 class Base:
-    def execute(self):
+    def __init__(self):
+        self.event_function = None
+
+    def execute(self, frame, render_frame):
         pass
 
-    def event(self):
-        pass
 
-    
+
