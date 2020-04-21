@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 import time
+from car.base import Base
 
 
-class FindRoadblock:
+class FindRoadblock(Base):
     """
         寻找障碍物（此类是通过OpenCV寻找单一颜色的障碍物）
     """
@@ -42,6 +43,11 @@ class FindRoadblock:
             return True
         else:
             return False
+
+    def execute(self, frame, render_frame_list):
+        if self.find(frame):
+            if not (self.event_function is None):
+                self.event_function()
 
     def track_show(self, cap, ksize=5, interv=5):
         """
@@ -99,6 +105,8 @@ class FindRoadblock:
 
     def nothing(self, x):
         pass
+
+
 
 
 if __name__ == '__main__':

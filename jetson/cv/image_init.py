@@ -29,8 +29,10 @@ class ImageInit(Base):
         self.kernel_type = kernel_type
         self.iterations = iterations
 
-    def execute(self, frame, render_frame):
-        render_frame = self.processing(frame)
+    def execute(self, frame, render_frame_list):
+        render_frame_list[0] = self.processing(frame)
+        if not (self.event_function is None):
+            self.event_function()
 
     def processing(self, frame):
 

@@ -3,9 +3,10 @@ import numpy as np
 import math
 import time
 from cv.image_init import ImageInit
+from car.base import Base
 
 
-class FindIntersection:
+class FindIntersection(Base):
 
     def __init__(self, radius, angle=90, threshold=3, delay_time=10, repeat_count=2):
         """
@@ -154,6 +155,10 @@ class FindIntersection:
         else:
             self.find(find_image, (160, 230), render_image)
         return False
+
+    def execute(self, frame, render_frame_list):
+        if isinstance(frame, render_frame_list[0]):
+            self.event_function(intersection_number=self.intersection_number)
 
 
 if __name__ == '__main__':

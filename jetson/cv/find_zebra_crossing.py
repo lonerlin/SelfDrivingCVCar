@@ -1,8 +1,9 @@
 
 import time
+from car.base import Base
 
 
-class FindZebraCrossing:
+class FindZebraCrossing(Base):
     """
     寻找斑马线，通过判断一个行中的白色线条数来寻找斑马线。
     """
@@ -45,4 +46,9 @@ class FindZebraCrossing:
                 self.__begin_time = time.perf_counter()
                 return True
         return False
+
+    def execute(self, frame, render_frame_list):
+        if self.find(frame):
+            if not (self.event_function is None):
+                self.event_function()
 

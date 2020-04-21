@@ -1,8 +1,9 @@
 import numpy as np
 import cv2
+from car.base import Base
 
 
-class FollowLine:
+class FollowLine(Base):
     def __init__(self, width, height, threshold=20, direction=True, image_type="BINARY"):
         """
             初始化巡线类，这里的阀值是指寻找连续白点的最小值，这样可以有效去除因地图反光产生的干扰。
@@ -77,4 +78,7 @@ class FollowLine:
         return cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0),
                                line_type=cv2.LINE_4, thickness=3, tipLength=0.1)
 
-
+    def execute(self, frame, render_frame_list):
+        offset, render_frame_list[0] = self.get_offset(frame, render_frame_list[0])
+        if not (self.event_function is None):
+            self.event_function(offset=offset)

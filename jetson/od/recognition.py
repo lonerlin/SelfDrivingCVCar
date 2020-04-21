@@ -3,13 +3,11 @@ from od.objcet_detection import ObjectDetection
 from od.object import Object
 
 import time
-import sys
-
-sys.path.append("..")
 from car.car_timer import CarTimer
+from car.base import Base
 
 
-class Recognition:
+class Recognition(Base):
     """
     该类用于初始化，并启动系统的对象检测进程，返回检测结果。通过PIPE跟子进程通信。通过共享变量控制子进程的退出。
     此类应该实现单例较为合理。等以后有机会再改。系统必须安装v4l-utils，才能支持USB摄像头
@@ -63,6 +61,12 @@ class Recognition:
         """
         self._stop_process.value = 1
         self.od.join(5)
+
+    def execute(self, frame, render_frame_list):
+        tmp_list = self.get_objects()
+        if tmp_list:
+            if not (self.event_function is None):
+                self.event_function(objects_list=tmp_list)
 
 
 if __name__ == '__main__':
