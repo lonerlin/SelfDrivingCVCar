@@ -4,24 +4,25 @@ from cv.follow_line import FollowLine
 from cv.find_intersection import FindIntersection
 from cv.find_zebra_crossing import FindZebraCrossing
 
-class Car(CarBase):
+
+class CarMain(CarBase):
     def __init__(self, line_camera, od_camera, serial):
         super.__init__(line_camera=line_camera, od_camera=od_camera, serial=serial)
         """
                    把所有需要新建的对象都放在这个函数中
                """
         self.recognition.event_function=self.e_recognition
-        Car.task_list.append(self.recognition)
+        CarMain.task_list.append(self.recognition)
         self.init = ImageInit(width=self.line_camera_width, height=self.line_camera_height,
                               threshold=250, bitwise_not=True, )
-        Car.task_list.append(self.init)
+        CarMain.task_list.append(self.init)
 
         self.fl = FollowLine(self.line_camera_width, self.line_camera_height, direction=False, threshold=5)
         self.fl.event_function = self.e_flowing_line
-        Car.task_list.append(self.fl)
+        CarMain.task_list.append(self.fl)
         self.fi = FindIntersection(radius=150, threshold=4, repeat_count=2, delay_time=1.7)
         self.fi.event_function = self.e_find_intersection
-        Car.task_list.append(self.fi)
+        CarMain.task_list.append(self.fi)
         self.fz = FindZebraCrossing(threshold=4, floor_line_count=3)
         self.fz.event_function = self.e_find_zebra_crossing
         car.task_list.append(self.fz)
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     o_camera = '/dev/video0'
     ser = '/dev/ttyUSB0'
 
-    car = Car(line_camera=l_camera, od_camera=o_camera, serial=ser)
+    car = CarMain(line_camera=l_camera, od_camera=o_camera, serial=ser)
     car.main_loop()
     car.close()
 
