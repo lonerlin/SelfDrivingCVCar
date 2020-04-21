@@ -18,11 +18,33 @@ class FindIntersection(Base):
         self.radius = radius
         self.angle = angle
         self.__threshold = threshold
-        self.intersection_number = 0
+        self.__intersection_number = 0
         self.__begin_time = 0
         self.__repeat_count = repeat_count
         self.__counter = 0
-        self.delay_time = delay_time
+        self.__delay_time = delay_time
+
+    @property
+    def delay_time(self):
+        """返回两个路口之间的间隔时间"""
+        return self.__delay_time
+
+    @delay_time.setter
+    def delay_time(self, d_time):
+        """
+        用于两个路口之间时间间隔的设置，避免当前路口重复计算
+        :param d_time: 设定时间间隔
+        :return: None
+        """
+        self.__delay_time = d_time
+
+    @property
+    def intersection_number(self):
+        """
+        用于返回从程序开始到当前所经过的路口数量
+        :return:路口数量
+        """
+        return self.__intersection_number
 
     def coordinate_from_point(self, origin, angle, radius):
         """
@@ -128,7 +150,7 @@ class FindIntersection(Base):
         for data in road:
             return_value.append([int(data[0]), int(data[2]), int(data[3])])
         if len(return_value) > 0 and not (render_image is None):
-            cv2.putText(render_image, "i:" + str(self.intersection_number), (10, 50),
+            cv2.putText(render_image, "i:" + str(self.__intersection_number), (10, 50),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
             """           
             cv2.putText(图像, 文字, (x, y), 字体, 大小, (b, g, r), 宽度)
@@ -149,7 +171,7 @@ class FindIntersection(Base):
                 if len(intersections) < 2 or abs(intersections[1][0] - intersections[0][0]) <= angle:
                     tmp_value = False
             if tmp_value:
-                self.intersection_number += 1
+                self.__intersection_number += 1
                 self.__begin_time = time.perf_counter()
                 return True
         else:
@@ -158,7 +180,7 @@ class FindIntersection(Base):
 
     def execute(self, frame, render_frame_list):
         if isinstance(frame, render_frame_list[0]):
-            self.event_function(intersection_number=self.intersection_number)
+            self.event_function(intersection_number=self.__intersection_number)
 
 
 if __name__ == '__main__':
