@@ -20,7 +20,9 @@ class CarBase:
         self._serial = CarSerial(self._serial_port)
         self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
-
+        self.original_frame = None
+        self.available_frame = None
+        self.render_frame = None
     def main_loop(self):
         pass
 
