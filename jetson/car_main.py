@@ -44,9 +44,7 @@ class CarMain(CarBase):
 
     # region 事件处理函数
 
-    def main_loop(self):
-        """不要修改这个函数"""
-        self.base_loop()
+
 
     def e_image_init(self, **kwargs):
         pass

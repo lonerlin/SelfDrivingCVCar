@@ -35,7 +35,7 @@ class CarBase:
         self.is_print_frame_rate = True
         self.is_save_video = False
 
-    def base_loop(self):
+    def main_loop(self):
         # 通过摄像头读入一帧
         while True:
             ret, self.original_frame = self.line_camera_capture.read()
