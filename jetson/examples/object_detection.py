@@ -7,7 +7,7 @@ sys.path.append("..")
 from od.recognition import Recognition
 from car.car_timer import CarTimer
 
-OD_CAMERA = '/dev/video0'        # 物体检测摄像头
+OD_CAMERA = '/dev/video1'        # 物体检测摄像头
 OD_CAMERA_WIDTH = 320            # 识别视频高度
 OD_CAMERA_HEIGHT = 240           # 识别视频高度
 
