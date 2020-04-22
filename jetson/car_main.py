@@ -8,9 +8,11 @@ from cv.find_zebra_crossing import FindZebraCrossing
 class CarMain(CarBase):
     def __init__(self, line_camera, od_camera, serial):
         super().__init__(line_camera=line_camera, od_camera=od_camera, serial_port=serial)
+
+        # region 新建运行的各种对象
         """
-                   把所有需要新建的对象都放在这个函数中
-               """
+             根据实际情况，把所有需要新建的对象都放在一下代码块中
+        """
         # 识别对象在基类（CarBase）中已经建立，在子类中只需要指定事件处理函数
         self.recognition.event_function = self.e_recognition
         # 把对象加入到循环队列中
@@ -36,6 +38,9 @@ class CarMain(CarBase):
         self.fz = FindZebraCrossing(threshold=4, floor_line_count=3)
         self.fz.event_function = self.e_find_zebra_crossing
         CarMain.task_list.append(self.fz)
+        # endregion
+
+    # region 事件处理函数
 
     def main_loop(self):
         """不要修改这个函数"""
@@ -75,13 +80,13 @@ class CarMain(CarBase):
         """
         pass
         print("e_find_zebra_crossing")
+    # endregion
 
 
 if __name__ == '__main__':
     l_camera = '/dev/video0'
     o_camera = '/dev/video1'
     ser = '/dev/ttyUSB0'
-    import threading
     car = CarMain(line_camera=l_camera, od_camera=o_camera, serial=ser)
     car.main_loop()
     car.close()
