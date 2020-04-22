@@ -1,10 +1,12 @@
 import cv2
+import time
 from car.car_serial import CarSerial
 from car.car_controller import CarController
 from od.recognition import Recognition
 from cv.image_init import ImageInit
 from cv.show_images import ShowImage
 from car.car_timer import CarTimer
+from cv.video_writer import VideoWriter
 
 
 class CarBase:
@@ -22,11 +24,15 @@ class CarBase:
         self._serial = CarSerial(self._serial_port)
         self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
+        self.video = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
         self.original_frame = None
         self.available_frame = None
         self.render_frame = None
         self.frame_rate_timer = CarTimer()
         self.display = ShowImage()
+        self.is_open_window = True
+        self.is_print_frame_rate = True
+        self.is_save_video = False
 
     def base_loop(self):
         # 通过摄像头读入一帧
@@ -40,6 +46,14 @@ class CarBase:
                 else:
                     task.execute(self.available_frame, [self.render_frame])
             self.car_controller.update()
+
+            if self.is_open_window:
+                self.display_window()
+            if self.is_print_frame_rate:
+                self.display_frame_rate()
+            if self.is_save_video:
+                self.video.write(self.render_frame)
+
             # 检测键盘，发现按下 q 键 退出循环
             if cv2.waitKey(1) == ord('q'):
                 break
@@ -60,3 +74,4 @@ class CarBase:
         cv2.destroyAllWindows()
         self.recognition.close()
         self._serial.close()
+        self.video.release()
