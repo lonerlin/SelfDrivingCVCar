@@ -7,7 +7,7 @@ from cv.find_zebra_crossing import FindZebraCrossing
 
 class CarMain(CarBase):
     def __init__(self, line_camera, od_camera, serial):
-        super.__init__(line_camera=line_camera, od_camera=od_camera, serial=serial)
+        super().__init__(line_camera=line_camera, od_camera=od_camera, serial_port=serial)
         """
                    把所有需要新建的对象都放在这个函数中
                """
@@ -34,7 +34,7 @@ class CarMain(CarBase):
         # 寻找斑马线的对象，事件处理函数中不会返回值
         self.fz = FindZebraCrossing(threshold=4, floor_line_count=3)
         self.fz.event_function = self.e_find_zebra_crossing
-        car.task_list.append(self.fz)
+        CarMain.task_list.append(self.fz)
 
     def main_loop(self):
         """不要修改这个函数"""
@@ -63,23 +63,9 @@ class CarMain(CarBase):
 
     def e_find_zebra_crossing(self, **kwargs):
         """
-            发现斑马线时触发
+            发现斑马线时触发本事件
         """
         pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
