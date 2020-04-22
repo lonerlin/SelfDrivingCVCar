@@ -12,6 +12,8 @@ class CarMain(CarBase):
         # region 新建运行的各种对象
         """
              根据实际情况，把所有需要新建的对象都放在一下代码块中
+             把新建的对象加入到需要循环执行的队列中
+             根据需要设定事件处理函数
         """
         # 识别对象在基类（CarBase）中已经建立，在子类中只需要指定事件处理函数
         self.recognition.event_function = self.e_recognition
