@@ -1,5 +1,6 @@
 import cv2
 import time
+import numpy as np
 from car.car_serial import CarSerial
 from car.car_controller import CarController
 from od.recognition import Recognition
@@ -20,14 +21,14 @@ class CarBase:
         self.line_camera_height = 240
         self.od_camera_width = 320
         self.od_camera_height = 240
-        self.recognition = Recognition(device=od_camera, width=self.od_camera_width, height=self.od_camera_height)
+        # self.recognition = Recognition(device=od_camera, width=self.od_camera_width, height=self.od_camera_height)
         self._serial = CarSerial(self._serial_port)
         self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
         self.video = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
-        self.original_frame = None
+        ret, self.original_frame = self.line_camera_capture.read()
         self.available_frame = None
-        self.render_frame = None
+        self.render_frame = cv2.resize(self.original_frame, (320, 240))
         self.frame_rate_timer = CarTimer()
         self.display = ShowImage()
         self.is_open_window = True
@@ -41,10 +42,13 @@ class CarBase:
             size = (self.line_camera_width, self.line_camera_height)
             self.render_frame = cv2.resize(self.original_frame, size)
             for task in CarBase.task_list:
+                tmp = []
                 if isinstance(task, ImageInit):
-                    task.execute(self.original_frame, [self.available_frame])
+                    self.available_frame = task.execute(self.original_frame)
+                    print("render:{}".format(self.available_frame.shape))
                 else:
-                    task.execute(self.available_frame, [self.render_frame])
+                    tmp.append(self.render_frame)
+                    task.execute(self.available_frame, tmp)
             self.car_controller.update()
 
             if self.is_open_window:
@@ -72,6 +76,6 @@ class CarBase:
         self._serial.drive_servo(90)
         self.line_camera_capture.release()
         cv2.destroyAllWindows()
-        self.recognition.close()
+        # self.recognition.close()
         self._serial.close()
         self.video.release()

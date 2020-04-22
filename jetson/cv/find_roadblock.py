@@ -19,6 +19,7 @@ class FindRoadblock(Base):
         :param v_high:
         :param threshold: 所占比例的阈值
         """
+        super().__init__()
         self.__hl = h_low
         self.__hh = h_high
         self.__sl = s_low

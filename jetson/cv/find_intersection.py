@@ -15,6 +15,7 @@ class FindIntersection(Base):
         :param angle: 朝向角度，一般直接向前是90
         :param threshold: 连续多少个白点以上认为一一条白线，通过修改阀值，消除噪点
         """
+        super().__init__()
         self.radius = radius
         self.angle = angle
         self.__threshold = threshold
@@ -179,8 +180,9 @@ class FindIntersection(Base):
         return False
 
     def execute(self, frame, render_frame_list):
-        if isinstance(frame, render_frame_list[0]):
-            self.event_function(intersection_number=self.__intersection_number)
+        if self.is_intersection(find_image=frame, render_image=render_frame_list[0]):
+            if not (self.event_function is None):
+                self.event_function(intersection_number=self.__intersection_number)
 
 
 if __name__ == '__main__':

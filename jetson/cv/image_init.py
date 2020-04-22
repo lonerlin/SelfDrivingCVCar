@@ -21,6 +21,7 @@ class ImageInit(Base):
             :param kernel_type: 核心
             :param iterations: 执行多少个轮次
             """
+        super().__init__()
         self.width = width
         self.height = height
         self.convert_type = convert_type
@@ -29,10 +30,10 @@ class ImageInit(Base):
         self.kernel_type = kernel_type
         self.iterations = iterations
 
-    def execute(self, frame, render_frame_list):
-        render_frame_list[0] = self.processing(frame)
+    def execute(self, frame):
         if not (self.event_function is None):
             self.event_function()
+        return self.processing(frame)
 
     def processing(self, frame):
 

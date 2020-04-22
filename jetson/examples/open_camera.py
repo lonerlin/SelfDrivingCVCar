@@ -3,7 +3,7 @@
 """
 import cv2
 
-CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
+CAMERA = '/dev/video1'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
 camera = cv2.VideoCapture(CAMERA)
 

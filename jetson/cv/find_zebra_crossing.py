@@ -16,6 +16,7 @@ class FindZebraCrossing(Base):
         :param floor_line_count: 图片中最少出现白色线的数量
         :param delay_time: 找到后，延迟多长时间再开始寻找
         """
+        super().__init__()
         self.__line_threshold = threshold
         self.width = width
         self.height = height

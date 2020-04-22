@@ -23,6 +23,7 @@ class Recognition(Base):
         :param frequency:检测的频率，默认每秒10帧
         :param display_window:是否开始监视窗口，默认是
         """
+        super().__init__()
         self.conn1, self.conn2 = Pipe()
         self._stop_process = Value('i', 0)
         self.od = ObjectDetection(self.conn1, self.conn2, self._stop_process, device=device, width=width,

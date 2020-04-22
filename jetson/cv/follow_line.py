@@ -13,6 +13,7 @@ class FollowLine(Base):
         :param direction:True意味着寻找白色中心点是从左边开始，False是从右边开始
         :param image_type: 其实这个类暂时只能处理二值图，所以这个参数暂时没有作用
         """
+        super().__init__()
         self.width = width
         self.height = height
         self.image_type = image_type
