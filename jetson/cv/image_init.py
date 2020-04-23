@@ -69,7 +69,7 @@ class ImageInit(Base):
         :param capture: 输入一个VideoCapture对象
         """
         si = ShowImage()
-        tracker = np.zeros((320, 240))
+        tracker = np.zeros((320, 100))
         si.show(tracker, "control")
         cv2.createTrackbar('Threshold', 'control', 0, 255, self.nothing)
         cv2.createTrackbar('Kernel', 'control', 1, 8, self.nothing)

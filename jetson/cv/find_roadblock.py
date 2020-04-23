@@ -61,7 +61,7 @@ class FindRoadblock(Base):
         tic1 = time.time()
         coords = []
         cv2.namedWindow('control')
-        tracker = np.zeros((320, 240))
+        tracker = np.zeros((320, 100))
 
         cv2.createTrackbar('Hlow', 'control', self.__hl, 255, self.nothing)
         cv2.createTrackbar('Hhigh', 'control', self.__hh, 255, self.nothing)

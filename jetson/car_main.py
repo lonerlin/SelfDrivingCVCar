@@ -3,15 +3,19 @@ from cv.image_init import ImageInit
 from cv.follow_line import FollowLine
 from cv.find_intersection import FindIntersection
 from cv.find_zebra_crossing import FindZebraCrossing
+from cv.find_roadblock import FindRoadblock
 
 
 class CarMain(CarBase):
     def __init__(self, line_camera, od_camera, serial):
         super().__init__(line_camera=line_camera, od_camera=od_camera, serial_port=serial)
 
+        # region 自定义变量
+        # endregion
+
         # region 新建运行的各种对象
         """
-             根据实际情况，把所有需要新建的对象都放在一下代码块中
+             根据实际情况，把所有需要新建的对象都放在以下代码块中
              把新建的对象加入到需要循环执行的队列中
              根据需要设定事件处理函数
         """
@@ -40,11 +44,15 @@ class CarMain(CarBase):
         self.fz = FindZebraCrossing(threshold=4, floor_line_count=3)
         self.fz.event_function = self.e_find_zebra_crossing
         CarMain.task_list.append(self.fz)
+
+        # # 使用巡线摄像头寻到障碍物时，使用FindRoadblock对象，注意对象必须为单一颜色，并且通过对象初始化设置HSV值
+        # self.fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
+        # self.fr.event_function = self.e_find_roadblock
+        # CarMain.task_list.append(self.fr)
+
         # endregion
 
     # region 事件处理函数
-
-
 
     def e_image_init(self, **kwargs):
         pass
@@ -80,6 +88,14 @@ class CarMain(CarBase):
         """
         pass
         print("e_find_zebra_crossing")
+
+    def e_find_roadblock(self, **kwargs):
+        """
+            当使用巡线摄像头发现障碍物时触发事件
+        """
+        print("e_find_roadblock")
+
+
     # endregion
 
 

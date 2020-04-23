@@ -8,6 +8,7 @@ from cv.image_init import ImageInit
 from cv.show_images import ShowImage
 from car.car_timer import CarTimer
 from cv.video_writer import VideoWriter
+from cv.find_roadblock import FindRoadblock
 
 
 class CarBase:
@@ -22,8 +23,8 @@ class CarBase:
         self.od_camera_width = 320
         self.od_camera_height = 240
         self.recognition = Recognition(device=od_camera, width=self.od_camera_width, height=self.od_camera_height)
-        # self._serial = CarSerial(self._serial_port)
-        # self.car_controller = CarController(self._serial)
+        self._serial = CarSerial(self._serial_port)
+        self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
         self.video = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
         ret, self.original_frame = self.line_camera_capture.read()
@@ -45,10 +46,12 @@ class CarBase:
                 tmp = []
                 if isinstance(task, ImageInit):
                     self.available_frame = task.execute(self.original_frame)
+                elif isinstance(task, FindRoadblock):
+                    task.execute(self.available_frame, None)
                 else:
                     tmp.append(self.render_frame)
                     task.execute(self.available_frame, tmp)
-            # self.car_controller.update()
+            self.car_controller.update()
 
             if self.is_open_window:
                 self.display_window()
@@ -71,10 +74,10 @@ class CarBase:
         self.frame_rate_timer.restart()
 
     def close(self):
-        # self._serial.drive_motor(0, 0)
-        # self._serial.drive_servo(90)
+        self._serial.drive_motor(0, 0)
+        self._serial.drive_servo(90)
         self.line_camera_capture.release()
         cv2.destroyAllWindows()
         self.recognition.close()
-        # self._serial.close()
+        self._serial.close()
         self.video.release()
