@@ -35,7 +35,7 @@ serial = CarSerial(SERIAL)
 # 此类并没有实现PID控制，而是简单的使用了比例这个参数。（现在这么简单的地图还无需用到PID）
 # 如果需要使用PID可以直接调用car目录下的pid类，同时把此类的比例参数设置为1
 ctrl = CarController(serial, proportional=0.4)
-
+p_offset = 0
 while True:
     ret, frame = camera.read()              # 读取每一帧
     frame = init.resize(frame)              # 把图像缩小，尺寸有ImageInit在初始化时指定
@@ -49,7 +49,10 @@ while True:
     # PID处理offset后再给CarController是一个选择
     # 简单的可以做如下的处理，当找不到线时，会出现offset=-1000的情况，我们可以不理它当它是0.
     if offset == -1000:
-        offset = 0
+        offset = p_offset
+    else:
+        p_offset = offset
+
     ctrl.follow_line(offset)
 
     display.show(image, "image")         # 显示处理后的帧
