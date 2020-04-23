@@ -27,7 +27,7 @@ class CarBase:
         self.car_controller = CarController(self._serial)
         self.line_camera_capture = cv2.VideoCapture(self._line_camera)
         self.video = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
-        ret, self.original_frame = self.line_camera_capture.read()
+        # ret, self.original_frame = self.line_camera_capture.read()
         self.available_frame = None
         self.render_frame = None  # cv2.resize(self.original_frame, (320, 240))
         self.frame_rate_timer = CarTimer()
@@ -39,25 +39,28 @@ class CarBase:
     def main_loop(self):
         # 通过摄像头读入一帧
         while True:
-            ret, self.original_frame = self.line_camera_capture.read()
-            size = (self.line_camera_width, self.line_camera_height)
+            ret, self.original_frame = self.line_camera_capture.read()  # 读取一帧
+            size = (self.line_camera_width, self.line_camera_height)    # 改变大小
             self.render_frame = cv2.resize(self.original_frame, size)
+            self.original_frame = self.render_frame
+            # 循环任务列表，按顺序执行，ImageInit需要先于其他cv下面的对象执行
             for task in CarBase.task_list:
                 tmp = []
-                if isinstance(task, ImageInit):
+                if isinstance(task, ImageInit):     # 没办法弄成一样，所以写了两个if
                     self.available_frame = task.execute(self.original_frame)
                 elif isinstance(task, FindRoadblock):
-                    task.execute(self.available_frame, None)
+                    task.execute(self.original_frame, None)
                 else:
                     tmp.append(self.render_frame)
                     task.execute(self.available_frame, tmp)
+            # 实际的小车控制操作由update控制
             self.car_controller.update()
 
-            if self.is_open_window:
+            if self.is_open_window:     # 其实如果不开窗口，必定无法退出
                 self.display_window()
-            if self.is_print_frame_rate:
+            if self.is_print_frame_rate:    # 这个可以取消
                 self.display_frame_rate()
-            if self.is_save_video:
+            if self.is_save_video:          # 保存视频
                 self.video.write(self.render_frame)
 
             # 检测键盘，发现按下 q 键 退出循环
@@ -74,10 +77,13 @@ class CarBase:
         self.frame_rate_timer.restart()
 
     def close(self):
-        self._serial.drive_motor(0, 0)
-        self._serial.drive_servo(90)
-        self.line_camera_capture.release()
-        cv2.destroyAllWindows()
-        self.recognition.close()
-        self._serial.close()
-        self.video.release()
+        """
+            一些需要手动释放的对象
+        """
+        self._serial.drive_motor(0, 0)  # 停车
+        self._serial.drive_servo(90)    # 把舵机调到90度
+        self.line_camera_capture.release()  # 释放巡线摄像头
+        cv2.destroyAllWindows()     # 关闭窗口
+        self.recognition.close()    # 关闭对象检测
+        self._serial.close()        # 关闭窗口
+        self.video.release()        # 关闭录像对象
