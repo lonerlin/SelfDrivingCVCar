@@ -11,6 +11,11 @@ class CarMain(CarBase):
         super().__init__(line_camera=line_camera, od_camera=od_camera, serial_port=serial)
 
         # region 自定义变量
+        """
+            建议自定义变量放在这里
+        """
+        self.p_offset = 0
+
         # endregion
 
         # region 新建运行的各种对象
@@ -26,7 +31,7 @@ class CarMain(CarBase):
 
         # 新建一个图像处理对象，由于这是一个图形初始化，转换为二值图的的对象，所以应该是第一个加入到任务队列中
         self.init = ImageInit(width=self.line_camera_width, height=self.line_camera_height,
-                              threshold=250, bitwise_not=True, )
+                              threshold=50, bitwise_not=True, iterations=3)
         self.init.event_function = self.e_image_init
         CarMain.task_list.append(self.init)
 
@@ -36,7 +41,7 @@ class CarMain(CarBase):
         CarMain.task_list.append(self.fl)
 
         # 寻找路口对象，事件处理函数中会返回一个intersection_number参数，你也可以通过fi.intersection_number调用这个属性
-        self.fi = FindIntersection(radius=150, threshold=4, repeat_count=2, delay_time=1.7)
+        self.fi = FindIntersection(radius=150, threshold=4, repeat_count=2, delay_time=1.6)
         self.fi.event_function = self.e_find_intersection
         CarMain.task_list.append(self.fi)
 
@@ -63,6 +68,8 @@ class CarMain(CarBase):
             识别对象的事件，当发现任何一个对象时，会触发本事件
         """
         ob_list = kwargs['objects_list']
+        # if self.recognition.object_appeared(ob_list, 1, 18):
+        #     self.car_controller.bypass_obstacle(0.8, 2.7)
         print("e_recognition")
 
     def e_flowing_line(self, **kwargs):
@@ -71,13 +78,29 @@ class CarMain(CarBase):
         """
         pass
         offset = kwargs['offset']
+        if offset == -1000:
+            offset = self.p_offset * 1.6
+        else:
+            self.p_offset = offset
+
+        self.car_controller.follow_line(offset)
+
         print("offset:{}".format(offset))
-        # self.car_controller.follow_line(offset)
 
     def e_find_intersection(self, **kwargs):
         """
             发现路口时触发本事件
         """
+        if self.fi.intersection_number == 1:
+            self.car_controller.turn(True, 1.2)
+        if self.fi.intersection_number == 5:
+            self.car_controller.turn(False, 1)
+        if self.fi.intersection_number == 6:
+            self.car_controller.turn(True, 1.1)
+        if self.fi.intersection_number == 10:
+            self.car_controller.turn(False, 1)
+        if self.fi.intersection_number == 11:
+            self.car_controller.stop()
         pass
         number = kwargs['intersection_number']
         print("intersection_number{}".format(number))
@@ -100,8 +123,8 @@ class CarMain(CarBase):
 
 
 if __name__ == '__main__':
-    l_camera = '/dev/video0'
-    o_camera = '/dev/video1'
+    l_camera = '/dev/video1'
+    o_camera = '/dev/video0'
     ser = '/dev/ttyUSB0'
     car = CarMain(line_camera=l_camera, od_camera=o_camera, serial=ser)
     car.main_loop()
