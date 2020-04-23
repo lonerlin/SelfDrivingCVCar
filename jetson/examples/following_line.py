@@ -47,6 +47,9 @@ while True:
     # 直接把Offset赋值给CarController，对于一般的线没有问题。
     # 但是对于急弯，或者线突然不见了，没办法处理，想稳定的巡线，需要对offset进行处理后再给CarController
     # PID处理offset后再给CarController是一个选择
+    # 简单的可以做如下的处理，当找不到线时，会出现offset=-1000的情况，我们可以不理它当它是0.
+    if offset == -1000:
+        offset = 0
     ctrl.follow_line(offset)
 
     display.show(image, "image")         # 显示处理后的帧
