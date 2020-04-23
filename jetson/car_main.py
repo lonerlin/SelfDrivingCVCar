@@ -96,7 +96,7 @@ class CarMain(CarBase):
         if self.fi.intersection_number == 5:
             self.car_controller.turn(False, 1)
         if self.fi.intersection_number == 6:
-            self.car_controller.turn(True, 1.1)
+            self.car_controller.turn(True, 1.3)
         if self.fi.intersection_number == 10:
             self.car_controller.turn(False, 1)
         if self.fi.intersection_number == 11:
