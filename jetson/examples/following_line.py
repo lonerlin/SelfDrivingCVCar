@@ -51,7 +51,7 @@ while True:
 
     display.show(image, "image")         # 显示处理后的帧
     display.show(render_image, "frame")  # 在屏幕上的frame窗口显示渲染后的图像（此处的渲染就是在屏幕上画出中心点的位置）
-    ctrl.update()
+    ctrl.update()   # controller实际控制执行函数，循环中必须调用才能正常使用controller
 
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
