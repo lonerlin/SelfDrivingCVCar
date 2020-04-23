@@ -7,6 +7,7 @@ from car.base import Base
 class FindRoadblock(Base):
     """
         寻找障碍物（此类是通过OpenCV寻找单一颜色的障碍物）
+
     """
     def __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1):
         """

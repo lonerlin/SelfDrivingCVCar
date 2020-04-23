@@ -12,6 +12,11 @@ from cv.find_roadblock import FindRoadblock
 
 
 class CarBase:
+    """
+        为车子的控制提供一个基类，把一些重复的变量和函数写在基类
+        继承本类的子类只需要关注于具体的操作
+        类变量task_list用于存储子类的操作任务，并由基类的mail_loop负责执行
+    """
     task_list = []
 
     def __init__(self, line_camera='/dev/video1', od_camera='/dev/video0', serial_port='/dev/ttyUSB0'):
@@ -37,12 +42,17 @@ class CarBase:
         self.is_save_video = False
 
     def main_loop(self):
+        """
+            整个程序的循环就是这个程序，子类的各个操作模块，建立后，把它加入task_lisk列表，有本函数负责循环执行
+            子类不用再写循环。
+        """
         # 通过摄像头读入一帧
         while True:
             ret, self.original_frame = self.line_camera_capture.read()  # 读取一帧
             size = (self.line_camera_width, self.line_camera_height)    # 改变大小
             self.render_frame = cv2.resize(self.original_frame, size)
             self.original_frame = self.render_frame
+
             # 循环任务列表，按顺序执行，ImageInit需要先于其他cv下面的对象执行
             for task in CarBase.task_list:
                 tmp = []
@@ -68,11 +78,18 @@ class CarBase:
                 break
 
     def display_window(self):
+        """
+            显示三个窗口，大多数情况下都是需要三个窗口，所以干脆用一个函数建立把它显示出来。
+        :return:
+        """
         self.display.show(self.original_frame, '原始')
         self.display.show(self.available_frame, '实际')
         self.display.show(self.render_frame, '渲染')
 
     def display_frame_rate(self):
+        """
+            打印帧速率
+        """
         print("帧速度：{} 帧/秒".format(1.0/self.frame_rate_timer.duration()))
         self.frame_rate_timer.restart()
 
