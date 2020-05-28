@@ -9,14 +9,10 @@
 */
 #include <Servo.h>
 #include<MotorControl.h>
-#define LeftDIRPin 4
-#define LeftPWMPin 5
-#define RightDIRPin 7
-#define RightPWMPin 6
-#define Switch 2
-#define BASE_SPEED 45
-#define FAST_SPEED 70
-int SPEED=0;
+#define LeftDIRPin 4         //左马达方向针脚
+#define LeftPWMPin 5         //左马达PWM
+#define RightDIRPin 7        //右方向针脚
+#define RightPWMPin 6        //右马达PWM
 int angle = 90;
 int start_angle=angle;
 int left,right;

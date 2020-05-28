@@ -1,3 +1,4 @@
+//马达控制实际类
 class MotorControl
 {
 public:
