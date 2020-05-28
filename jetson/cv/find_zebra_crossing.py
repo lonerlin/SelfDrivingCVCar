@@ -10,11 +10,11 @@ class FindZebraCrossing(Base):
     def __init__(self, width=320, height=240, threshold=4, floor_line_count=4, delay_time=10):
         """
         初始化类
-        :param width:图像的宽
-        :param height: 图像的高
-        :param threshold: 阈值，超过阈值的连续白点认为是一条白色线
-        :param floor_line_count: 图片中最少出现白色线的数量
-        :param delay_time: 找到后，延迟多长时间再开始寻找
+        :param width:图像的宽，默认320
+        :param height: 图像的高，默认240
+        :param threshold: 阈值，超过阈值的连续白点认为是一条白色线，默认是4
+        :param floor_line_count: 图片中最少出现白色线的数量，默认是4 条线
+        :param delay_time: 找到后，延迟多长时间再开始寻找，默认是10 秒
         """
         super().__init__()
         self.__line_threshold = threshold

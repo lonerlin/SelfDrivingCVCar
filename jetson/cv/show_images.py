@@ -3,7 +3,7 @@ import cv2
 
 class ShowImage:
     """
-        显示OPENCV图像，主要是改变图片的位置，避免图片叠在一起。
+        本类用于显示OPENCV图像，通过设定每个视频窗口的初始位置，避免所有窗口叠在一起。
     """
     def __init__(self,):
         self.name_list = []

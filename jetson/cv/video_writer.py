@@ -9,9 +9,9 @@ class VideoWriter:
         """
         初始化视频保存类
         :param name: 保存的文件名
-        :param frameWidth: 宽
-        :param frameHight: 高
-        :param fps: 帧速
+        :param frameWidth: 保存的视频宽，默认320
+        :param frameHight: 保存的视频高，默认240
+        :param fps: 帧速，默认15 帧
         """
         self.fps = fps
         self.fourcc = cv2.VideoWriter_fourcc('h', '2', '6', '4')

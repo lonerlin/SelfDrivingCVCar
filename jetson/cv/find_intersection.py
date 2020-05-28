@@ -18,8 +18,10 @@ class FindIntersection(Base):
         """
             初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
         :param radius: 设置半径
-        :param angle: 朝向角度，一般直接向前是90
-        :param threshold: 连续多少个白点以上认为一一条白线，通过修改阀值，消除噪点
+        :param angle: 朝向角度，一般直接向前是90，默认是90
+        :param threshold: 连续多少个白点以上认为一一条白线，通过修改阀值，消除噪点，默认是3
+        :param delay_time:在检查到路口后，延迟多少秒开始第二次检查（避免重复检测同一个路口），默认是10秒
+        :param repeat_count:在帧中不同位置进行检测的次数，多位置检测的目的是避免干扰，默认是2
         """
         super().__init__()
         self.radius = radius
