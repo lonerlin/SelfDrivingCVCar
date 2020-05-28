@@ -4,6 +4,8 @@
   约定通过一个8为数字来传送左右马达的转速：
     每个四位，如果第四位等于1代表马达向后，0代表马达向前（既是1代表负）
     左边四位是左马达，右边四位是右马达
+    另外，如果最左一位是2，代表这是舵机的控制指令，当前小车只有一个测试用的舵机，所有只用到左4位。
+    当需要多个舵机时，可以用到右四位，或是最左一位为3，4等等。
 */
 #include <Servo.h>
 #include<MotorControl.h>
@@ -94,7 +96,10 @@ void loop() {
     
  }
 
-
+//控制舵机的转向
+//servo:舵机对象
+//start_angle:开始角度
+//end_angle:结束角度
 void servo_move(Servo servo,int start_angle,int end_angle){
   if (angle<10)angle=20;
   if(angle>170)angle=160;

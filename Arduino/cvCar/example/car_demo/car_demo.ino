@@ -1,3 +1,4 @@
+//本程序现在已被正式放弃，请使用bridge.ino。
 #include<PID.h>
 #include<MotorControl.h>
 #define LeftDIRPin 4
