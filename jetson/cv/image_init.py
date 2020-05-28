@@ -13,9 +13,9 @@ class ImageInit(Base):
             本函数用于对图像进行大小，灰度，二值，反转等转换。默认输入为灰度，如果需要转换为二值图，需输入阈值，如果需要反转需
             把bitwise_not 设置为true
 
-            :param width: 需要输出的宽度
-            :param height: 需要输出的高度
-            :param convert_type: 默认为“GARY”，二值图为“BINARY”
+            :param width: 需要输出的宽度 默认320
+            :param height: 需要输出的高度 默认240
+            :param convert_type: 默认为二值图为“BINARY”
             :param threshold: 阈值，在二值图时生效
             :param bitwise_not: 是否反转
             :param kernel_type: 核心
@@ -55,7 +55,10 @@ class ImageInit(Base):
         :return: 处理后的图像
         """
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, self.kernel_type)
+
         erosion = cv2.erode(frame, kernel, self.iterations)
+        if self.bitwise_not:
+            erosion = cv2.dilate(erosion, kernel, self.iterations)
         # dilate = cv2.dilate(erosion, kernel, 2)
         return erosion
 
