@@ -69,7 +69,7 @@ def trackshow(source=1, ksize=5, interv=5 ):
         # # get contour
         # _,conts, hier = cv2.findContours(closed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         #
-        # # find longest contour
+        # # _find longest contour
         # maxArea = 0
         # cxs = []
         # cys = []

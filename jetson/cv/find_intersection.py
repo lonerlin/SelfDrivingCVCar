@@ -55,7 +55,7 @@ class FindIntersection(Base):
         """
         return self.__intersection_number
 
-    def coordinate_from_point(self, origin, angle, radius):
+    def _coordinate_from_point(self, origin, angle, radius):
         """
             通过圆心位置坐标，角度和半径计算圆上点的坐标
         :param origin: 圆心位置
@@ -75,7 +75,7 @@ class FindIntersection(Base):
         y = int(np.round(y))
         return x, y
 
-    def in_image_bounds(self, image, x, y):
+    def _in_image_bounds(self, image, x, y):
         """
         判断一个点是否在图片上
         :param image: 需要检查的图片
@@ -85,7 +85,7 @@ class FindIntersection(Base):
         """
         return x >= 0 and y >= 0 and y < len(image) and x < len(image[y])
 
-    def scan_circle(self, image, point, radius, look_angle, display_image=None):
+    def _scan_circle(self, image, point, radius, look_angle, display_image=None):
         """
             以指定的圆心，半径，方向，在图上画出半圆，并返回半圆数据集
         :param image: 输入的图像
@@ -100,8 +100,8 @@ class FindIntersection(Base):
         scan_start = x - radius
         scan_end = x + radius
 
-        endpoint_left = self.coordinate_from_point(point, look_angle - 90, radius)
-        endpoint_right = self.coordinate_from_point(point, look_angle + 90, radius)
+        endpoint_left = self._coordinate_from_point(point, look_angle - 90, radius)
+        endpoint_right = self._coordinate_from_point(point, look_angle + 90, radius)
 
         # print("scanline left:{} right:{} angle:{}".format(endpoint_left, endpoint_right, look_angle))
         if not (display_image is None):
@@ -121,9 +121,9 @@ class FindIntersection(Base):
         returnVal = True
         for i in range(0, 180, 1):
             current_angle = startAngle + i
-            scan_point = self.coordinate_from_point(point, current_angle, radius)
+            scan_point = self._coordinate_from_point(point, current_angle, radius)
 
-            if self.in_image_bounds(image, scan_point[0], scan_point[1]):
+            if self._in_image_bounds(image, scan_point[0], scan_point[1]):
                 imageValue = image[scan_point[1]][scan_point[0]]
                 data[i] = [i, imageValue, scan_point[0], scan_point[1]]
             else:
@@ -131,7 +131,7 @@ class FindIntersection(Base):
                 break
         return returnVal, data
 
-    def find_in_circle(self, scan_data):
+    def _find_in_circle(self, scan_data):
         """
         输入的圆的数据集进行分析，并找出路口的特征点，此处输入的点集必须为二值形式
         :param scan_data:  scan_circle返回的数据集
@@ -151,10 +151,10 @@ class FindIntersection(Base):
 
         return angle_list
 
-    def find(self, find_image, point, render_image=None):
-        _, scan_data = self.scan_circle(find_image, point, self.radius, look_angle=self.angle,
-                                        display_image=render_image)
-        road = self.find_in_circle(scan_data)
+    def _find(self, find_image, point, render_image=None):
+        _, scan_data = self._scan_circle(find_image, point, self.radius, look_angle=self.angle,
+                                         display_image=render_image)
+        road = self._find_in_circle(scan_data)
         return_value = []
         for data in road:
             return_value.append([int(data[0]), int(data[2]), int(data[3])])
@@ -169,12 +169,18 @@ class FindIntersection(Base):
         return return_value
 
     def is_intersection(self, find_image, angle=25, render_image=None):
-
+        """
+            判断当前输入帧中是否存在路口
+        :param find_image:输入帧
+        :param angle: 两个路口的最小夹角，单两条线之间的夹角小于angle时，不认为是路口。默认是25度。
+        :param render_image: 需要渲染的图像
+        :return: 发现路口时返回True，否则返回False
+        """
         if time.perf_counter() - self.__begin_time > self.delay_time:
             start_height = 230
             tmp_value = True
             for i in range(self.__repeat_count):
-                intersections = self.find(find_image, (160, start_height-(i*10)), render_image)
+                intersections = self._find(find_image, (160, start_height - (i * 10)), render_image)
                 # print(intersections)
                 # print("len:", len(intersections))
                 if len(intersections) < 2 or abs(intersections[1][0] - intersections[0][0]) <= angle:
@@ -184,7 +190,7 @@ class FindIntersection(Base):
                 self.__begin_time = time.perf_counter()
                 return True
         else:
-            self.find(find_image, (160, 230), render_image)
+            self._find(find_image, (160, 230), render_image)
         return False
 
     def execute(self, frame, render_frame_list):
@@ -208,8 +214,8 @@ if __name__ == '__main__':
         # image_processing(image, width=320, height=240, threshold=248, convert_type="BINARY")
         cv2.imshow("test_one", image2)
         fi = FindIntersection(150)
-        # data = find(image2, (160, 230), image)
-        data2 = fi.find(image2, (160, 200), image)
+        # data = _find(image2, (160, 230), image)
+        data2 = fi._find(image2, (160, 200), image)
 
         # print(data)
         print(data2)
