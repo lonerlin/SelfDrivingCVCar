@@ -29,6 +29,7 @@ while not timer.timeout():
     controller.go_straight(delay_time=5)   # 直走5秒
     controller.turn(direction=True, delay_time=1)  # 左转1秒
 
+    controller.update()   # CarController的update方法必须在每次循环中调用，才能更新任务列表
 # 计时时间到，控制小车停止
 controller.stop()
 

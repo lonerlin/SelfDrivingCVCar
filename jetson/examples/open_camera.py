@@ -14,5 +14,5 @@ while True:
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
         break
-camera.release()                        # 释放摄像头
+camera.release()                         # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口

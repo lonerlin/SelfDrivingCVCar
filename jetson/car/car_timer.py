@@ -2,13 +2,12 @@ import time
 
 
 class CarTimer:
-    def __init__(self, start_time=time.perf_counter(), interval=0.0):
+    def __init__(self, interval=0.0):
         """
         定时器类，用于时间的计算
-        :param start_time:开始时间
         :param interval: 计时时间
         """
-        self.start_time = start_time
+        self.start_time = time.perf_counter()
         self.interval = interval
 
     def timeout(self):

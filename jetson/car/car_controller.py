@@ -128,7 +128,7 @@ class CarController:
         :param second_delay_time: 回归主线的运行时间
         """
         self.__function_timer.restart()
-        ct = CarTimer(start_time=time.perf_counter(), interval=first_delay_time + second_delay_time + 1)
+        ct = CarTimer( interval=first_delay_time + second_delay_time + 1)
         self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct, work=self.__bypass_obstacle,
                                       first_delay_time=first_delay_time, second_delay_time=second_delay_time))
 
@@ -139,7 +139,7 @@ class CarController:
         :param delay_time: 转弯延迟时间
         """
         self.task_list.append(CarTask(name="turn", activated=True, priority=2,
-                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                      timer=CarTimer(interval=delay_time),
                                       work=self.__turn, direction=direction))
 
     def stop(self, delay_time=0):
@@ -151,7 +151,7 @@ class CarController:
             self.task_list.append(CarTask(name="stop", activated=True, priority=0, work=self.__stop))
         else:
             self.task_list.append(CarTask(name="pause", activated=True, priority=1,
-                                          timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                          timer=CarTimer(interval=delay_time),
                                           work=self.__stop))
 
     def go_straight(self, delay_time=8):
@@ -160,7 +160,7 @@ class CarController:
         :param delay_time: 延迟时间
         """
         self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
-                                      timer=CarTimer(time.perf_counter(), interval=delay_time),
+                                      timer=CarTimer(interval=delay_time),
                                       work=self.__go_straight))
 
     def group(self, base_control_list):
@@ -185,9 +185,9 @@ class CarController:
         :param angle: 转向角度
         :param delay_time: 延迟时间
         """
-        self.__serial.drive_servo(angle) # 向发一个指令给Arduino，然后用下面的任务占着时间，不给其他任务执行
+        self.__serial.drive_servo(angle)    # 向发一个指令给Arduino，然后用下面的任务占着时间，不给其他任务执行
         self.task_list.append(CarTask(name="servo_move", activated=True, priority=1,
-                                      timer=CarTimer(start_time=time.perf_counter(), interval=delay_time),
+                                      timer=CarTimer(interval=delay_time),
                                       work=self.__sevo_move))
     # endregion
 

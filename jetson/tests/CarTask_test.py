@@ -14,7 +14,7 @@ def _do_work(**kwargs):
 
 def do(direction=True, delay=3):
     task_list.append(CarTask(name="hello", activated=True, priority=1,
-                             timer=CarTimer(start_time=time.perf_counter(), interval=delay),
+                             timer=CarTimer(interval=delay),
                              work=_do_work, direction=direction))
 
 
