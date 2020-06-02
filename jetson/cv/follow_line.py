@@ -4,7 +4,11 @@ from car.base import Base
 
 
 class FollowLine(Base):
-    def __init__(self, width, height, threshold=20, direction=True, image_type="BINARY"):
+    """
+    巡线处理类，输入二值图，找到其中的引导线中心位置，本类为巡线提供一个统一的接口。
+    使用者可以根据地图的复杂程度，修改重写get_offset方法。
+    """
+    def __init__(self, width=320, height=240, threshold=20, direction=True, image_type="BINARY"):
         """
             初始化巡线类，这里的阀值是指寻找连续白点的最小值，这样可以有效去除因地图反光产生的干扰。
         :param width: 处理图像的宽
@@ -29,7 +33,7 @@ class FollowLine(Base):
             当找不到线时，返回-1000，告知调用程序找不到白点。
         :param frame: 输入的图像二值图
         :param render_image: 需要渲染的图像，在上面画出一个蓝色的箭头。
-        :return: 返回偏离中心点的距离，如果早不到偏置，返回-1000
+        :return: 返回偏离中心点的距离，如果找不到偏置，返回-1000
         """
         color = frame[int(self.height/3)]
         continuous = 0

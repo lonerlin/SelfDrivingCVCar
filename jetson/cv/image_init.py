@@ -7,6 +7,9 @@ from car.base import Base
 
 
 class ImageInit(Base):
+    """
+    提供一个图像初始化类，把摄像头读取的帧处理成可供系统进一步使用的二值图。
+    """
     def __init__(self, width=320, height=240, convert_type="BINARY", threshold=250, bitwise_not=False,
                  kernel_type=(3, 3), iterations=2):
         """
@@ -17,9 +20,9 @@ class ImageInit(Base):
             :param height: 需要输出的高度 默认240
             :param convert_type: 默认为二值图为“BINARY”
             :param threshold: 阈值，在二值图时生效
-            :param bitwise_not: 是否反转
-            :param kernel_type: 核心
-            :param iterations: 执行多少个轮次
+            :param bitwise_not: 是否黑白反转
+            :param kernel_type: 膨胀或腐蚀的核
+            :param iterations: 腐蚀或膨胀的执行多少个轮次
             """
         super().__init__()
         self.width = width
@@ -36,7 +39,11 @@ class ImageInit(Base):
         return self.processing(frame)
 
     def processing(self, frame):
-
+        """
+        根据对象初始化参数，对输入的每一帧进行处理，主要处理包括修改尺寸，转换为二值图，黑白翻转，膨胀，腐蚀等。
+        :param frame: 输入的帧
+        :return: 处理完成的图像
+        """
         size = (self.width, self.height)                              # 尺寸
         image = cv2.resize(frame, size)                     # 修改尺寸
         image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)     # 转换为灰度
@@ -63,6 +70,11 @@ class ImageInit(Base):
         return erosion
 
     def resize(self, frame):
+        """
+        根据对象初始化参数，修改图像的大小
+        :param frame:
+        :return:
+        """
         size = (self.width, self.height)
         return cv2.resize(frame, size)
 
@@ -74,9 +86,9 @@ class ImageInit(Base):
         si = ShowImage()
         tracker = np.zeros((320, 100))
         si.show(tracker, "control")
-        cv2.createTrackbar('Threshold', 'control', 0, 255, self.nothing)
-        cv2.createTrackbar('Kernel', 'control', 1, 8, self.nothing)
-        cv2.createTrackbar('Iterations', 'control', 1, 5, self.nothing)
+        cv2.createTrackbar('Threshold', 'control', 0, 255, self._nothing)
+        cv2.createTrackbar('Kernel', 'control', 1, 8, self._nothing)
+        cv2.createTrackbar('Iterations', 'control', 1, 5, self._nothing)
         while True:
             _, img1 = capture.read()
 
@@ -93,7 +105,12 @@ class ImageInit(Base):
                 break
         capture.release
 
-    def nothing(self, x):
+    def _nothing(self, x):
+        """
+        一份辅助函数
+        :param x:
+        :return:
+        """
         pass
 
 
