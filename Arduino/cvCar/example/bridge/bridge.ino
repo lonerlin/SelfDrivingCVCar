@@ -6,7 +6,8 @@
     左边四位是左马达，右边四位是右马达
     另外，如果最左一位是2，代表这是舵机的控制指令，当前小车只有一个测试用的舵机，所有只用到左4位。
     当需要多个舵机时，可以用到右四位，或是最左一位为3，4等等。
-*/
+  */
+
 #include <Servo.h>
 #include<MotorControl.h>
 #define LeftDIRPin 4         //左马达方向针脚
@@ -22,10 +23,12 @@ Servo servo1;
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
- Serial.begin(115200);
-  while(!Serial){;}
   left=0;
   right=0;
+  mc.Motor(left,right);
+ Serial.begin(115200);
+  while(!Serial){;}
+
    servo1.attach( 9, 600, 2400 );
    servo1.write(90);
 }
