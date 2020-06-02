@@ -138,7 +138,7 @@ class CarController:
         :param direction: 方向（True为左，False为右）
         :param delay_time: 转弯延迟时间
         """
-        self.task_list.append(CarTask(name="turn", activated=True, priority=2,
+        self.task_list.append(CarTask(name="turn", activated=True, priority=1,
                                       timer=CarTimer(interval=delay_time),
                                       work=self.__turn, direction=direction))
 

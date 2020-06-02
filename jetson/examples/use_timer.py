@@ -9,6 +9,7 @@
     下面例子演示了怎样在30秒内，循环控制车子直线行走5 秒，然后左转1 秒，最后停车。
 """
 # 从上一级目录导入模块，必须加入这两行
+import time
 import sys
 sys.path.append('..')
 
@@ -23,15 +24,20 @@ controller = CarController(serial, base_speed=100)
 
 # 新建一个计时器对象，设定他的计时时间为30秒
 timer = CarTimer(interval=30)
-
+timer2 = CarTimer(interval=5)
 # 当时间未到时循环
 while not timer.timeout():
     controller.go_straight(delay_time=5)   # 直走5秒
-    controller.turn(direction=True, delay_time=1)  # 左转1秒
+    if timer2.timeout():
+        controller.turn(direction=True, delay_time=1)  # 左转1秒
+        timer2.restart()
 
     controller.update()   # CarController的update方法必须在每次循环中调用，才能更新任务列表
+    time.sleep(0.05)
 # 计时时间到，控制小车停止
-controller.stop()
+serial.drive_motor(0, 0)
+time.sleep(0.1)
+serial.close()
 
 
 

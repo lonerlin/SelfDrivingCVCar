@@ -93,11 +93,15 @@ class CarSerial:
 
 
 if __name__ == '__main__':
-    cs = CarSerial("/dev/ttyUSB0", 115200, receive=True)
+    cs = CarSerial("/dev/ttyUSB0")
+    time.sleep(2)
+    print("start")
+    cs.drive_motor(200, 200)
     time.sleep(1)
-    n = 0
-    begin = time.time()
-    angle = 45
     cs.drive_servo(60)
-
-
+    time.sleep(10)
+    cs.drive_motor(0, 0)
+    time.sleep(1)
+    cs.drive_servo(90)
+    cs.close()
+    print("stop")

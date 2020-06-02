@@ -24,23 +24,22 @@ serial = CarSerial("/dev/ttyUSB0")  # 参数为串口文件
 controller = CarController(serial, base_speed=100)
 
 # 新建一个计时器对象，设定他的计时时间为30秒
-timer = CarTimer(interval=60)
+timer = CarTimer(interval=20)
 
 # 创建一个列表用于存储马达动作组合的列表
 control_list = []
 
 # 按需要控制的顺序，添加各种马达速度和执行时间
-control_list.append(BaseControl(100, 100, 10))     # 直走10秒
-control_list.append(BaseControl(0, 150, 5))        # 左转 5秒
+control_list.append(BaseControl(100, 100, 5))     # 直走10秒
+control_list.append(BaseControl(0, 150, 2))        # 左转 5秒
 control_list.append(BaseControl(0, 0, 2))          # 暂停2秒
-control_list.append(BaseControl(150, 0, 5))        # 右转5秒
-control_list.append(BaseControl(-100, -100, 10))   # 后退10秒
+control_list.append(BaseControl(150, 0, 2))        # 右转5秒
+control_list.append(BaseControl(-100, -100, 5))   # 后退10秒
 control_list.append(BaseControl(0, 0, 2))          # 停车
 
-
+controller.group(control_list)
 # 当时间未到时循环
 while not timer.timeout():
-    controller.group(control_list)
 
     controller.update()     # CarController的update方法必须在每次循环中调用，才能更新任务列表
 

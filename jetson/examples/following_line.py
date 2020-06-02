@@ -23,7 +23,7 @@ display = ShowImage()
 # 对象用于对输入的图形进行二值化（或者灰度），同时对图形进行腐蚀，以去除部分图像噪声。
 # 具体的参数的意义请参考类说明
 # 这里要特别注意，bitwise_not为True时图像颜色进行了反转，对于灰度图，也就是黑变白，白变黑，适合于引导线是黑色的地图。
-init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=250, bitwise_not=True)
+init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=60, bitwise_not=True)
 
 # fl对象用于寻找引导线偏离图像中心的位置，threshold是控制连续白色的的阈值，也就是只有连续多少个白色像素点才认为已经找到引导线
 # direction是开始寻找的方向，True是从左边开始寻找，False是右边。当顺时针绕圈时，引导线大概率出现在右边，所以可以选择False。
@@ -62,5 +62,7 @@ while True:
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
         break
+
+ctrl.stop()                             # 停车
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口

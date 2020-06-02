@@ -11,30 +11,40 @@ import time
 import sys
 sys.path.append("..")                       # 添加模块路径
 from car.car_serial import CarSerial
+from car.car_timer import CarTimer
 SERIAL = "/dev/ttyUSB0"     # USB 串口
 # 新建一个串口类，此类最好不要直接使用，而是通过CarController来对车子进行控制
-serial = CarSerial(SERIAL)
+serial = CarSerial(SERIAL, receive=True)
+timer = CarTimer(interval=1)
 
-
+print("start")
 # 等待一秒
-time.sleep(1)
+while not timer.timeout():
+    time.sleep(0.1)
 
+timer.interval = 10
 # 定义马达速度
 left_speed = 100
-right_speed = 90
+right_speed = 100
 
+print("motor start")
 # 驱动马达
 serial.drive_motor(left_speed, right_speed)
-time.sleep(5)   # 等待5秒
+
+timer.restart()
+while not timer.timeout():
+    serial.drive_motor(left_speed, right_speed)
+    time.sleep(0.1)
 
 # 重新设置马达速度
 left_speed = 0
 right_speed = 0
-
+print("motor stop")
 # 马达停止转动
 serial.drive_motor(left_speed, right_speed)
-time.sleep(1)   # 等待1秒
 
+
+print("转动舵机")
 # 定义舵机的角度
 angle = 60
 # 转动舵机
@@ -46,3 +56,4 @@ angle = 90
 # 转动舵机
 serial.drive_servo(angle)
 
+serial.close()
