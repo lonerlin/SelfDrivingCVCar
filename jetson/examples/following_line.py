@@ -11,7 +11,7 @@ from cv.follow_line import FollowLine
 from car.car_controller import CarController
 from car.car_serial import CarSerial
 
-SERIAL = "/dev/ttyUSB0"     # 串口
+SERIAL = "/dev/ttyACM0"     # 串口
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
 camera = cv2.VideoCapture(CAMERA)
@@ -30,8 +30,7 @@ init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=60, bit
 fl = FollowLine(width=320, height=240, threshold=15, direction=False)
 
 # 串口类，此类最好不要直接使用，而是通过CarController来对车子进行控制
-serial = CarSerial(SERIAL)
-
+serial = CarSerial(SERIAL, receive=True)
 # 此类并没有实现PID控制，而是简单的使用了比例这个参数。（现在这么简单的地图还无需用到PID）
 # 如果需要使用PID可以直接调用car目录下的pid类，同时把此类的比例参数设置为1
 ctrl = CarController(serial, proportional=0.4)
