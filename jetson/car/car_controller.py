@@ -8,7 +8,15 @@ class CarController:
     """
         控制车子动作的类，通过该类可以控制车子的前进，转弯，暂停，控制车子舵机角度等。
         PID控制功能暂时没有添加
-        本类通过设置一个控制任务列表来收集循环（每一帧）中的各个任务，并选择优先级高的任务执行。
+        本类通过设置一个控制任务列表来收集循环（每一帧）中的各个任务，并选择优先级高的任务执行。数字越小优先级越高。
+        各个函数的优先级如下：
+        0：stop（） 小车完全停止，不能继续行走。
+        1：stop（停止时间）暂停一段时间。
+        2：Turn  转弯
+        2：group 组合。
+        3：go_straight 直走
+        4：保留
+        5：following_line 巡线
     """
     def __init__(self, car_serial, base_speed=100, proportional=0.4, integral=0, diff=0):
         """
@@ -25,7 +33,7 @@ class CarController:
         self.__offset = 0
         self.task_list = []
         self.__function_timer = CarTimer()  # 提供一个全局的计时器供函数使用
-        self.task_list.append(CarTask(name="follow_line", activated=True, priority=3, work=self.__follow_line))
+        self.task_list.append(CarTask(name="follow_line", activated=True, priority=5, work=self.__follow_line))
 
     # region 实际操作函数
     def __follow_line(self):
@@ -128,8 +136,8 @@ class CarController:
         :param second_delay_time: 回归主线的运行时间
         """
         self.__function_timer.restart()
-        ct = CarTimer( interval=first_delay_time + second_delay_time + 1)
-        self.task_list.append(CarTask(name="bypass", activated=True, priority=1, timer=ct, work=self.__bypass_obstacle,
+        ct = CarTimer(interval=first_delay_time + second_delay_time + 1)
+        self.task_list.append(CarTask(name="bypass", activated=True, priority=2, timer=ct, work=self.__bypass_obstacle,
                                       first_delay_time=first_delay_time, second_delay_time=second_delay_time))
 
     def turn(self, direction=True, delay_time=1):
@@ -138,7 +146,7 @@ class CarController:
         :param direction: 方向（True为左，False为右）
         :param delay_time: 转弯延迟时间
         """
-        self.task_list.append(CarTask(name="turn", activated=True, priority=1,
+        self.task_list.append(CarTask(name="turn", activated=True, priority=2,
                                       timer=CarTimer(interval=delay_time),
                                       work=self.__turn, direction=direction))
 
@@ -159,7 +167,7 @@ class CarController:
         直接向前走，不要巡线
         :param delay_time: 延迟时间
         """
-        self.task_list.append(CarTask(name="go_straight", activated=True, priority=2,
+        self.task_list.append(CarTask(name="go_straight", activated=True, priority=3,
                                       timer=CarTimer(interval=delay_time),
                                       work=self.__go_straight))
 
