@@ -12,7 +12,7 @@
 # 从上一级目录导入模块，必须加入这两行
 import sys
 sys.path.append('..')
-
+import time
 from car.car_controller import CarController
 from car.car_timer import CarTimer
 from car.car_serial import CarSerial
@@ -42,6 +42,7 @@ controller.group(control_list)
 while not timer.timeout():
 
     controller.update()     # CarController的update方法必须在每次循环中调用，才能更新任务列表
+    time.sleep(0.05)        # 模拟每秒20帧
 
 # 计时时间到，控制小车停止
 controller.stop()
