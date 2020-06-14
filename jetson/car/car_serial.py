@@ -20,9 +20,10 @@ class CarSerial:
     def __init__(self, port, baud_rate=115200, receive=False):
         """
             初始化串口通信
+            在Linux中，查看实际的串口文件可以使用 “ls /dev/tty*”命令。通常 Arduino的串口文件都是 "/dev/ttyACM0" 或者"/dev/ttyUSB0"
         :param port: 端口
-        :param baud_rate:波特率
-        :param receive: 是否接收串口的返回信息，如果是，将在终端窗口输出Arduino返回的信息。
+        :param baud_rate:波特率 默认的波特率时115200，如果设置的波特率太小，可能会出现传输太慢，Arduino 无法反应的情况。
+        :param receive: 是否接收串口的返回信息，默认是否，如果改为是，将在终端窗口输出Arduino端返回的信息。
         """
         self.Port = port
         self.Baud_rate = baud_rate

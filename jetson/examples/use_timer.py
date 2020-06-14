@@ -18,6 +18,7 @@ from car.car_timer import CarTimer
 from car.car_serial import CarSerial
 
 # 新建串口通信对象，除非测试，不要直接调用此类，控制小车应该通过CarController类
+# 查看串口实际的串口文件可以使用 ls /dev/tty* 命令。通常 Arduino的串口文件都是 "/dev/ttyACM0" 或者"/dev/ttyUSB0"
 serial = CarSerial("/dev/ttyUSB0")  # 参数为串口文件
 # 新建一个CarController，传入串口通信对象，用于控制小车的各种动作
 controller = CarController(serial, base_speed=100)
