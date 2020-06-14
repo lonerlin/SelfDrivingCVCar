@@ -4,7 +4,7 @@
 # @File　　  :resize_parameter_find_roadblock.py
 # @Software  :PyCharm
 """
-    本实例用于调试寻找单色色块，当使用巡线摄像头寻找单色障碍物时可以使用它来调整HSV值，以便遭到最合适的HSV初始值。
+    本实例用于调试寻找单色色块，当使用巡线摄像头寻找单色障碍物时可以使用它来调整HSV值，以便找到最合适的HSV初始值。
 """
 import cv2
 import sys
@@ -17,5 +17,5 @@ camera = cv2.VideoCapture(CAMERA)    # 新建摄像头视频VideoCapture对象
 fr = fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.3)  # 初始化FindRoadblock对象
 
 fr.track_show(camera)   # 利用手动调整HSV阈值，从而寻找到合适的HSV阈值。
-camera.release()
-cv2.destroyAllWindows()
+camera.release()        # 释放资源（释放摄像头）
+cv2.destroyAllWindows()  # 关闭窗口
