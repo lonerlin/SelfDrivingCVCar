@@ -19,7 +19,7 @@ from car.car_serial import CarSerial
 from car.car_controller import BaseControl
 
 # 新建串口通信对象，除非测试，不要直接调用此类，控制小车应该通过CarController类
-serial = CarSerial("/dev/ttyUSB0")  # 参数为串口文件
+serial = CarSerial("/dev/ttyACM0", receive=True)  # 参数为串口文件
 # 新建一个CarController，传入串口通信对象，用于控制小车的各种动作
 controller = CarController(serial, base_speed=100)
 
@@ -30,11 +30,11 @@ timer = CarTimer(interval=20)
 control_list = []
 
 # 按需要控制的顺序，添加各种马达速度和执行时间
-control_list.append(BaseControl(100, 100, 5))     # 直走10秒
-control_list.append(BaseControl(0, 150, 2))        # 左转 5秒
+control_list.append(BaseControl(100, 100, 5))     # 直走5秒
+control_list.append(BaseControl(0, 150, 2))        # 左转 2秒
 control_list.append(BaseControl(0, 0, 2))          # 暂停2秒
-control_list.append(BaseControl(150, 0, 2))        # 右转5秒
-control_list.append(BaseControl(-100, -100, 5))   # 后退10秒
+control_list.append(BaseControl(150, 0, 2))        # 右转2秒
+control_list.append(BaseControl(-100, -100, 5))   # 后退5秒
 control_list.append(BaseControl(0, 0, 2))          # 停车
 
 controller.group(control_list)
@@ -45,5 +45,5 @@ while not timer.timeout():
     time.sleep(0.05)        # 模拟每秒20帧
 
 # 计时时间到，控制小车停止
-controller.stop()
-serial.close()
+controller.exit()
+

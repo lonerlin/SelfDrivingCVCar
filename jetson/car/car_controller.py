@@ -199,6 +199,16 @@ class CarController:
                                       work=self.__sevo_move))
     # endregion
 
+    def exit(self):
+        """
+            清空任务列表，停止马达转动。
+            本方法可用于循环结束后的收尾工作。
+        """
+        self.task_list.clear()
+        self.__serial.drive_motor(0, 0)
+        self.__serial.drive_servo(90)
+        self.__serial.close()
+
 
 class BaseControl:
     """

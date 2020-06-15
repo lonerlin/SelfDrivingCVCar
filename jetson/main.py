@@ -159,7 +159,7 @@ while True:
         break
 
 # 收尾工作
-serial.drive_motor(0, 0)
+ctrl.exit()
 rc.close()
 # vw.release()
 camera.release()
