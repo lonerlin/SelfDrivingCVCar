@@ -31,7 +31,7 @@ controller.go_straight(delay_time=5)   # 直走5秒
 while not timer.timeout():
     print("time2.duration:{}".format(timer2.duration()))
     if timer2.timeout():
-        # CarController 根据动作的优先级来选择需要执行的动作，我们同事输入5秒的直行和1秒转弯，它将优先执行转弯1秒
+        # CarController 根据动作的优先级来选择需要执行的动作，我们同时输入5秒的直行和1秒转弯，它将优先执行转弯1秒
         # 当转弯一秒时间到后，转弯任务结束，这时直走还剩下4秒，所以第二秒开始就执行直走任务。
         controller.turn(direction=True, delay_time=1)  # 左转1秒
         controller.go_straight(delay_time=5)           # 直走5秒
