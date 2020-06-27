@@ -1,7 +1,7 @@
 # 自动驾驶视觉小车
 
 利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。
-整个系统包括： /br
+整个系统包括：
 - 两个摄像头作为输入,其中一个摄像头负责巡线任务，另外一个摄像头负责目标检测任务。
 - 使用jetson nano作为主控。
 - 使用一块Arduino控制小车的走动等各种动作。
@@ -44,6 +44,20 @@
     - resize_parameter_threshold：演示怎样打开摄像头，新建一个ImageInit实例把图片转换为二值图，通过滑动条调整该实例参数，使生成的图片效果最好。
 - main.py：一个综合应用实例。
 - car_main：使用事件驱动方法实现的一个综合实例。
+
+### Arduino
+- cvCar
+    - bridge：连接jetson，根据串口传输的控制指令，对小车进行控制。
 ***
-## 如何使用
+## 如何开始
+- 硬件的搭建和系统配置（略）
+- 上传程序到Arduino
+    - 进入源代码中的Arduino文件夹，把cvCar文件夹压缩为cvCar.zip文件。
+    - 打开Arduino IDE，找到“项目”菜单，打开并选择该菜单中的“加载库-添加ZIP库”，找到并打开cvCar.zip。
+    - 在Arduino IDE，找到“文件菜单”，打开并选择“示例-第三方库示例-cvCar-examples-bridge”。
+    - 把该实例程序上传到Arduino。
+- 在jetson nano 上编程控制小车
+    - 打开Ubuntu命令行对话框，输入sudo git clone  https://github.com/lonerlin/SelfDrivingCVCar 下载本项目代码
+    - 进入代码目录中的 /jetson/exaples/
+    - 输入命令：sudo python3 open_camera.py，如果能够顺利打开摄像图，显示窗口，恭喜你，可以开始玩车了。
 ***
