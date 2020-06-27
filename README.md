@@ -1,10 +1,49 @@
 # 自动驾驶视觉小车
 
-A miniature version of self-driving CV car using SSD and openCV.
+利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。
+整个系统包括： /br
+- 两个摄像头作为输入,其中一个摄像头负责巡线任务，另外一个摄像头负责目标检测任务。
+- 使用jetson nano作为主控。
+- 使用一块Arduino控制小车的走动等各种动作。
+- jetson nano 和 Arduino 两者使用串口进行通信。
 ***
 ## 依赖
+- jetson nano
+    - Opencv 4
+    - jetson inference
+    - python 3
+    - pyserial
+- Arduino uno
 ***
 ## 目录结构
+### jetson
+- car
+    - CarController ： 核心类，控制车子的马达，舵机
+    - CarSerial：封装了与Arduino的通信
+    - CarTask： CarController的一个辅助类
+    - CarTimer：封装了一个计时器
+    - Pid：提供一个PID算法类
+- cv
+    - ImageInit：把图像初始化（大小，二值化，去噪）
+    - FollowLine：巡线类
+    - FindIntersection：寻找路口
+    - FindZebraCrossing：寻找斑马线
+    - ShowImage：用于辅助显示窗口
+    - VideoWriter：录像类，保存视频    
+- od
+    - Recognition：对象检测的封装
+- examples
+    - arduino_comunication： 演示了jetson nano 通过 Arduino 驱动小车的马达和舵机。
+    - CarController_Group： 演示了CarController中group方法的使用。
+    - display_multiple_windows： 展示了使用cv包中ImageInit对象的使用方法，同时利用了该保重的ShowImages对象显示多个窗口。
+    - following_line： 演示了小车巡线的基本方法。
+    - object_detection： 演示了怎样进行对象检测。
+    - open_camera：演示了怎样使用Opencv打开摄像头。
+    - use_timer:演示了CarTimer类的使用方法。
+    - resize_parameter_find_roadblock：用于调试寻找单色色块，当使用巡线摄像头寻找单色障碍物时可以使用它来调整HSV值，以便找到最合适的HSV初始值。
+    - resize_parameter_threshold：演示怎样打开摄像头，新建一个ImageInit实例把图片转换为二值图，通过滑动条调整该实例参数，使生成的图片效果最好。
+- main.py：一个综合应用实例。
+- car_main：使用事件驱动方法实现的一个综合实例。
 ***
 ## 如何使用
 ***
