@@ -59,7 +59,7 @@
 - 在jetson nano 上编程控制小车
     - 打开Ubuntu命令行对话框，输入sudo git clone  https://github.com/lonerlin/SelfDrivingCVCar 下载本项目代码
     - 进入代码目录中的 /jetson/exaples/
-    - 输入命令：sudo python3 open_camera.py，如果能够顺利打开摄像图，显示窗口，恭喜你，可以开始玩车了。
+    - 输入命令：sudo python3 open_camera.py，如果能够顺利打开摄像头，显示窗口，恭喜你，可以开始玩车了。
 ***
 ## 详细教程
 - 怎样查看并找到硬件文件。
