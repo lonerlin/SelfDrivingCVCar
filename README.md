@@ -71,7 +71,7 @@
 ***
 ## 详细教程
 - [怎样查看并找到硬件文件。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/find_devices.md)
-- 使用OpenCV打开摄像头。
+- [使用OpenCV打开摄像头。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/open_camera.md)
 - 把输入的图像转换为可以提取信息的二值图。
 - 使用多窗口显示图像。
 - 测试、控制小车的马达。
