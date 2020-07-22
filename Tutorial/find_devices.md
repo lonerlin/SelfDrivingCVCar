@@ -8,10 +8,10 @@ dev这个目录对所有的用户都十分重要。因为在这个目录中包�
 - 使用ls命令查看摄像头
     ```
         ls /dev/video*
-    ```
- </br>
+    ``` 
+ 
     ![video](https://github.com/lonerlin/SelfDrivingCVCar/raw/testing/Tutorial/pic/video.png)
- </br>
+
 - 使用ls命令查看Arduino板
     ```
         ls /dev/tty*
