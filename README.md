@@ -62,7 +62,7 @@
     sudo git clone  https://github.com/lonerlin/SelfDrivingCVCar
     ```
      下载本项目代码
-    - 进入代码目录中的 /jetson/exaples/
+    - 进入代码目录中的 /jetson/examples/
     - 输入命令：
     ```bash
     sudo python3 open_camera.py
@@ -76,7 +76,7 @@
 - [使用多窗口显示图像。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/display_windows.md)
 - [测试、控制小车的马达。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/serial_comunication.md)
 - CarTimer，一个简单的计时器。
-- CarController，控制的核心。
+- [CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
 - 巡线。
 - 找到并计算路口。
 - 识别对象。
