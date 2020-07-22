@@ -86,7 +86,7 @@ class ImageInit(Base):
         si = ShowImage()
         tracker = np.zeros((320, 100))
         si.show(tracker, "control")
-        cv2.createTrackbar('Threshold', 'control', 0, 255, self._nothing)
+        cv2.createTrackbar('Threshold', 'control', 1, 255, self._nothing)
         cv2.createTrackbar('Kernel', 'control', 1, 8, self._nothing)
         cv2.createTrackbar('Iterations', 'control', 1, 5, self._nothing)
         while True:
