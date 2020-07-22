@@ -32,7 +32,7 @@
 运行该实例，调整参数的进度条，可以在比赛的现场，快捷的找到参数。
 
 ## 使用ImageInit
-ImageInit的使用非常简单，只需要在程序的开始出新建并初始化该类的一个实例，然后在帧循环中调用processing方法。
+ImageInit的使用非常简单，只需要在程序的开始处新建并初始化该类的一个实例，然后在帧循环中调用processing方法。
 下面的例子展示了如何初始化ImageInit，并调用processing方法。
 完整的文件请下载jetson\examples\路径下的[display_multiple_Windows.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/display_multiple_Windows.py)
 ```python
