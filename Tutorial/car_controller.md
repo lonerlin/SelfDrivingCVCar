@@ -31,6 +31,7 @@
 - 时间点4：小车暂停一秒完成，系统删除列表中的暂停任务，继续执行转弯任务。
 - 时间点5：小车转弯2秒完成，系统删除列表中的转弯任务，继续执行巡线任务。
 </br>
-具体列表和时间参考下图：
+具体列表和时间参考下图：  
+
 ![task_list](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/list.png)
         
