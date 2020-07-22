@@ -10,12 +10,13 @@ dev这个目录对所有的用户都十分重要。因为在这个目录中包�
         ls /dev/video*
     ```
  </br>
-    ![video](https://github.com/lonerlin/SelfDrivingCVCar/tree/testing/Tutorial/pic/video.png)
+    ![video](https://github.com/lonerlin/SelfDrivingCVCar/raw/testing/Tutorial/pic/video.png)
+ </br>
 - 使用ls命令查看Arduino板
     ```
         ls /dev/tty*
     ```
   一般原装的Arduino版，Jetson nano 系统是已经安装了驱动，它的文件名是“ttyACM0”，“ttyACM1”等等，
   如果串口通信使用的是CH340芯片，则需要先安装驱动，设备文件名是“ttyUSB0”，“ttyUSB1”等。</br>
-    ![arduino](https://github.com/lonerlin/SelfDrivingCVCar/tree/testing/Tutorial/pic/arduino.png)
+    ![arduino](https://github.com/lonerlin/SelfDrivingCVCar/raw/testing/Tutorial/pic/arduino.png)
 
