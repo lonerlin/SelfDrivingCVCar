@@ -35,6 +35,60 @@
 
 ![task_list](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/list.png)   
 ***
+## CarController的方法
+CarController方法详细的说明如下：
+
+```python    
+
+    __init__(self, car_serial, base_speed=100, proportional=0.4, integral=0, diff=0)
+            初始化类
+        :param car_serial: 串口通信类
+        :param base_speed: 车子在直线行走时两个轮子的速度（-255,255）
+        :param proportional: PID比例参数
+        :param integral: PID的积分参数
+        :param diff: PID的微分参数
+    
+    bypass_obstacle(self, first_delay_time, second_delay_time)
+        避障函数，第一个时间段主要通过右轮的倒转，快速旋转，第二个时间段，通过缓慢的偏转回归到主线上
+        :param first_delay_time:偏离主线的运行时间
+        :param second_delay_time: 回归主线的运行时间
+    
+    exit(self)
+        清空任务列表，停止马达转动。
+        本方法可用于循环结束后的收尾工作。
+    
+    follow_line(self, offset)
+        巡线接口
+        :param offset:
+    
+    go_straight(self, delay_time=8)
+        直接向前走，不要巡线
+        :param delay_time: 延迟时间
+    
+    group(self, base_control_list)
+        连续执行BaseControl列表的函数
+        :param base_control_list: 必须提供一个BaseControl对象的List
+    
+    servo_move(self, angle, delay_time=1)
+        旋转舵机到指定的角度，舵机的旋转需要一定的时间，在这段时间内Arduino将不会响应nano的传输的命令
+        delay_time用于指定这一段时间，同时本函数应该避免在这段时间内反复调用，否则会出现Arduino因为无法响应指令而出错。
+        :param angle: 转向角度
+        :param delay_time: 延迟时间
+    
+    stop(self, delay_time=0)
+        如果delay_time = 0 将完全停止，如果delay_time> 0 将会暂停几秒
+        :param delay_time: 暂停的时间，0将无限时暂停
+    
+    turn(self, direction=True, delay_time=1)
+        转弯
+        :param direction: 方向（True为左，False为右）
+        :param delay_time: 转弯延迟时间
+    
+    update(self)
+        在每一个帧中执行这个函数来选择优先级最高的一项控制动作，并执行该动作。
+        同时删除超时的动作。
+    
+```
 ## 怎样使用CarController
 CarController的使用非常简单，只需在程序开始时实例化CarController，然后在帧循环的过程中，直接调用CarController提供的方法
 （函数）例如：
