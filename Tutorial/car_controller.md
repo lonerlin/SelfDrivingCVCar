@@ -33,5 +33,54 @@
 </br>
 具体列表和时间参考下图：  
 
-![task_list](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/list.png)
-        
+![task_list](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/list.png)   
+***
+## 怎样使用CarController
+CarController的使用非常简单，只需在程序开始时实例化CarController，然后在帧循环的过程中，直接调用CarController提供的方法
+（函数）例如：
+````python
+
+...
+
+# 串口通信对象
+serial = CarSerial(port=SERIAL, receive=False)
+# 实例化一个小车控制器
+ctrl = CarController(car_serial=serial, base_speed=80)
+
+...
+
+while True:
+
+    ...
+    
+    # 通过摄像头读入一帧
+    ret, frame = camera.read()
+
+    # 改变图像的大小
+    frame = img_init.resize(frame)
+    
+    # 把图片二值化，并去噪
+    image = img_init.processing(frame)
+
+    # 巡线
+    offset, line_image = qf_line.get_offset(image, frame)
+
+    ctrl.follow_line(offset)    #此处直接调用
+    
+    ...
+    
+    # 物体探测
+    targets = rc.get_objects()
+
+    if fi.intersection_number == 2 and rc.object_appeared(targets, 1, object_width=40, delay_time=10):  # 看见人的处理程序
+        ctrl.stop(3)           # 直接调用
+
+    ...
+    ...
+
+````
+完整的实例，可以参考实例[main.py]((https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py)),
+或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson//car_main.py)
+
+
+ 

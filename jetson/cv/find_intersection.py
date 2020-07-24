@@ -16,7 +16,7 @@ class FindIntersection(Base):
 
     def __init__(self, radius, angle=90, threshold=3, delay_time=10, repeat_count=2):
         """
-            初始化查找十字路口，通过控制半径，朝向，阀值来在半圆上找到白线
+            初始化查找十字路口，通过控制半径，朝向，阈值来在半圆上找到白线
         :param radius: 设置半径
         :param angle: 朝向角度，一般直接向前是90，默认是90
         :param threshold: 连续多少个白点以上认为一一条白线，通过修改阀值，消除噪点，默认是3
@@ -194,6 +194,13 @@ class FindIntersection(Base):
         return False
 
     def execute(self, frame, render_frame_list):
+        """
+            执行寻找路口任务，如果找到路口，触发找到路口事件。
+            事件函数来之基类base，触发事件时返回一个参数，标明以起点出发计算，当前是第几个路口。
+        :param frame: 需要检测的帧
+        :param render_frame_list: 需要渲染的帧
+        :return: 没有返回值
+        """
         if self.is_intersection(find_image=frame, render_image=render_frame_list[0]):
             if not (self.event_function is None):
                 self.event_function(intersection_number=self.__intersection_number)
