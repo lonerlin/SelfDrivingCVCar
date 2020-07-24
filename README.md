@@ -77,9 +77,10 @@
 - [测试、控制小车的马达。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/serial_comunication.md)
 - [CarTimer，一个简单的计时器。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/timer.md)
 - [CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
-- 巡线。
+- [巡线。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/following_line.md)
 - 找到并计算路口。
 - 识别对象。
+- 找到斑马线
 - 综合任务。
 - 事件驱动方式，让小车控制更为简单。
 
