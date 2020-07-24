@@ -75,7 +75,7 @@
 - [把输入的图像转换为可以提取信息的二值图。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/init_frame.md)
 - [使用多窗口显示图像。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/display_windows.md)
 - [测试、控制小车的马达。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/serial_comunication.md)
-- CarTimer，一个简单的计时器。
+- [CarTimer，一个简单的计时器。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/timer.md)
 - [CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
 - 巡线。
 - 找到并计算路口。
