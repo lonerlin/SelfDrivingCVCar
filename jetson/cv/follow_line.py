@@ -25,6 +25,7 @@ class FollowLine(Base):
         self.center = 0
         self.__threshold = threshold
         self.direction = direction
+        self.key_row = int(self.height/3)
 
     def get_offset(self, frame, render_image=None):
         """
@@ -35,7 +36,7 @@ class FollowLine(Base):
         :param render_image: 需要渲染的图像，在上面画出一个蓝色的箭头。
         :return: 返回偏离中心点的距离，如果找不到偏置，返回-1000
         """
-        color = frame[int(self.height/3)]
+        color = frame[self.key_row]
         continuous = 0
         self.center = 0
         if self.direction:
@@ -78,7 +79,8 @@ class FollowLine(Base):
 
     def render_image(self, frame):
         start_point = (int(self.width/2), int(self.height-10))
-        end_point = (int(self.center if self.center != -1000 else self.width/2), int(self.height/3))
+        cv2.line(frame, (1, self.key_row), (self.width-1, self.key_row), (255, 0, 0), 8, 1)
+        end_point = (int(self.center if self.center != -1000 else self.width/2), self.key_row)
         cv2.circle(frame, end_point, 2, color=(0, 255, 255))
         return cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0),
                                line_type=cv2.LINE_4, thickness=3, tipLength=0.1)
