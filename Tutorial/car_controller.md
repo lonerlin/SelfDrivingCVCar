@@ -133,7 +133,7 @@ while True:
     ...
 
 ````
-完整的实例，可以参考实例[main.py]((https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py)),
+完整的实例，可以参考实例[main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py),
 或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/car_main.py)
 
 

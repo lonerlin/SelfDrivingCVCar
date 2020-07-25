@@ -226,7 +226,7 @@ if __name__ == '__main__':
 
         # print(data)
         print(data2)
-        cv2.imshow("render_image", image)
+        cv2.imshow("_render_image", image)
 
         if cv2.waitKey(1) == ord('q'):
             break

@@ -34,7 +34,8 @@ class FollowLine(Base):
             当找不到线时，返回-1000，告知调用程序找不到白点。
         :param frame: 输入的图像二值图
         :param render_image: 需要渲染的图像，在上面画出一个蓝色的箭头。
-        :return: 返回偏离中心点的距离，如果找不到偏置，返回-1000
+        :return: 返回偏离中心点的距离，如果找不到偏置，返回-1000；
+                  如果输入了渲染帧，返回渲染帧，否则返回None
         """
         color = frame[self.key_row]
         continuous = 0
@@ -73,11 +74,16 @@ class FollowLine(Base):
         #     pass
 
         if not (render_image is None):
-            return int(self.__offset), self.render_image(render_image)
+            return int(self.__offset), self._render_image(render_image)
         else:
             return int(self.__offset), None
 
-    def render_image(self, frame):
+    def _render_image(self, frame):
+        """
+            渲染输入的帧，在帧上画出关键线，偏置点和辅助箭头
+        :param frame: 输入的渲染帧
+        :return: 输出渲染后的帧
+        """
         start_point = (int(self.width/2), int(self.height-10))
         cv2.line(frame, (1, self.key_row), (self.width-1, self.key_row), (255, 0, 0), 8, 1)
         end_point = (int(self.center if self.center != -1000 else self.width/2), self.key_row)
