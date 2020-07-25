@@ -54,11 +54,9 @@
     一个完整的巡线程序除了FollowLine，还需调用ShowImage，CarController，CarSerial等类的实例进行配合。FollowLine用于巡线
     和计算偏移值，CarController通过CarSerial，控制小车马达转动，ShowImage用于屏幕上显示帧。
 
-    ```python
 
-    """
-    本例演示了小车巡线的基本方法。
-"""
+```python
+
 
 import cv2
 import sys
@@ -124,7 +122,8 @@ ctrl.stop()                             # 停车
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口
 
-    ```
+
+```
 
 
 ## 巡线的一些注意事项
