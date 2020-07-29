@@ -78,7 +78,7 @@
 - [CarTimer，一个简单的计时器。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/timer.md)
 - [CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
 - [巡线。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/following_line.md)
-- 找到并计算路口。
+- [找到并计算路口。]((https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/intersection.md))
 - 识别对象。
 - 找到斑马线
 - 综合任务。
