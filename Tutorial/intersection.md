@@ -7,7 +7,7 @@
 还是自己想办法，写了一个简单的算法。下面简单解释实现的过程：
     1 场地中路口的几种路口
     如下图所示，比赛场地的路口基本上是丁字路口，Y字路口。
-    ![map](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/map.png)
+    ![map](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/map.jpg)
     我们再从巡线摄像头的角度，看一下这些路口的图像。
 
     2.“半圆法”下的路口
