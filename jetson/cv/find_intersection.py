@@ -14,7 +14,7 @@ class FindIntersection(Base):
         是否到达路口。比赛中根据场地情况，需要调整以上几个参数，以达到最好的效果。
     """
 
-    def __init__(self, radius, angle=90, threshold=3, delay_time=10, repeat_count=2):
+    def __init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2):
         """
             初始化查找十字路口，通过控制半径，朝向，阈值来在半圆上找到白线
         :param radius: 设置半径
