@@ -30,7 +30,37 @@ FindIntersection类封装了判别路口算法的具体实现。使用时候只�
 了一个属性intersection_number，记录了从小车出发开始，至当前经过了多少个路口，可以辅助小车的定位。FindIntersection详细的方
 法说明如下：
 ````python
-
+__init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2)
+        初始化查找十字路口，通过控制半径，朝向，阈值来在半圆上找到白线
+        :param radius: 设置半径
+        :param angle: 朝向角度，一般直接向前是90，默认是90
+        :param threshold: 连续多少个白点以上认为是一条白线，通过修改阈值，消除噪点，默认是3
+        :param delay_time:在检查到路口后，延迟多少秒开始第二次检查（避免重复检测同一个路口），默认是10秒
+        :param repeat_count:在帧中不同位置进行检测的次数，多位置检测的目的是避免干扰，默认是2
+    
+    execute(self, frame, render_frame_list)
+        执行寻找路口任务，如果找到路口，触发找到路口事件。
+        事件函数来自基类base，触发事件时返回一个参数，该参数以起点出发计算，表示当前路口是第几个路口。
+        :param frame: 需要检测的帧
+        :param render_frame_list: 需要渲染的帧
+        :return: 没有返回值
+    
+    is_intersection(self, find_image, angle=25, render_image=None)
+        判断当前输入帧中是否存在路口
+        :param find_image:输入帧
+        :param angle: 两个路口的最小夹角，当两条线之间的夹角小于angle时，不认为是路口。默认是25度。
+        :param render_image: 需要渲染的图像
+        :return: 发现路口时返回True，否则返回False
+    
+    ----------------------------------------------------------------------
+    两个属性:
+    
+    delay_time
+        返回两个路口之间的间隔时间
+    
+    intersection_number
+        用于返回从程序开始到当前所经过的路口数量
+        :return:路口数量
 ````
 ## 一个判别路口的实例
 ## 判别路口和转弯
