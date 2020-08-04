@@ -20,7 +20,7 @@ class Recognition(Base):
         :param device: 指定摄像头（/dev/video?）
         :param width: 指定摄像头宽度
         :param height: 指定摄像头高度
-        :param frequency:检测的频率，默认每秒10帧
+        :param frequency:检测的频率，默认每秒40帧(相当于不限制检测频率)
         :param display_window:是否开始监视窗口，默认是
         """
         super().__init__()
