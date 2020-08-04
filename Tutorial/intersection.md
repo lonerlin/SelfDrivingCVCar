@@ -2,16 +2,16 @@
 # 发现十字路口和转弯
 由于比赛场地没有提供导航的标志，所以通过十字路口，丁字路口等引导线的交叉位，来判断小车的位置，辅助小车行进路线的规划，是
 一种简单而有效的方法。系统利用巡线摄像头，使用OpenCV技术，实现了一种简单的路口判别技术。
-## 判别路口的具体实
+## 判别路口的具体实现
 比起在一帧图像中寻找引导线的中心点，路口的判别更加困难。尝试了houghlines函数寻找线，快速特征检测器等方法后，发现效果不
-好。最后，还是自己想办法，写了一个简单的算法。下面简单解释实现的过程：
+好。最后，还是自己想办法，写了一个简单的算法。下面解释该算法的实现的过程：
     1 场地中路口的几种路口
     如下图所示，比赛场地的路口基本上是丁字路口，Y字路口。
 
-    ![map](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/map.jpg)
+   ![map](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/map.jpg)
 
     我们再从巡线摄像头的角度，看一下这些路口的图像和它的二值图。
-
+    
     2.“半圆法”下的路口
     由于小车在不停的行进中，所以，路口的图像也是在不断变化的。怎样判断前方是一个路口呢？
         - 我们以摄像头所在的位置为圆心，以图像的宽度为半径，在图像上画出一个半圆。
@@ -69,7 +69,7 @@ __init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2)
 ## 一个判别路口的实例
     以下实例演示了怎样初始化FindIntersection，并且在循环中调用该实例方法实现路口的检测，配合CarController的对象
     控制小车做出动作。完整的程序请下载examples路径下的
-    [find_intersection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/find_intersection.py)
+  [find_intersection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/find_intersection.py)
 ```python
 
 ...
@@ -128,6 +128,12 @@ camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口
 ```
 
-
+## 路口判别应该注意的一些问题
+    1.巡线摄像头的上下摆动会严重影响路口的判别，所以在调整FindIntersection实例的参数时，尽量不要去改变摄像头的角度。
+    摄像头的角度并不是越向下越好。
+    2.当场地背景为黑色，引导线为白色时，环境容易受到白光的影响，可以通过调整FindIntersection的参数，减少影响。尽量避
+    免强白光直射场地。
+    3.FindIntersection初始化参数radius，不能超过图像长度的一半。比如320*240，半径不要超过160，否则会出错。
+    4.FindIntersection中repeat_count如果设置过大，会出现计算量大，程序延迟等情况，一般不要超过3.
 
 
