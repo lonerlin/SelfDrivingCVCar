@@ -67,9 +67,10 @@ __init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2)
         :return:路口数量
 ````
 ## 一个判别路口的实例
-    以下实例演示了怎样初始化FindIntersection，并且在循环中调用该实例方法实现路口的检测，配合CarController的对象
-    控制小车做出动作。完整的程序请下载examples路径下的
-  [find_intersection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/find_intersection.py)
+以下实例演示了怎样初始化FindIntersection，并且在循环中调用该实例方法实现路口的检测，配合CarController的对象控制小车做出动作。
+完整的程序请下载examples路径下的[find_intersection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/find_intersection.py) 文件
+
+
 ```python
 
 ...
