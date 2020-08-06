@@ -82,5 +82,5 @@
 - [目标检测。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/object_detection.md)
 - [检测人行横道。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/zebra_crossing.md)
 - [完整程序的结构。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/complete_program.md)
-- 事件驱动方式，让小车控制更为简单。
+- [事件驱动方式，让小车控制更为简单。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/event_driven.md)
 
