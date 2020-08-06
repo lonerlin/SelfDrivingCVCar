@@ -83,12 +83,11 @@ while True:
     ctrl.follow_line(offset)
 
     # 物体探测
-    targets = rc.get_objects()
 
-    if fi.intersection_number == 2 and rc.object_appeared(targets, 1, object_width=40, delay_time=10):  # 看见人的处理程序
+    if fi.intersection_number == 2 and rc.object_appeared(1, object_width=40, delay_time=10):  # 看见人的处理程序
         ctrl.stop(3)
 
-    if fi.intersection_number == 3 and rc.object_appeared(targets, 44, object_width=58, delay_time=10):      # 看见人的处理程序
+    if fi.intersection_number == 3 and rc.object_appeared(44, object_width=58, delay_time=10):      # 看见人的处理程序
         ctrl.bypass_obstacle(0.8, 2.4)
 
     # 路口处理程序

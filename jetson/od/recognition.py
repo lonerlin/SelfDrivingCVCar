@@ -45,13 +45,20 @@ class Recognition(Base):
         else:
             return []
 
-    def object_appeared(self, objcets, appeard_id, object_width=60, delay_time=10):
-
+    def object_appeared(self, appeared_id, object_width_threshold=60, delay_time=10):
+        """
+            根据输入的目标ID，目标宽度，延迟时间 检测所需目标是否出现并符合设定条件。
+            目标ID根据COCO数据集定义。object_appeared用于协助检测对象是否出现。
+        :param appeared_id:需要检测的目标ID
+        :param object_width_threshold:目标的宽度是否超过阈值
+        :param delay_time:两次检测时间间隔（避免重复检测到同一对象）
+        :return:当目标对象出现并符合设定的条件返回TRUE，否则返回FALSE
+        """
+        objs = self.get_objects()     # 写在这里是为了对象检测窗口不卡住，否则可以写在下面的判断里
         self.__timer.interval = delay_time
         if self.__timer.timeout():
-            objs = objcets
             for obj in objs:
-                if obj.class_id == appeard_id and obj.width > object_width:
+                if obj.class_id == appeared_id and obj.width > object_width_threshold:
                     self.__timer.start_time = time.perf_counter()
                     return True
         return False
@@ -64,6 +71,9 @@ class Recognition(Base):
         self.od.join(5)
 
     def execute(self, frame, render_frame_list):
+        """
+        用于事件的触发和返回
+        """
         tmp_list = self.get_objects()
         if tmp_list:
             if not (self.event_function is None):

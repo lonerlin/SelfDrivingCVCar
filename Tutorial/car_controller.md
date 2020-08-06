@@ -126,7 +126,7 @@ while True:
     # 物体探测
     targets = rc.get_objects()
 
-    if fi.intersection_number == 2 and rc.object_appeared(targets, 1, object_width=40, delay_time=10):  # 看见人的处理程序
+    if fi.intersection_number == 2 and rc.object_appeared(1,object_width=40,delay_time=10):  # 看见人的处理程序
         ctrl.stop(3)           # 直接调用
 
     ...

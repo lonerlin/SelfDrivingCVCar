@@ -25,6 +25,10 @@ class Object:
                      '花瓶', '剪刀', '泰迪熊', '头发干燥器', '牙刷']
 
     def __init__(self, detection):
+        """
+            初始化一个Object对象，用户不要手动新建此类的对象
+        :param detection:由ObjectDetection生成
+        """
         self.class_id = detection[0]
         self.name = Object.names[self.class_id]
         self.chinese = Object.chinese_names[self.class_id]
