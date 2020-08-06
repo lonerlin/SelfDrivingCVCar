@@ -31,7 +31,12 @@
     # 录像
     vw.write(line_image)
 ```
-
+- CarController对象有个核心方法update，在每个循环中必须调用一次，否则CarController对象无法完成工作。具体的原因可以参考
+[CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md) 一节。
+```python
+    # CarController在update方法被调用后，才实际控制小车执行动作。
+    ctrl.update()
+```
 ## 销毁对象，释放资源
 最后当比赛结束，退出循环时，你需要做一些收尾的处理工作，销毁对象，释放资源。
 ```python
