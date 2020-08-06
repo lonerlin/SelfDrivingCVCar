@@ -80,7 +80,7 @@
 - [巡线。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/following_line.md)
 - [找到并计算路口。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/intersection.md)
 - [目标检测。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/object_detection.md)
-- 找到斑马线
+- [检测人行横道。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/zebra_crossing.md)
 - 综合任务。
 - 事件驱动方式，让小车控制更为简单。
 
