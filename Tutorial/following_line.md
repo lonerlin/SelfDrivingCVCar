@@ -51,9 +51,9 @@
 ````
 
 ## 一个完整的巡线实例
-    一个完整的巡线程序除了FollowLine，还需调用ShowImage，CarController，CarSerial等类的实例进行配合。FollowLine用于巡线
-    和计算偏移值，CarController通过CarSerial，控制小车马达转动，ShowImage用于屏幕上显示帧。该实例是位于jetson、examples目
-    录下的[following_line.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/following_line.py)
+一个完整的巡线程序除了FollowLine，还需调用ShowImage，CarController，CarSerial等类的实例进行配合。FollowLine用于巡线
+和计算偏移值，CarController通过CarSerial，控制小车马达转动，ShowImage用于屏幕上显示帧。该实例是位于jetson\examples目
+录下的 [following_line.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/following_line.py)
     
 ```python
 
