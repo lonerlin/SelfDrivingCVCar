@@ -48,7 +48,7 @@ while True:
     # PID处理offset后再给CarController是一个选择
     # 简单的可以做如下的处理，当找不到线时，会出现offset=-1000的情况，我们可以不理它当它是0.
     if offset == -1000:
-        offset = p_offset
+        offset = p_offset * 1.5
     else:
         p_offset = offset
 
