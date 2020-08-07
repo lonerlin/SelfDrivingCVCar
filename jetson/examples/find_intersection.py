@@ -63,7 +63,7 @@ while True:
 
     # 此处为路口转弯的处理程序，当检测到一个路口时，is_intersection方法返回True（没有检测到返回False）
     # is_intersection的两个参数第一个是需要查找路口的二值图，第二个是渲染图会在上面画出寻找路口的半圆和路口数
-    if find_inter.is_intersection(image, render_image):
+    if find_inter.is_intersection(image, render_image=render_image):
         # 当检测到路口时，判断当前是否为第一个路口，intersection_number属性记录了从起点开始至当前的路口数
         if find_inter.intersection_number == 1:
             # 执行左转弯动作，时间是1.2秒，由于转弯优先级高于巡线，此时不会执行巡线动作

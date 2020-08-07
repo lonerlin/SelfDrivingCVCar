@@ -85,11 +85,11 @@ class FollowLine(Base):
         :return: 输出渲染后的帧
         """
         start_point = (int(self.width/2), int(self.height-10))
-        cv2.line(frame, (1, self.key_row), (self.width-1, self.key_row), (255, 0, 0), 8, 1)
+        cv2.line(frame, (1, self.key_row), (self.width-1, self.key_row), (0, 255, 0), 2, 1)
         end_point = (int(self.center if self.center != -1000 else self.width/2), self.key_row)
         cv2.circle(frame, end_point, 2, color=(0, 255, 255))
         return cv2.arrowedLine(frame, start_point, end_point, (255, 0, 0),
-                               line_type=cv2.LINE_4, thickness=3, tipLength=0.1)
+                               line_type=cv2.LINE_4, thickness=2, tipLength=0.1)
 
     def execute(self, frame, render_frame_list):
         offset, render_frame_list[0] = self.get_offset(frame, render_frame_list[0])

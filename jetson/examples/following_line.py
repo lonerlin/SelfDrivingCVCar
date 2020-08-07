@@ -23,7 +23,7 @@ display = ShowImage()
 # 对象用于对输入的图形进行二值化（或者灰度），同时对图形进行腐蚀，以去除部分图像噪声。
 # 具体的参数的意义请参考类说明
 # 这里要特别注意，bitwise_not为True时图像颜色进行了反转，对于灰度图，也就是黑变白，白变黑，适合于引导线是黑色的地图。
-init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=60, bitwise_not=True)
+init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=120, bitwise_not=True)
 
 # fl对象用于寻找引导线偏离图像中心的位置，threshold是控制连续白色的的阈值，也就是只有连续多少个白色像素点才认为已经找到引导线
 # direction是开始寻找的方向，True是从左边开始寻找，False是右边。当顺时针绕圈时，引导线大概率出现在右边，所以可以选择False。
@@ -38,6 +38,7 @@ p_offset = 0
 while True:
     ret, frame = camera.read()              # 读取每一帧
     frame = init.resize(frame)              # 把图像缩小，尺寸有ImageInit在初始化时指定
+    display.show(frame, "original")
     image = init.processing(frame)          # 对帧进行处理
 
     # 偏置就是白色线的中心点距离图片中心点的距离，比如320*240的图像，中心点在160

@@ -3,7 +3,7 @@
 ## ImageInit介绍
 无人驾驶小车以地图上的线作为小车行进和转弯的引导线。以摄像头拍摄的每一帧作为巡线的基础。原始的帧是一个320*240RGB图像，
 为了方便引导线位置的提取，必须先对原始的帧进行处理，把它转换成二值图。然后在二值图上寻找出引导线的位置。 </br>
-系统提供了一个[ImageInit](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/cv/image_init.py)类，用于协助把原始帧转换为二值图。
+系统提供了一个 [ImageInit](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/cv/image_init.py) 类，用于协助把原始帧转换为二值图。
 该类的初始化函数如下：
 ```python
      """
