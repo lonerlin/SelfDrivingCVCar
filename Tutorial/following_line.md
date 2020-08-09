@@ -2,7 +2,7 @@
     巡线是机器人比赛最基本的一个任务，就是小车沿着比赛任务场地上特定的线路行走。一般的方法有光电巡线，红外，摄像头等等，
     使用的技术和方法多种多样。智能小车使用摄像头进行巡线，为了与传统的光电巡线比赛进行衔接，降低比赛难度，智能小车的巡
     线任务较为简单，小车行进的路线基本都是直线，行进路线的中间有黑色或白色的引导线。
-    *(点击图片查看小车巡线视频)*
+   *(点击图片查看小车巡线视频)*
 
 
 [![fl_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_all.jpg)](https://www.bilibili.com/video/BV1nV411U7vb/)
