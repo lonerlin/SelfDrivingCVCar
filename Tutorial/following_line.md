@@ -2,16 +2,18 @@
     巡线是机器人比赛最基本的一个任务，就是小车沿着比赛任务场地上特定的线路行走。一般的方法有光电巡线，红外，摄像头等等，
     使用的技术和方法多种多样。智能小车使用摄像头进行巡线，为了与传统的光电巡线比赛进行衔接，降低比赛难度，智能小车的巡
     线任务较为简单，小车行进的路线基本都是直线，行进路线的中间有黑色或白色的引导线。
+    * (点击图片查看小车巡线视频) *
 
-[![fl_main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_main.png)](https://www.bilibili.com/video/BV1nV411U7vb/)
+
+[![fl_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_all.jpg)](https://www.bilibili.com/video/BV1nV411U7vb/)
 
 ## 小车巡线的基本原理
     小车巡线，首先通过巡线摄像头获取场地的图像，通过ImageInit的实例，把图像处理为二值图，然后在二值图中寻找引导线的中心
     点，计算引导线中心点与图像中心点的位置偏差值，最后以这个偏差值为基础，经过比例换算后，作为两个驱动轮速度的差数值，通
     过CarController的follow_line方法，控制左右驱动轮该笔速度，实现巡线。下面通过一个实例，进一步解释巡线的原理和步骤。
 
+![fl_main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_main.png)
 
-![fl_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_all.jpg)
     1.通过巡线摄像头，获取场地图像。
 
    ![fl_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_original.png)
