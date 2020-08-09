@@ -14,19 +14,19 @@
 
     1.通过巡线摄像头，获取场地信息。
 
-    ![fl_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_original.png)
+   ![fl_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_original.png)
 
     2.把一帧图像转换为二值图。
 
-    ![fl_binary_image](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_binary_image.png)
+   ![fl_binary_image](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_binary_image.png)
 
     3.寻找引导线中心点。
 
-    ![fl_render_image](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_render_image.png)
+   ![fl_render_image](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_render_image.png)
 
     4.计算引导线中心点至图像中心点的距离。
 
-    ![fl_offset](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_offset.png)
+   ![fl_offset](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_offset.png)
 
     5.把距离转换为差速值。
     6.驱动左右两个轮子改变转速。
