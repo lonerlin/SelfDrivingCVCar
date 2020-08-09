@@ -3,6 +3,9 @@
 ## ImageInit介绍
 无人驾驶小车以地图上的线作为小车行进和转弯的引导线。以摄像头拍摄的每一帧作为巡线的基础。原始的帧是一个320*240RGB图像，
 为了方便引导线位置的提取，必须先对原始的帧进行处理，把它转换成二值图。然后在二值图上寻找出引导线的位置。 </br>
+*（下图frame窗口是原始图，image窗口是转化后的二值图）*
+![init_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/init_all.png)   
+
 系统提供了一个 [ImageInit](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/cv/image_init.py) 类，用于协助把原始帧转换为二值图。
 该类的初始化函数如下：
 ```python
@@ -29,7 +32,10 @@
 - threshold 这个参数最为重要，需要根据现场的灯光等因素进行必要的调整。
 - kernel_type,iteration 两个参数用于控制干扰。
 为了方便参数的设置，在jetson\examples\路径下,提供了一个实例[resize_parameter_threshold.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/resize_parameter_threshold.py)
-运行该实例，调整参数的进度条，可以在比赛的现场，快捷的找到参数。
+运行该实例，调整参数的进度条，可以在比赛的现场，快捷的找到参数。   
+*(点击下图查看视频)*   
+    
+[![init_threshold](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/init_threshold.png)](https://www.bilibili.com/video/BV1L64y1c74M/)
 
 ## 使用ImageInit
 ImageInit的使用非常简单，只需要在程序的开始处新建并初始化该类的一个实例，然后在帧循环中调用processing方法。
