@@ -136,5 +136,7 @@ while True:
 完整的实例，可以参考实例[main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py),
 或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/car_main.py)
 
-
+## 使用CarController注意事项
+1. 最重要的一点是在每一帧循环的最后，必须调用update方法，否则CarController无法正常工作。
+2. 要留意优先级的问题，同一时间内执行两个优先级不同的动作，只有优先级高的动作得到执行。
  
