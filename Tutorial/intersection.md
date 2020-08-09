@@ -20,21 +20,21 @@
         - 我们以摄像头所在的位置为圆心，以图像的宽度为半径，在图像上画出一个半圆。
         - 我们在半圆上寻找连续的白点，当连续的白点超过阈值时，我们认为它是一个分支。如果我们找到多组白点，那么可以认为
           在前方具有多少个分支。   
-   ![inter_semicircle](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/semicircle.png)
-   ![inter_semicircle2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/semicircle2.png)    
+   ![inter_semicircle](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_semicircle.png)
+   ![inter_semicircle2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_semicircle2.png)    
    
     3.“夹角”与路口距离
         - 在检测到两组以上的白线时，我们通过计算两组白线中心点的夹角，可以初略的测算小车当前位置到交叉路口的距离。当小车
           距离路口较远时，夹角较小，而当小车较为靠近路口时，夹角会大一点。    
-   ![inter_semicircle2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/semicircle2.png)
-   ![inter_semicircle3](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/semicircle3.png)    
+   ![inter_semicircle2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_semicircle2.png)
+   ![inter_semicircle3](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_semicircle3.png)    
           
     4. 抗干扰的一些方法
         摄像头巡线，通常无可避免会有一些干扰，我们通过设置连续白点的阈值（此处原理跟寻找引导线阈值是一样的），来避免一些
         白点的干扰。另外，改变圆心的位置，重复检测，来提高检测路口的成功率。（以上种方式对应于FindIntersection类构造
         函数中的threeshold，repeat_count参数）    
-   ![inter_repeat](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/repeat.png)
-   ![inter_repeat2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/repeat2.png)   
+   ![inter_repeat](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_repeat.png)
+   ![inter_repeat2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_repeat2.png)   
    
     5. 避免重复检测路口
         小车经过一个路口，需要一定的时间，假设为5秒，在5秒的时间内，程序会多次检测这一个路口（假设每秒10帧，就是有50次），
