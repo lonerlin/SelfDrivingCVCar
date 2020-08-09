@@ -5,9 +5,10 @@
 
 ## 斑马线识别的实现
 斑马线识别技术较为简单，我们利用OpenCV技术，参考巡线寻找引导线的方法，在帧中寻找一组连续黑白间隔的线。我们设置一个阈值，当帧中发
-现有4组以上黑白相间的线时，我们认为这是斑马线。参考下图。小车可以执行减速或者让行的动作。
-【此处参入斑马线二值图】
+现有4组以上黑白相间的线时，我们认为这是斑马线。参考下图。小车可以执行减速或者让行的动作。   
 
+![zebra_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_original.png)
+![zebra_line](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_line.png)
 ## FindZebraCrossing的使用
 系统封装了FindZebraCrossing类，用于实现斑马线的的寻找和判断。使用该类非常简单，只需要在初始化时设定白线阈值（参考巡线时的白线
 阈值），白线组数的下限。然后在循环中调用实例方法find，当找到符合条件的一组线时，find返回TRUE，否则返回False。详细的方向说明如
