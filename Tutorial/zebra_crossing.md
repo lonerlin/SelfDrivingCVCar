@@ -1,11 +1,11 @@
 # 人行横道的检测
 根据比赛任务的要求，在比赛中会出现1~2处人行横道,比赛场地上有斑马线标志。小车经过斑马线时必须减速，如果检测到行人，必须停车让行。
-这是一个综合的任务，一是要检测到斑马线，而是要检测斑马线上是否有行人。   
+这是一个综合的任务，一是要检测到斑马线，二是要检测斑马线上是否有行人。   
 本文介绍的是如何识别斑马线，如何识别行人请参考[目标检测](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/object_detection.md)
 
 ## 斑马线识别的实现
 斑马线识别技术较为简单，我们利用OpenCV技术，参考巡线寻找引导线的方法，在帧中寻找一组连续黑白间隔的线。我们设置一个阈值，当帧中发
-现有4组以上黑白相间的线时，我们认为这是斑马线。参考下图。小车可以执行减速或者让行的动作。   
+现有3组以上黑白相间的线时，我们认为这是斑马线。参考下图。小车可以执行减速或者让行的动作。   
 
 ![zebra_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_original.png)
 ![zebra_line](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_line.png)

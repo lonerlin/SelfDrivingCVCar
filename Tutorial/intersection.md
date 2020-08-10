@@ -6,8 +6,9 @@
 比起在一帧图像中寻找引导线的中心点，路口的判别更加困难。尝试了houghlines函数寻找线，快速特征检测器等方法后，发现效果不
 好。最后，还是自己想办法，写了一个简单的算法。下面解释该算法的实现的过程：    
 
-    1 场地中路口的几种路口
-    如下图所示，比赛场地的路口基本上是丁字路口，Y字路口。
+    1 场地的几种路口   
+         
+    如下图红色圆圈所示，比赛场地的路口基本上是丁字路口，Y字路口。
 
    ![map](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/map.jpg)
 
@@ -18,7 +19,7 @@
    
     2.“半圆法”下的路口
     由于小车在不停的行进中，所以，路口的图像也是在不断变化的。怎样判断前方是一个路口呢？
-        - 我们以摄像头所在的位置为圆心，以图像的宽度为半径，在图像上画出一个半圆。
+        - 我们以图像的中心线和距离图像下边缘10个像素的横线交叉位置点为圆心，以略小于图像宽度的一半宽度为半径，在图像上画出一个半圆。
         - 我们在半圆上寻找连续的白点，当连续的白点超过阈值时，我们认为它是一个分支。如果我们找到多组白点，那么可以认为
           在前方具有多少个分支。   
    ![inter_semicircle](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_semicircle.png)
@@ -34,6 +35,7 @@
         摄像头巡线，通常无可避免会有一些干扰，我们通过设置连续白点的阈值（此处原理跟寻找引导线阈值是一样的），来避免一些
         白点的干扰。另外，改变圆心的位置，重复检测，来提高检测路口的成功率。（以上种方式对应于FindIntersection类构造
         函数中的threeshold，repeat_count参数）    
+        下图展示了重复不同次数时（repeat_count值），半圆的位置和路口的指示。    
    ![inter_repeat](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_repeat.png)
    ![inter_repeat2](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/inter_repeat2.png)   
    
