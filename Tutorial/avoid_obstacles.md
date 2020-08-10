@@ -41,6 +41,10 @@ __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1)
     
 
 ```
+在examples目录下，有一个实例[resize_parameter_find_roadblock.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/resize_parameter_find_roadblock.py)
+演示了怎样调整HSV颜色的上下限，以便利用巡线摄像头快速找到颜色块，比赛现场，运行该实例，可以快速找到FindRoadBlock的初始化参数。  
+
+
 ## 避障动作
 系统在CarController中提供了一个方法bypass_obstacle，它会一共一个两阶段的避障动作，第一个阶段为绕开障碍物，第二阶段为回归到中线，你只需要
 设置第一阶段和第二阶段的参数，其它的工作由CarController完成，如果你对这个简单的避障方法不满意，你可以使用CarController提供的一个复杂的方法
