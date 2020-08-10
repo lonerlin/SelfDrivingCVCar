@@ -30,7 +30,8 @@
 在类的初始化时，有两个参数需要根据实际的地图和环境进行调整。
 - bitwise_not 这个参数用于控制黑白的翻转，当地图引导线为黑色时，这个参数必须为TRUE。
 - threshold 这个参数最为重要，需要根据现场的灯光等因素进行必要的调整。
-- kernel_type,iteration 两个参数用于控制干扰。
+- kernel_type,iteration 两个参数用于控制干扰。    
+
 为了方便参数的设置，在jetson\examples\路径下,提供了一个实例[resize_parameter_threshold.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/resize_parameter_threshold.py)
 运行该实例，调整参数的进度条，可以在比赛的现场，快捷的找到参数。   
 *(点击下图查看视频)*   
