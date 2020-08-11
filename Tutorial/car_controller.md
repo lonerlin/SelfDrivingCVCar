@@ -136,7 +136,62 @@ while True:
 完整的实例，可以参考实例[main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py),
 或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/car_main.py)
 
+
+## 动作组合问题
+CarController提供的巡线，直行，转弯，暂停，避障等动作能满足大多数情况下的动作需要。某些情况下，你可能需要很复杂的动作组合，或者
+需要对两个轮子进行比较细致的控制，这时可以使用CarController提供的group方法。group方法能够根据你提供的基本动作列表，完成复杂的
+动作组合。    
+在car目录下的Car_controller.py文件中，提供了一个辅助类，BaseControl，它更像是C语言中的结构体。具体代码如下：
+```python
+class BaseControl:
+    """
+        一个用于保存马达速度和延迟时间的类
+    """
+    def __init__(self, left_speed=100, right_speed=100, delay_time=1):
+        """
+            初始化
+        :param left_speed: 左马达速度
+        :param right_speed: 右马达速度
+        :param delay_time: 延迟时间
+        """
+        self.left_speed = left_speed
+        self.right_speed = right_speed
+        self.delay_time = delay_time
+```
+它提供了三个属性，分别是左右轮速度，执行时间。使用group方法时，你必须先构建一个存放BaseControl实例的列表，把该列表作为group的
+输入参数。group会根据动作添加的先后顺序，很执行时间，执行相应的动作。我们看一下具体的实例：
+```python
+
+...
+
+# 新建一个计时器对象，设定他的计时时间为30秒
+timer = CarTimer(interval=20)
+
+# 创建一个列表用于存储马达动作组合的列表
+control_list = []
+
+# 按需要控制的顺序，添加各种马达速度和执行时间
+control_list.append(BaseControl(100, 100, 5))     # 直走5秒
+control_list.append(BaseControl(0, 150, 2))        # 左转 2秒
+control_list.append(BaseControl(0, 0, 2))          # 暂停2秒
+control_list.append(BaseControl(150, 0, 2))        # 右转2秒
+control_list.append(BaseControl(-100, -100, 5))   # 后退5秒
+control_list.append(BaseControl(0, 0, 2))          # 停车
+
+controller.group(control_list)
+# 当时间未到时循环
+while not timer.timeout():
+
+    controller.update()     # CarController的update方法必须在每次循环中调用，才能更新任务列表
+    time.sleep(0.05)        # 模拟每秒20帧
+
+...
+
+```
+从上面的实例可以看到，我们先构建了一个列表control_list,然后先列表中添加了一些BaseControl的实例，最后，我们调用controller对象的
+group方法，并把control_list作为group的参数。 而在循环中，只需要调用control的update().完整的实例请查看[CarController_Group.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/CarController_Group.py)
+
 ## 使用CarController注意事项
 1. 最重要的一点是在每一帧循环的最后，必须调用update方法，否则CarController无法正常工作。
 2. 要留意优先级的问题，同一时间内执行两个优先级不同的动作，只有优先级高的动作得到执行。
- 
+3. group方法较为复杂，建议优先使用各种简单的动作函数。 

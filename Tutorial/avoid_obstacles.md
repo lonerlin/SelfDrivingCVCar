@@ -49,6 +49,6 @@ __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1)
 系统在CarController中提供了一个方法bypass_obstacle，它会一共一个两阶段的避障动作，第一个阶段为绕开障碍物，第二阶段为回归到中线，你只需要
 设置第一阶段和第二阶段的参数，其它的工作由CarController完成，如果你对这个简单的避障方法不满意，你可以使用CarController提供的一个复杂的方法
 group，这两个方法的详细说明，请参考[CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
-
+也可以查看examples路径下的[CarController_Group.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/CarController_Group.py) 实例。
 ## 一个简单的避障实例
 
