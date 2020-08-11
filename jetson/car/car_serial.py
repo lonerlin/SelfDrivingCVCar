@@ -29,8 +29,10 @@ class CarSerial:
         self.Baud_rate = baud_rate
         self.ser = serial.Serial(self.Port, self.Baud_rate)
         if receive:
-            t = threading.Thread(target=self.listen, daemon=True)
+            t = threading.Thread(target=self.listen, daemon=True, args=(receive,))
             t.start()
+        else:
+            self.ser.write('90000000')
 
     def write(self, text):
         """
@@ -48,7 +50,7 @@ class CarSerial:
         if self.ser.isOpen():
             self.ser.close()
 
-    def listen(self):
+    def listen(self, temp):
         """
             监听Arduino端口发回的信息。
         """

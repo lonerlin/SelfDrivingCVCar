@@ -18,6 +18,7 @@ int angle = 90;
 int start_angle=angle;
 int left,right;
 String inStr="";
+bool is_Send=false;
 
 Servo servo1;
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
@@ -56,15 +57,24 @@ void loop() {
     if(inStr!="" && inStr.length()==8 )
     {
        int tmp;
-       Serial.print("string:");
-       Serial.println(inStr);
+       if(is_Send)
+       {
+            Serial.print("string:");
+            Serial.println(inStr);
+       }
        inStr = inStr + "";
-
+       if(inStr.substring(0,1)=="9")
+       {
+            is_Send=true;
+       }
        if(inStr.substring(0,1)=="2")
        {
           angle = inStr.substring(1,4).toInt();
-          Serial.print("angle:");
-          Serial.print(angle);
+          if(is_Send)
+          {
+            Serial.print("angle:");
+            Serial.print(angle);
+          }
           servo_move(servo1,start_angle,angle);
           start_angle=angle;
           
@@ -72,21 +82,24 @@ void loop() {
        else
        {
          tmp =inStr.substring(0,4).toInt();
-         Serial.println(tmp);
+         //Serial.println(tmp);
          if(tmp /1000 >0)left=-tmp%1000;
          else left=tmp%1000;
   
          //右边取余
          tmp =inStr.substring(4,8).toInt();
-         Serial.println(tmp);
+         //Serial.println(tmp);
          if(tmp/1000>0)right=-tmp%1000;
          else  right=tmp%1000;
          
          mc.Motor(left,right);
-         Serial.print("left:");
-         Serial.println(left);
-         Serial.print("right:");
-         Serial.println(right);
+         if (is_Send)
+         {
+            Serial.print("left:");
+            Serial.println(left);
+            Serial.print("right:");
+            Serial.println(right);
+         }
        }
        inStr="";
     }
