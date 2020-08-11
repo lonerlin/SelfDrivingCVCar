@@ -51,4 +51,10 @@ __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1)
 group，这两个方法的详细说明，请参考[CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md)
 也可以查看examples路径下的[CarController_Group.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/CarController_Group.py) 实例。
 ## 一个简单的避障实例
+下面我们以在路中间设置一个瓶子，来看一下怎样让小车进行避障。
+【插入图片】
+我们还是使用巡线实例 [following_line.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/following_line.py) 作为基本的程序框架.
+然后添加Recognition的对象，利用原来的CarController对象，通过这两个对象实现瓶子的识别和绕过障碍物的动作。
+```python
 
+```
