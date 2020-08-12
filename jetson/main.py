@@ -13,9 +13,9 @@ from car.car_timer import CarTimer
 from cv.show_images import ShowImage
 
 # region 设置参数
-LINE_CAMERA = '/dev/video1'      # 巡线摄像头
-OD_CAMERA = '/dev/video0'        # 物体检测摄像头
-SERIAL = "/dev/ttyUSB0"          # 串口
+LINE_CAMERA = '/dev/video0'      # 巡线摄像头
+OD_CAMERA = '/dev/video1'        # 物体检测摄像头
+SERIAL = "/dev/ttyACM0"          # 串口
 
 LINE_CAMERA_WIDTH = 320          # 巡线视频高度
 LINE_CAMERA_HEIGHT = 240         # 巡线视频宽度

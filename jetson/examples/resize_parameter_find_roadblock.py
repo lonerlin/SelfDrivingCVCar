@@ -11,7 +11,7 @@ import sys
 sys.path.append('..')
 from cv.find_roadblock import FindRoadblock
 
-CAMERA = '/dev/video1'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
+CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
 camera = cv2.VideoCapture(CAMERA)    # 新建摄像头视频VideoCapture对象
 fr = fr = FindRoadblock(0, 138, 147, 255, 0, 135, 0.3)  # 初始化FindRoadblock对象

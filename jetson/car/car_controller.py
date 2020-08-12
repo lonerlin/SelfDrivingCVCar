@@ -62,8 +62,8 @@ class CarController:
 
         if self.__function_timer.duration() < first_delay_time:
             self.__serial.drive_motor(50, -200)
-        elif first_delay_time < self.__function_timer.duration() < first_delay_time+1:
-            self.__serial.drive_motor(100, 100)
+        elif first_delay_time < self.__function_timer.duration() < first_delay_time+1.5:
+            self.__serial.drive_motor(self.base_speed, self.base_speed)
         else:
             self.__serial.drive_motor(50, 200)
 
@@ -136,7 +136,7 @@ class CarController:
         :param second_delay_time: 回归主线的运行时间
         """
         self.__function_timer.restart()
-        ct = CarTimer(interval=first_delay_time + second_delay_time + 1)
+        ct = CarTimer(interval=first_delay_time + second_delay_time + 1.5)
         self.task_list.append(CarTask(name="bypass", activated=True, priority=2, timer=ct, work=self.__bypass_obstacle,
                                       first_delay_time=first_delay_time, second_delay_time=second_delay_time))
 

@@ -11,8 +11,18 @@ from cv.follow_line import FollowLine
 from car.car_controller import CarController
 from car.car_serial import CarSerial
 from od.recognition import Recognition
+from cv.find_roadblock import FindRoadblock
 SERIAL = "/dev/ttyACM0"     # 串口
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
+
+OD_CAMERA = '/dev/video1'        # 物体检测摄像头
+OD_CAMERA_WIDTH = 320            # 识别视频高度
+OD_CAMERA_HEIGHT = 240           # 识别视频高度
+
+# 新建一个识别对象，用于识别操作，程序中的识别对象只能有一个
+# 指定设备，指定窗口的宽度和高度，是否打开识别显示窗口（默认是打开）
+recognition = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, display_window=True)
+
 
 camera = cv2.VideoCapture(CAMERA)
 
@@ -33,16 +43,10 @@ fl = FollowLine(width=320, height=240, threshold=15, direction=False)
 serial = CarSerial(SERIAL, receive=False)
 # 此类并没有实现PID控制，而是简单的使用了比例这个参数。（现在这么简单的地图还无需用到PID）
 # 如果需要使用PID可以直接调用car目录下的pid类，同时把此类的比例参数设置为1
-ctrl = CarController(serial, proportional=0.4)
+ctrl = CarController(serial, base_speed=150, proportional=0.4)
 p_offset = 0
 
-OD_CAMERA = '/dev/video1'        # 物体检测摄像头
-OD_CAMERA_WIDTH = 640            # 识别视频高度
-OD_CAMERA_HEIGHT = 480           # 识别视频高度
-
-# 新建一个识别对象，用于识别操作，程序中的识别对象只能有一个
-# 指定设备，指定窗口的宽度和高度，是否打开识别显示窗口（默认是打开）
-#recognition = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, display_window=True)
+findRoadblock = FindRoadblock(h_low=0, h_high=100, s_low=0, s_high=159, v_low=80, v_high=255, threshold=0.2)
 
 while True:
     ret, frame = camera.read()              # 读取每一帧
@@ -64,10 +68,14 @@ while True:
 
     ctrl.follow_line(offset)
 
-    # 添加识别
-    # if recognition.object_appeared(appeared_id=44):
-    #     ctrl.bypass_obstacle(3, 3)
-    # recognition.get_objects()
+    # 利用目标检测，发现水瓶，并绕过水瓶
+    if recognition.object_appeared(appeared_id=44, object_width_threshold=40):
+        ctrl.bypass_obstacle(1.3, 4.5)
+
+    # 利用HSV阈值，发现单一色彩物体，绕过障碍物
+    if findRoadblock.find(frame):
+        ctrl.bypass_obstacle(1.3, 4.8)
+
     display.show(image, "image")         # 显示处理后的帧
     display.show(render_image, "frame")  # 在屏幕上的frame窗口显示渲染后的图像（此处的渲染就是在屏幕上画出中心点的位置）
     ctrl.update()   # controller实际控制执行函数，循环中必须调用才能正常使用controller
@@ -75,7 +83,7 @@ while True:
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
         break
-# recognition.close()
+recognition.close()
 ctrl.stop()                             # 停车
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口

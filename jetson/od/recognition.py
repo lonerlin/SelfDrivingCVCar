@@ -81,7 +81,7 @@ class Recognition(Base):
 
 
 if __name__ == '__main__':
-    reco = Recognition(device="/dev/video0", width=640, height=480)
+    reco = Recognition(device="/dev/video1", width=320, height=240)
     begin = time.time()
 
     while time.time() - begin < 60:

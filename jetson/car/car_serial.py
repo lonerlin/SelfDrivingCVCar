@@ -29,10 +29,11 @@ class CarSerial:
         self.Baud_rate = baud_rate
         self.ser = serial.Serial(self.Port, self.Baud_rate)
         if receive:
+
             t = threading.Thread(target=self.listen, daemon=True, args=(receive,))
             t.start()
-        else:
-            self.ser.write('90000000')
+            time.sleep(0.1)
+            self.ser.write('90000000')            # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
 
     def write(self, text):
         """
