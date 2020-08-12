@@ -32,8 +32,9 @@ class CarSerial:
 
             t = threading.Thread(target=self.listen, daemon=True, args=(receive,))
             t.start()
-            time.sleep(0.1)
-            self.ser.write('90000000')            # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
+
+            time.sleep(0.5)
+            self.write('91234567')            # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
 
     def write(self, text):
         """

@@ -40,7 +40,7 @@ p_offset = 0
 # 新建一个FindIntersection对象，使用默认的设置参数
 # radius = 140 半径140 ；threshold = 3 连续白点为三个以上判断为线；repeat_count = 2 使用两个圆心，重复检测两次;
 # delay_time = 10 检测到路口后，等待10秒开始第二次检测 ;
-find_inter = FindIntersection()
+find_inter = FindIntersection(delay_time=3)
 
 while True:
     ret, frame = camera.read()              # 读取每一帧
@@ -67,10 +67,12 @@ while True:
         # 当检测到路口时，判断当前是否为第一个路口，intersection_number属性记录了从起点开始至当前的路口数
         if find_inter.intersection_number == 1:
             # 执行左转弯动作，时间是1.2秒，由于转弯优先级高于巡线，此时不会执行巡线动作
-            ctrl.turn(True, delay_time=1.2)
-        else:
-            # 如果当前不是第一个路口，执行右转弯，时间也是1.2秒
-            ctrl.turn(False, delay_time=1.2)
+            ctrl.turn(True, delay_time=2)
+        if find_inter.intersection_number == 3:
+            # 如果第三个路口，执行右转弯，时间也是2秒
+            ctrl.turn(False, delay_time=2)
+        if find_inter.intersection_number == 5:
+            ctrl.stop()
 
     display.show(image, "image")         # 显示处理后的帧
     display.show(render_image, "frame")  # 在屏幕上的frame窗口显示渲染后的图像（此处的渲染就是在屏幕上画出中心点的位置）
