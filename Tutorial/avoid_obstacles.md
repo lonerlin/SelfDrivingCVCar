@@ -42,7 +42,8 @@ __init__(self, h_low, h_high, s_low, s_high, v_low, v_high, threshold=0.1)
 
 ```
 在examples目录下，有一个实例[resize_parameter_find_roadblock.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/resize_parameter_find_roadblock.py)
-演示了怎样调整HSV颜色的上下限，以便利用巡线摄像头快速找到颜色块，比赛现场，运行该实例，可以快速找到FindRoadBlock的初始化参数。   
+演示了怎样调整HSV颜色的上下限，以便利用巡线摄像头快速找到颜色块，比赛现场，运行该实例，可以快速找到FindRoadBlock的初始化参数。 
+*（点击图片查看对应的调试视频）*  
 [![ob_resize](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/ob_resize.png)](https://www.bilibili.com/video/BV14f4y197KU) 
 
 
