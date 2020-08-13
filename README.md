@@ -34,8 +34,10 @@
     - Recognition：对象检测的封装
 - examples
     - arduino_comunication： 演示了jetson nano 通过 Arduino 驱动小车的马达和舵机。
+    - bypass_obstacle: 演示了两种识别障碍物的方式，小车绕过障碍物。
     - CarController_Group： 演示了CarController中group方法的使用。
     - display_multiple_windows： 展示了使用cv包中ImageInit对象的使用方法，同时利用了该保重的ShowImages对象显示多个窗口。
+    - find_intersection: 演示了路口的识别，记录和转弯，停车。
     - following_line： 演示了小车巡线的基本方法。
     - object_detection： 演示了怎样进行对象检测。
     - open_camera：演示了怎样使用Opencv打开摄像头。
@@ -69,6 +71,7 @@
     ```
     如果能够顺利打开摄像头，显示窗口，恭喜你，可以开始玩车了。
 ***
+
 ## 详细教程
 - [怎样查看并找到硬件文件。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/find_devices.md)
 - [使用OpenCV打开摄像头。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/open_camera.md)
