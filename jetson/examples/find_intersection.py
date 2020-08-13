@@ -70,7 +70,7 @@ while True:
             ctrl.turn(True, delay_time=2)
         if find_inter.intersection_number == 3:
             # 如果第三个路口，执行右转弯，时间也是2秒
-            ctrl.turn(False, delay_time=2)
+            ctrl.turn(False, delay_time=1.7)
         if find_inter.intersection_number == 5:
             ctrl.stop()
 
