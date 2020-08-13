@@ -73,6 +73,7 @@
 ***
 
 ## 详细教程
+- [基础知识要求](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/basic_knowledge.md)
 - [怎样查看并找到硬件文件。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/find_devices.md)
 - [使用OpenCV打开摄像头。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/open_camera.md)
 - [把输入的图像转换为可以提取信息的二值图。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/init_frame.md)
