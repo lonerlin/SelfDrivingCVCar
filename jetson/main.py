@@ -147,7 +147,7 @@ while True:
 
     si.show(line_image, "line")
     # 录像
-    # vw.write(line_image)
+    # vw._write(line_image)
 
     # 打印帧速率
     frame_rate_calc = 1 / timer.duration()

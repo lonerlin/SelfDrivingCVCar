@@ -32,10 +32,10 @@ class CarSerial:
             time.sleep(0.5)
             self.ser.write("90000000\n".encode("ascii"))  # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
 
-            t = threading.Thread(target=self.listen, daemon=True)
+            t = threading.Thread(target=self._listen, daemon=True)
             t.start()
 
-    def write(self, text):
+    def _write(self, text):
         """
             发送信息
         :param text: 信息字符串
@@ -51,11 +51,11 @@ class CarSerial:
         if self.ser.isOpen():
             self.ser.close()
 
-    def listen(self):
+    def _listen(self):
         """
             监听Arduino端口发回的信息。
         """
-        print("listen start:")
+        print("_listen start:")
         while 1:
             try:
                 print("read:", self.ser.readline().decode("ascii"))
@@ -69,7 +69,7 @@ class CarSerial:
                 pass
 
     @staticmethod
-    def build_motors_string(left, right):
+    def _build_motors_string(left, right):
         """
             用于生成发送给Arduino串口的一串信息八位字符串“12550255”左四位表示左马达，右四位表示右马达。
             四位中的第一位0表示正转，1表示反转，后三位表示马达速度。
@@ -97,7 +97,7 @@ class CarSerial:
         :param left: 左马达速度（-255,255）
         :param right: 右马达速度（-255,255）
         """
-        self.write(self.build_motors_string(int(left), int(right)))
+        self._write(self._build_motors_string(int(left), int(right)))
 
     def drive_servo(self, angle):
         """
@@ -107,7 +107,7 @@ class CarSerial:
         tmp_str = "2"
         tmp_str += str(abs(angle)).zfill(3)
         tmp_str += "2090"
-        self.write(tmp_str)
+        self._write(tmp_str)
 
 
 if __name__ == '__main__':

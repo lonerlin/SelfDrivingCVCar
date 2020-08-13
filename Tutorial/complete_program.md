@@ -29,7 +29,7 @@
     # 显示line_image帧
     si.show(line_image, "line")
     # 录像
-    vw.write(line_image)
+    vw._write(line_image)
 ```
 - CarController对象有个核心方法update，在每个循环中必须调用一次，否则CarController对象无法完成工作。具体的原因可以参考
 [CarController，控制的核心。](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/car_controller.md) 一节。
