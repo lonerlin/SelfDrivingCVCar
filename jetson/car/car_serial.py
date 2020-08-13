@@ -29,12 +29,11 @@ class CarSerial:
         self.Baud_rate = baud_rate
         self.ser = serial.Serial(self.Port, self.Baud_rate)
         if receive:
-
-            t = threading.Thread(target=self.listen, daemon=True, args=(receive,))
-            t.start()
-
             time.sleep(0.5)
-            self.write('91234567')            # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
+            self.ser.write("90000000\n".encode("ascii"))  # 发送“90000000”，开启调试模式，Arduino发送串口信息给jetson nano
+
+            t = threading.Thread(target=self.listen, daemon=True)
+            t.start()
 
     def write(self, text):
         """
@@ -42,7 +41,7 @@ class CarSerial:
         :param text: 信息字符串
         """
         text += "\n"
-        self.ser.write(text.encode("utf-8"))
+        self.ser.write(text.encode("ascii"))
         self.ser.flush()
 
     def close(self):
@@ -52,12 +51,22 @@ class CarSerial:
         if self.ser.isOpen():
             self.ser.close()
 
-    def listen(self, temp):
+    def listen(self):
         """
             监听Arduino端口发回的信息。
         """
+        print("listen start:")
         while 1:
-            print("read:", self.ser.readline())
+            try:
+                print("read:", self.ser.readline().decode("ascii"))
+            except serial.SerialException as e:
+                # There is no new data from serial port
+                print("Error:serial.SerialException")
+            except TypeError as e:
+                print("Error:serial.TypeError")
+                return None
+            else:
+                pass
 
     @staticmethod
     def build_motors_string(left, right):

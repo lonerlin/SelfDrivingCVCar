@@ -24,10 +24,11 @@ Servo servo1;
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
+  pinMode(13, OUTPUT);
   left=0;
   right=0;
   mc.Motor(left,right);
- Serial.begin(115200);
+  Serial.begin(115200);
   while(!Serial){;}
 
    servo1.attach( 9, 600, 2400 );
@@ -66,6 +67,7 @@ void loop() {
        if(inStr.substring(0,1)=="9")
        {
             is_Send=true;
+            digitalWrite(13,HIGH);
        }
        if(inStr.substring(0,1)=="2")
        {
@@ -73,7 +75,7 @@ void loop() {
           if(is_Send)
           {
             Serial.print("angle:");
-            Serial.print(angle);
+            Serial.println(angle);
           }
           servo_move(servo1,start_angle,angle);
           start_angle=angle;
