@@ -1,6 +1,7 @@
 # 自动驾驶视觉小车
 
 利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。
+[![main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/main.png)](https://www.bilibili.com/video/BV12v411v7hy/)
 整个系统包括：
 - 两个摄像头作为输入,其中一个摄像头负责巡线任务，另外一个摄像头负责目标检测任务。
 - 使用jetson nano作为主控。
