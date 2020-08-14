@@ -9,7 +9,7 @@
 - 使用jetson nano作为主控。
 - 使用一块Arduino控制小车的走动等各种动作。
 - jetson nano 和 Arduino 两者使用串口进行通信。
-***   
+
 ## 依赖
 - jetson nano
     - Opencv 4
@@ -17,7 +17,7 @@
     - python 3
     - pyserial
 - Arduino uno
-***    
+ 
 ## 目录结构   
 ### jetson   
 - car
@@ -53,7 +53,7 @@
 ### Arduino
 - cvCar
     - bridge：连接jetson，根据串口传输的控制指令，对小车进行控制。
-***
+
 ## 如何开始
 - 硬件的搭建和系统配置（略）
 - 上传程序到Arduino
@@ -73,7 +73,7 @@
     sudo python3 open_camera.py
     ```
     如果能够顺利打开摄像头，显示窗口，恭喜你，可以开始玩车了。
-***
+
 
 ## 详细教程
 - [基础知识要求](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/basic_knowledge.md)
