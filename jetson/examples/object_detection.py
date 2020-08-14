@@ -8,8 +8,8 @@ from od.recognition import Recognition
 from car.car_timer import CarTimer
 
 OD_CAMERA = '/dev/video1'        # 物体检测摄像头
-OD_CAMERA_WIDTH = 320            # 识别视频高度
-OD_CAMERA_HEIGHT = 240           # 识别视频高度
+OD_CAMERA_WIDTH = 640            # 识别视频高度
+OD_CAMERA_HEIGHT = 480           # 识别视频高度
 
 # 新建一个识别对象，用于识别操作，程序中的识别对象只能有一个
 # 指定设备，指定窗口的宽度和高度，是否打开识别显示窗口（默认是打开）

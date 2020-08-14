@@ -28,7 +28,7 @@ p_offset = 0
 
 # region 新立需要的各种对象
 # 串口通信对象
-serial = CarSerial(port=SERIAL, receive=False)
+serial = CarSerial(port=SERIAL, receive=True)
 # 小车控制器
 ctrl = CarController(car_serial=serial, base_speed=80)
 # 识别对象
@@ -83,6 +83,7 @@ while True:
     ctrl.follow_line(offset)
 
     # 物体探测
+    rc.get_objects()
 
     if fi.intersection_number == 2 and rc.object_appeared(1, object_width=40, delay_time=10):  # 看见人的处理程序
         ctrl.stop(3)
