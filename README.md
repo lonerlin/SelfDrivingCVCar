@@ -1,13 +1,15 @@
 # 自动驾驶视觉小车
 
-利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。
-[![main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/main.png)](https://www.bilibili.com/video/BV12v411v7hy/)
+利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。   
+
+[![main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/main.png)](https://www.bilibili.com/video/BV12v411v7hy/)   
+
 整个系统包括：
 - 两个摄像头作为输入,其中一个摄像头负责巡线任务，另外一个摄像头负责目标检测任务。
 - 使用jetson nano作为主控。
 - 使用一块Arduino控制小车的走动等各种动作。
 - jetson nano 和 Arduino 两者使用串口进行通信。
-***
+***   
 ## 依赖
 - jetson nano
     - Opencv 4
@@ -15,9 +17,9 @@
     - python 3
     - pyserial
 - Arduino uno
-***
-## 目录结构
-### jetson
+***    
+## 目录结构   
+### jetson   
 - car
     - CarController ： 核心类，控制车子的马达，舵机
     - CarSerial：封装了与Arduino的通信
