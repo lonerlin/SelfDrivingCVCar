@@ -2,10 +2,8 @@
 为了测试，调试小车，通常需要显示多个视频窗口，OpenCV提供了imshow函数来显示窗口。如果你直接调用imshow显示多个窗口的话，
 所有的窗口会叠加在一起，为了简化程序，系统提供了ShowImage类，用于多窗口的显示，该类会按默认的位置显示窗口，避免窗口的叠加。
 调用非常简单，只需要在初始化后，调用show函数,。</br>
-[display_windows](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/dp_windows.png)
-
-
-
+  ![display_windows](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/dp_windows.png)    
+ 
 show函数需要两个参数
 - frame: 显示的图（帧）
 - window_name: 窗口名字   
