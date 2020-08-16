@@ -18,7 +18,8 @@ def convert_docx():
     copy_all(source_path, target_path)
     file_list = get_files(target_path, ".md")
     for file_name in file_list:
-        replace(file_name, "https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/", "pic/")
+        replace(file_name, "https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/",
+                "H:\\doc\\Tutorial\\pic\\")
         pypandoc.convert_file(file_name, "docx", outputfile=os.path.splitext(file_name)[0] + ".docx")
 
 def copy_all(source_path, target_path):
@@ -40,11 +41,11 @@ def get_files(target_path, suffix):
 
 
 def replace(file, old, new):
-    f = open(file, 'r', encoding='utf-8')
+    f = open(file, 'r', encoding="utf-8")
     content = f.read()
     f.close()
     t = content.replace(old, new)
-    with open(file, "w", encoding='utf-8') as f1:
+    with open(file, "w", encoding="utf-8") as f1:
         f1.write(t)
 
 
