@@ -12,16 +12,23 @@ sys.path.append("..")
 
 
 def convert_docx():
-    source_path = os.path.abspath(os.path.join(os.getcwd(), "../..")) + "\\Tutorial"
-    print(source_path)
+    source_path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
     target_path = "H:\\doc\\Tutorial"
-    copy_all(source_path, target_path)
+
+    print("source_path:{}".format(source_path))
+    print("target_path:{}".format(target_path))
+
+
+    copy_all(source_path + "\\Tutorial", target_path)
+    shutil.copy(source_path + "\\README.md", target_path + "\\README.md")
+    print("完成文件复制！")
+
     file_list = get_files(target_path, ".md")
     for file_name in file_list:
         replace(file_name, "https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/",
                 "H:\\doc\\Tutorial\\pic\\")
         pypandoc.convert_file(file_name, "docx", outputfile=os.path.splitext(file_name)[0] + ".docx")
-
+        print("转换{}文件为word文档".format(file_name))
 def copy_all(source_path, target_path):
 
     if os.path.exists(target_path):
@@ -47,7 +54,9 @@ def replace(file, old, new):
     t = content.replace(old, new)
     with open(file, "w", encoding="utf-8") as f1:
         f1.write(t)
+    print("替换{}的图片路径".format(file))
 
 
 if __name__ == '__main__':
     convert_docx()
+    sys.exit()
