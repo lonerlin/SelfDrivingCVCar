@@ -13,11 +13,11 @@
  - [史上最全的python OpenCV入门教程](https://www.seoxiehui.cn/article-32318-1.html)
  - [超详细的OpenCV入门教程](http://c.biancheng.net/opencv/)   
  
- ## Arduino的知识    
- Arduino大家都比较熟悉，但是，如果你想深入学习Arduino，我推荐你认真读一下[Arduino权威指南（第2版）](https://item.jd.com/11666296.html) 链接是到京东的，但不是做广告。   
+## Arduino的知识    
+Arduino大家都比较熟悉，但是，如果你想深入学习Arduino，我推荐你认真读一下[Arduino权威指南（第2版）](https://item.jd.com/11666296.html) 链接是到京东的，但不是做广告。   
    
- ## Linux基础知识  
- 小车所用的主控Jetson nano所带的操作系统是Ubuntu，如果你对Linux比较陌生，可以看一下这方面的入门书籍，我推荐[鸟哥的Linux私房菜 基础学习篇](https://item.jd.com/12443890.html) 链接同样到京东，不是做广告。  
+## Linux基础知识  
+小车所用的主控Jetson nano所带的操作系统是Ubuntu，如果你对Linux比较陌生，可以看一下这方面的入门书籍，我推荐[鸟哥的Linux私房菜 基础学习篇](https://item.jd.com/12443890.html) 链接同样到京东，不是做广告。  
  
- ## 其他一些知识  
- 最基础的电子学知识，比如马达，马达驱动，舵机，串口通信，电池电压，电流，功率，稳压变压等知识，了解这是知识，有助于你更好的了解和控制小车。
+## 其他一些知识  
+最基础的电子学知识，比如马达，马达驱动，舵机，串口通信，电池电压，电流，功率，稳压变压等知识，了解这是知识，有助于你更好的了解和控制小车。
