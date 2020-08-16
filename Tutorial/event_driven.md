@@ -1,10 +1,12 @@
-# 事件驱动模型，让程序更简单
-如果你认真阅读main.py函数，你就会发现它过于复杂，整体程序比较长。有没有更加现代，更加面向对象的写法呢？答案当然是有。
+# 事件驱动模型，让程序更简单   
+
+如果你认真阅读main.py函数，你就会发现它过于复杂，整体程序比较长。有没有更加现代，更加面向对象的写法呢？答案当然是有。   
+
 ## 一个处理基本任务的父类
 
 其实，整个程序的框架基本是固定的，所以在car路径下，定义了一个类CarBase，它实现了程序最基本的部分，包括一些对象的初始化，
 主循环的构造和最后的对象销毁，资源释放。用户在编写小车控制程序时，直接继承该类。   
-在子类中，你只需按需新建一些对象，如巡线对象，寻找十字路口对象。然后将这些对象添加到任务对象列表中。
+在子类中，你只需按需新建一些对象，如巡线对象，寻找十字路口对象。然后将这些对象添加到任务对象列表中。    
 
 ## 事件触发与回调函数
 如果你认真阅读cv目录下面的各个文件的源代码，你会发现它们都继承了car路径下的Base类，Base类提供一个event_function的属性和
@@ -13,7 +15,8 @@
 execute除了对实际执行函数的调用之外，还会触发对event_function的调用，相当于触发了一个事件。   
 但是在基类的event_function是一个变量，它值是None，为何可以作为一个事件函数呢？Python本身提供了这么一个特性，变量可以是一个
 函数，既然是一个函数，那么就可以把变量当成函数来调用。    
-每个继承了Base的类，都有这么个event_function的变量，那它的具体得值（其实就是一个函数），你仔细阅读car_main.py中的以下代码：
+每个继承了Base的类，都有这么个event_function的变量，那它的具体得值（其实就是一个函数），你仔细阅读car_main.py中的以下代码：    
+
 ```python
 
 ...
@@ -49,14 +52,18 @@ execute除了对实际执行函数的调用之外，还会触发对event_functio
 
  我们新建一个FindIntersection的实例fi，然后让fi的属性指向e_find_intersection，在循环中我们重复调用fi.execute()
  ，当fi对象找到路口时，event_function会被调用，因为event_function的具体值是函数e_find_intersection，所以最后
- e_find_intersection会得到执行。
+ e_find_intersection会得到执行。    
  
+
  ## 程序循环中的对象时怎么被执行的？
- 仔细阅读car_main.py的代码，你会发现,每个新建的对象都会被添加到CarMain的task_list中，比如下面的程序：
+ 仔细阅读car_main.py的代码，你会发现,每个新建的对象都会被添加到CarMain的task_list中，比如下面的程序：    
+ 
  ```python
 CarMain.task_list.append(self.fi)
-```
-task_list中保存了我们新建的所有对象，然后我们在基类中遍历task_list，逐一执行对象的execute方法，这样就实现了对所有对象的执行。
+```   
+
+task_list中保存了我们新建的所有对象，然后我们在基类中遍历task_list，逐一执行对象的execute方法，这样就实现了对所有对象的执行。    
+
 ```python
 # 循环任务列表，按顺序执行，ImageInit需要先于其他cv下面的对象执行
             for task in CarBase.task_list:
@@ -70,7 +77,7 @@ task_list中保存了我们新建的所有对象，然后我们在基类中遍�
                     task.execute(self.available_frame, tmp)
             # 实际的小车控制操作由update控制
             self.car_controller.update()
-```
+```   
 
 ## 使用事件驱动模型的优缺点
 习惯于面向编程的人，可能更接受这样的编程方式，你在使用的过程中，会用到继承，多态等等的技术。我们设计比赛的初衷，就是通过比赛，

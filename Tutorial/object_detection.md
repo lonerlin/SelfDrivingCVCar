@@ -3,8 +3,12 @@
 尤其是在复杂场景中，需要对多个目标进行实时处理时，目标自动提取和识别就显得特别重要。(百度百科)
 当前，目标检测是人工智能一个热门的研究方向，也有着广泛的应用。如现在汽车的行人检测和预防碰撞系统（PCS），自适应巡航系统（ACC）都会使用
 到目标检测技术。   
+   
 *(点击下图查看目标检测演示视频)*    
-[![od](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/od.png)](https://www.bilibili.com/video/BV1YK411T75e/)
+   
+[![od](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/od.png)](https://www.bilibili.com/video/BV1YK411T75e/)   
+    
+    
 ## 比赛中的目标检测任务要求
 无人驾驶小车比赛任务中有以下几个要求：   
   - 进入车站，检测到有人等车，停车5秒。
@@ -14,6 +18,7 @@
   
 以上比赛任务，可以转换为小车行进过程的通过实时图像的目标检测来实现对各种对象的查找和识别，同事结合CarController对象实现小车的控制。
     
+    
 ## 目标检测的具体实现
 目标检测理论性较强，这里省略了具体的理论分析。只介绍系统实现的方法。我们探索了多种模型，框架，甚至于硬件。最后使用了一个独立的摄像头，
 以英伟达提供的Jetson Inference作为编程的接口，Mobilenet作为模型，兼顾了检测成功率，速度，和编程的简易性。
@@ -21,8 +26,11 @@
 阅读Object类说明），同时提供了，object_appeared方法，用于协助用户快速判断所需要的对象是否出现。   
 封装了Object辅助类，该类保存了目标对象的ID，中英文名称，位置，宽、高，面积，中心点等信息，object还封装了两个相关的静态方法，get_list，
 get_object_id 用于生成对象列表，转换名字等功能。
-
-### Recognition方法详细说明:
+    
+    
+### Recognition方法详细说明:    
+    
+    
 ```python
 __init__(self, device="/dev/video0", width=320, height=240, frequency=40, display_window=True)
 
@@ -56,7 +64,9 @@ execute(self, frame, render_frame_list)
         
     用于事件的触发
                       
-```
+```    
+   
+   
 ### Object 方法的详细说明：
 ```python
 属性：
@@ -89,9 +99,13 @@ height ： 对象的高
         :return: id
         
 ```
+    
+    
+## 一个目标检测的简单实例    
 
-## 一个目标检测的简单实例
-以下实例演示了如何初始化Recognition，并在循环中打印出识别的对象信息，完整的程序请下载examples路径下的[object_detection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/object_detection.py) 文件
+以下实例演示了如何初始化Recognition，并在循环中打印出识别的对象信息，完整的程序请下载examples路径下的[object_detection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/object_detection.py) 文件   
+   
+   
 ```python
 
 ...
@@ -146,14 +160,16 @@ while not timer.timeout():
 # 循环结束必须调用close（）函数，结束识别窗口，否则窗口将一直打开
 recognition.close()
 
-```
+```    
+
 ## 在做目标检测时需要注意的一些问题
     1. 目标检测单独使用一个摄像头，其他任务共用一个摄像头
     2. 系统采用的是应用最为广泛的COCO数据集，该数据能检测90个目标，具体的目标名称和编号请参考下文。
     3. 结束Recognition的使用，必须调用其方法close,否则程序不能正常退出。
     4. 目标检测技术的成功率受到一定的限制，会受到灯光，摄像头角度，物体角度等等的限制，无论哪种模型，都不可能做到100%
     5. 在比赛中，如果是检测人，要注意场地周围的参赛者，裁判员等人员有可能被检测到，从而影响程序的准确性。
-    
+     
+         
 ## COCO数据集的目标编号和中英文名称：
     0,unlabeled,没有标签
     1,person,人

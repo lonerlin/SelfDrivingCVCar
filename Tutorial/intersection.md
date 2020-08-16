@@ -1,9 +1,12 @@
 
 # 发现十字路口和转弯
 由于比赛场地没有提供导航的标志，所以通过十字路口，丁字路口等引导线的交叉位，来判断小车的位置，辅助小车行进路线的规划，是
-一种简单而有效的方法。系统利用巡线摄像头，使用OpenCV技术，实现了一种简单的路口判别技术。
-*(点击下图查看寻找路口和转弯视频)*
-[![in_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/in_all.jpg)](https://www.bilibili.com/video/BV1SA411Y7aQ/)
+一种简单而有效的方法。系统利用巡线摄像头，使用OpenCV技术，实现了一种简单的路口判别技术。   
+
+*(点击下图查看寻找路口和转弯视频)*     
+
+[![in_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/in_all.jpg)](https://www.bilibili.com/video/BV1SA411Y7aQ/)   
+
 ## 判别路口的具体实现
 比起在一帧图像中寻找引导线的中心点，路口的判别更加困难。尝试了houghlines函数寻找线，快速特征检测器等方法后，发现效果不
 好。最后，还是自己想办法，写了一个简单的算法。下面解释该算法的实现的过程：    
@@ -44,12 +47,14 @@
     5. 避免重复检测路口
         小车经过一个路口，需要一定的时间，假设为5秒，在5秒的时间内，程序会多次检测这一个路口（假设每秒10帧，就是有50次），
         为了避免重复检测同一路口，在检测到路口后，程序延迟一定的时间才进行检测，默认是10秒（可以通过修改FindIntersection
-        构造函数中的delay_time参数，或者该类的delay_time属性改变延迟时间）
+        构造函数中的delay_time参数，或者该类的delay_time属性改变延迟时间）     
+        
 ## FindIntersection类和使用方法
 FindIntersection类封装了判别路口算法的具体实现。使用时候只需要对类进行实例化，并且在初始化时设置根据需要设置几个参数，然
 后在循环中，调用类的is_intersection方法，当当前是一个路口时，该方法返回True，否则返回False；另外，FindIntersection还提供
 了一个属性intersection_number，记录了从小车出发开始，至当前经过了多少个路口，可以辅助小车的定位。FindIntersection详细的方
-法说明如下：
+法说明如下：   
+
 ````python
 __init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2)
         初始化查找十字路口，通过控制半径，朝向，阈值来在半圆上找到白线
@@ -82,12 +87,15 @@ __init__(self, radius=140, angle=90, threshold=3, delay_time=10, repeat_count=2)
     intersection_number
         用于返回从程序开始到当前所经过的路口数量
         :return:路口数量
-````
+````    
+    
+    
 ## 一个判别路口的实例
 以下实例演示了怎样初始化FindIntersection，并且在循环中调用该实例方法实现路口的检测，配合CarController的对象控制小车做出动作.
 小车在第一个路口左转，三个路口右转，第五个路口停车。完整的程序请下载examples路径下的[find_intersection.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/find_intersection.py) 文件   
 [查看本实例视频](https://www.bilibili.com/video/BV1SA411Y7aQ/)
-
+     
+     
 ```python
 
 ...
@@ -146,7 +154,7 @@ while True:
 ctrl.stop()                             # 停车
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口
-```
+```    
 
 ## 路口判别应该注意的一些问题
     1.巡线摄像头的上下摆动会严重影响路口的判别，所以在调整FindIntersection实例的参数时，尽量不要去改变摄像头的角度。

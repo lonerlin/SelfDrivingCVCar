@@ -1,5 +1,6 @@
 # 使用任务列表控制小车
-
+   
+   
 ## 什么是任务列表
     根据比赛的任务，小车在行进过程中需要完成直走、后退、巡线、转弯、加减速、暂停等基本任务，或者这些任务的组合，
     例如避障。系统通过摄像头，循环读取每一帧，根据任务要求，对每一帧中的信息进行分析，获取信息，并作出相应的动作。
@@ -23,6 +24,7 @@
     同时在循环中，系统会删除任务列表中那些超时的任务。通过这种方式，来控制小车的各种动作。用户在编程中，
     只需在循环中添加任务，无需手动编程控制小车选择哪一个任务，也无需自己编程计算时间。
     
+     
 ## 一个任务列表实例
 
 - 时间点1：小车巡线前进
@@ -34,10 +36,13 @@
 具体列表和时间参考下图：  
 
 ![task_list](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/list.png)   
-***
+   
+      
+      
 ## CarController的方法
 CarController方法详细的说明如下：
-
+   
+   
 ```python    
 
     __init__(self, car_serial, base_speed=100, proportional=0.4, integral=0, diff=0)
@@ -88,10 +93,14 @@ CarController方法详细的说明如下：
         在每一个帧中执行这个函数来选择优先级最高的一项控制动作，并执行该动作。
         同时删除超时的动作。
     
-```
+```   
+   
+   
 ## 怎样使用CarController
 CarController的使用非常简单，只需在程序开始时实例化CarController，然后在帧循环的过程中，直接调用CarController提供的方法
-（函数）例如：
+（函数）例如：   
+    
+    
 ````python
 
 ...
@@ -134,14 +143,16 @@ while True:
 
 ````
 完整的实例，可以参考实例[main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/main.py),
-或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/car_main.py)
+或者[car_main.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/car_main.py)   
 
 
 ## 动作组合问题
 CarController提供的巡线，直行，转弯，暂停，避障等动作能满足大多数情况下的动作需要。某些情况下，你可能需要很复杂的动作组合，或者
 需要对两个轮子进行比较细致的控制，这时可以使用CarController提供的group方法。group方法能够根据你提供的基本动作列表，完成复杂的
 动作组合。    
-在car目录下的Car_controller.py文件中，提供了一个辅助类，BaseControl，它更像是C语言中的结构体。具体代码如下：
+在car目录下的Car_controller.py文件中，提供了一个辅助类，BaseControl，它更像是C语言中的结构体。具体代码如下：   
+   
+   
 ```python
 class BaseControl:
     """
@@ -188,9 +199,13 @@ while not timer.timeout():
 ...
 
 ```
+   
+   
 从上面的实例可以看到，我们先构建了一个列表control_list,然后先列表中添加了一些BaseControl的实例，最后，我们调用controller对象的
 group方法，并把control_list作为group的参数。 而在循环中，只需要调用control的update().完整的实例请查看[CarController_Group.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/CarController_Group.py)
-
+   
+      
+      
 ## 使用CarController注意事项
 1. 最重要的一点是在每一帧循环的最后，必须调用update方法，否则CarController无法正常工作。
 2. 要留意优先级的问题，同一时间内执行两个优先级不同的动作，只有优先级高的动作得到执行。

@@ -11,7 +11,9 @@ show函数需要两个参数
 如果不指定名字，默认提供一个叫none的窗口，但是如果有两个以上不指定名字，将只显示最后一个帧
      
 下面实例演示了该类的使用。
-完整的文件请下载jetson\examples\路径下的[display_multiple_Windows.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/display_multiple_Windows.py)
+完整的文件请下载jetson\examples\路径下的[display_multiple_Windows.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/display_multiple_Windows.py)   
+    
+    
 ```python
 import cv2
 import sys
@@ -44,7 +46,8 @@ while True:
         break
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口
-```
+```    
+
 ## 使用ShowImage的注意事项
 1. 该类是为7寸显示屏（1200*600）专门设计的，其他尺寸的显示屏，特别是7寸以下的显示屏，显示的窗口可能有部分会叠加在一起。
 2. 如果你需要显示多个不同的帧，必须给每个窗口命名。

@@ -3,17 +3,22 @@
 根据比赛任务的要求，在比赛中会出现1~2处人行横道,比赛场地上有斑马线标志。小车经过斑马线时必须减速，如果检测到行人，必须停车让行。
 这是一个综合的任务，一是要检测到斑马线，二是要检测斑马线上是否有行人。   
 本文介绍的是如何识别斑马线，如何识别行人请参考[目标检测](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/object_detection.md)
-
+   
+   
 ## 斑马线识别的实现
 斑马线识别技术较为简单，我们利用OpenCV技术，参考巡线寻找引导线的方法，在帧中寻找一组连续黑白间隔的线。我们设置一个阈值，当帧中发
 现有3组以上黑白相间的线时，我们认为这是斑马线。参考下图。小车可以执行减速或者让行的动作。   
 
 ![zebra_original](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_original.png)
-![zebra_line](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_line.png)
+![zebra_line](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/zebra_line.png)   
+   
+   
 ## FindZebraCrossing的使用
 系统封装了FindZebraCrossing类，用于实现斑马线的的寻找和判断。使用该类非常简单，只需要在初始化时设定白线阈值（参考巡线时的白线
 阈值），白线组数的下限。然后在循环中调用实例方法find，当找到符合条件的一组线时，find返回TRUE，否则返回False。详细的方向说明如
-下：
+下：   
+   
+   
 ````python
     __init__(self, width=320, height=240, threshold=4, floor_line_count=4, delay_time=10)
         初始化类
@@ -33,11 +38,15 @@
         在图片中找线
         :param image:需要处理的图像
         :return: 是否是斑马线
-````
+````   
+    
+    
+## 寻找斑马线的一个实例   
 
-## 寻找斑马线的一个实例
 我们使用examples目录下的[following_line.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/following_line.py)
-实例，在开始处import类，然后新建一个类的实例fzc，最后在循环中调用fzc的find方法，当找到斑马线时，执行先暂停后直走的动作。
+实例，在开始处import类，然后新建一个类的实例fzc，最后在循环中调用fzc的find方法，当找到斑马线时，执行先暂停后直走的动作。   
+   
+   
 ```python
 import cv2
 import sys
@@ -115,7 +124,8 @@ ctrl.stop()                             # 停车
 camera.release()                        # 释放摄像头
 cv2.destroyAllWindows()                 # 关闭所有窗口
 
-```
+```   
+
 
 ## 使用FindZebraCrossing需要注意的问题
     1.使用的是巡线的摄像头

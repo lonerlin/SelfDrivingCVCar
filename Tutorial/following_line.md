@@ -1,11 +1,13 @@
 # 小车巡线
+
     巡线是机器人比赛最基本的一个任务，就是小车沿着比赛任务场地上特定的线路行走。一般的方法有光电巡线，红外，摄像头等等，
     使用的技术和方法多种多样。智能小车使用摄像头进行巡线，为了与传统的光电巡线比赛进行衔接，降低比赛难度，智能小车的巡
     线任务较为简单，小车行进的路线基本都是直线，行进路线的中间有黑色或白色的引导线。
+
    *(点击图片查看小车巡线视频)*
 
-
 [![fl_all](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/fl_all.jpg)](https://www.bilibili.com/video/BV1nV411U7vb/)
+
 
 ## 小车巡线的基本原理
     小车巡线，首先通过巡线摄像头获取场地的图像，通过ImageInit的实例，把图像处理为二值图，然后在二值图中寻找引导线的中心
@@ -38,6 +40,7 @@
     FollowLine封装了寻找白线中心点，计算偏移值等功能。使用FollowLine方法非常简单，只需要实例化一个FollowLine，然后调
     用该实例的get_offset方法，指定方法的两个参数。详细的方法参数请参考下表。
 
+
 ````python
 
     __init__(self, width=320, height=240, threshold=20, direction=True, image_type='BINARY')
@@ -65,10 +68,12 @@
 
 ````
 
+
 ## 一个完整的巡线实例
 一个完整的巡线程序除了FollowLine，还需调用ShowImage，CarController，CarSerial等类的实例进行配合。FollowLine用于巡线
 和计算偏移值，CarController通过CarSerial，控制小车马达转动，ShowImage用于屏幕上显示帧。该实例是位于jetson\examples目
 录下的 [following_line.py](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/jetson/examples/following_line.py)
+
     
 ```python
 
