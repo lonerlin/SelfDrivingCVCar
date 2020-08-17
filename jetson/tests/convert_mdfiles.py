@@ -29,6 +29,10 @@ def convert_docx():
                 "H:\\doc\\Tutorial\\pic\\")
         pypandoc.convert_file(file_name, "docx", outputfile=os.path.splitext(file_name)[0] + ".docx")
         print("转换{}文件为word文档".format(file_name))
+
+    buildAll(target_path)
+
+
 def copy_all(source_path, target_path):
 
     if os.path.exists(target_path):
@@ -45,6 +49,24 @@ def get_files(target_path, suffix):
             if suf == suffix:
                 res.append(os.path.join(root, filename))  # =>把一串字符串组合成路径
     return res
+
+
+def buildAll(target_path):
+
+    file_list = ["README.md", "basic_knowledge.md", "find_devices.md", "open_camera.md", "init_frame.md",
+                 "display_windows.md", "serial_comunication.md", "timer.md", "car_controller.md", "following_line.md",
+                 "intersection.md", "object_detection.md", "zebra_crossing.md", "avoid_obstacles.md",
+                 "complete_program.md", "event_driven.md"]
+
+    f = open(target_path + "\\all.md", "a", encoding="utf-8")
+    for file in file_list:
+        tmp = open(target_path + "\\" + file, 'r', encoding="utf-8")
+        t = tmp.read()
+        f.write(t)
+        tmp.close()
+    f.close()
+    pypandoc.convert_file(target_path + "\\all.md", "docx", outputfile=target_path + "\\all.docx")
+    print("写入单独一个文件all.docx")
 
 
 def replace(file, old, new):
