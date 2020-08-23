@@ -63,10 +63,15 @@ def buildAll(target_path):
         tmp = open(target_path + "\\" + file, 'r', encoding="utf-8")
         t = tmp.read()
         f.write(t)
+        f.write("   \r\n" * 3)
         tmp.close()
     f.close()
     pypandoc.convert_file(target_path + "\\all.md", "docx", outputfile=target_path + "\\all.docx")
     print("写入单独一个文件all.docx")
+    replace(target_path + "\\all.md", "H:\\doc\\Tutorial\\pic\\", "pic/")
+    print("替换all.md文件的图片为相对路径。")
+
+
 
 
 def replace(file, old, new):
@@ -76,6 +81,7 @@ def replace(file, old, new):
     t = content.replace(old, new)
     with open(file, "w", encoding="utf-8") as f1:
         f1.write(t)
+
     print("替换{}的图片路径".format(file))
 
 
