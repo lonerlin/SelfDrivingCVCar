@@ -68,3 +68,11 @@ def play(filename):
     # close PyAudio (5)
     p.terminate()
 
+
+def simple():
+    import simpleaudio as sa
+    from pydub import AudioSegment
+    from pydub import playback
+    mp3 = AudioSegment.from_file("09.mp3", format="mp3")
+    print(mp3.duration_seconds)
+    playback.play(mp3)
