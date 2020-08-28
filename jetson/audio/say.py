@@ -5,22 +5,23 @@
 # @Software  :PyCharm
 import pyttsx3
 import threading
+
+
 class Say:
-
     def __init__(self):
-
+        pass
 
     @staticmethod
-    def run(text,chinese):
+    def run(text, chinese):
         engine = pyttsx3.init()
         if chinese:
-            engine.setProperty('voice','zh')
+            engine.setProperty('voice', 'zh')
         engine.say(text)
         engine.runAndWait()
         engine.stop()
 
     @staticmethod
-    def say(text,chinese=True):
-        t =threading.Thread(target=Say.run,args=(text,chinese,))
+    def say(text, chinese=True):
+        t = threading.Thread(target=Say.run, args=(text, chinese,))
         t.setDaemon(True)
         t.start()
