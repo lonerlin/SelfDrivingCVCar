@@ -8,20 +8,21 @@ import threading
 
 
 class Say:
-    def __init__(self):
-        pass
+    def __init__(self, chinese=True):
 
-    @staticmethod
-    def run(text, chinese):
-        engine = pyttsx3.init()
+        self.engine = pyttsx3.init()
         if chinese:
-            engine.setProperty('voice', 'zh')
-        engine.say(text)
-        engine.runAndWait()
-        engine.stop()
+            self.engine.setProperty('voice', 'zh')
 
-    @staticmethod
-    def say(text, chinese=True):
-        t = threading.Thread(target=Say.run, args=(text, chinese,))
-        t.setDaemon(True)
-        t.start()
+    def run(self, text):
+
+        self.engine.say(text)
+        self.engine.runAndWait()
+
+    def say(self, text):
+        # t = threading.Thread(target=self.run, args=(text,))
+        # t.setDaemon(True)
+        # t.start()
+        print("语音：{}".format(text))
+        self.run(text)
+

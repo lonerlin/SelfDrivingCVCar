@@ -7,6 +7,7 @@ import sys
 import time
 sys.path.append('..')
 from audio.say import Say
-Say.say(" 这里是中华人民共和国领土，请快速离开。")
-time.sleep(1.5)
-Say.say("佛山市南海区罗村高级中学欢迎您")
+s = Say()
+s.say(" 这里是中华人民共和国领土，请快速离开。")
+# time.sleep(2)
+s.say("佛山市南海区罗村高级中学欢迎您")
