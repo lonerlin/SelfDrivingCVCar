@@ -11,7 +11,7 @@ import threading
 import time
 import numpy as np
 from queue import Queue
-import copy
+from multiprocessing import Process,Queue
 
 
 class FaceRecognition:
@@ -31,13 +31,14 @@ class FaceRecognition:
             print("请减慢检测速度")
 
     def close(self):
-        self._q_send.put("stop")
+        if not self._q_send.full():
+            self._q_send.put("stop")
 
 
-class MultiFaceRecognition(threading.Thread):
+class MultiFaceRecognition(Process):
 
     def __init__(self, q_receive, callback, known_folder):
-        threading.Thread.__init__(self)
+        super(MultiFaceRecognition, self).__init__()
         self.q_receive = q_receive
         self.callback = callback
         self.known_people_folder = known_folder
@@ -47,12 +48,18 @@ class MultiFaceRecognition(threading.Thread):
     def run(self):
         while True:
             if not self.q_receive.empty():
+                print("test begin")
                 brg_image = self.q_receive.get()
+                print(type(brg_image))
                 if type(brg_image) == np.ndarray:
-                    faces = self.multi_recognition(brg_image)
-                    self.callback(faces)
+                    # faces = self.multi_recognition(brg_image)
+                    # print(faces)
+                    # self.callback(faces)
+                    pass
                 else:
                     break
+            # else:
+                # print("empty")
 
     def _scan_known_people(self):
         known_names = []
@@ -87,6 +94,7 @@ class MultiFaceRecognition(threading.Thread):
         face_locations = face_recognition.face_locations(rgb_frame)
         face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
         face_list = []
+        print("recognition begin")
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding)

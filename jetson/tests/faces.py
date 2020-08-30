@@ -22,21 +22,26 @@ def callback(faces):
         print("unknown")
 
 
-camera = cv2.VideoCapture(CAMERA)
-fr = FaceRecognition(known_folder="faces/", callback=callback)
-count = 0
-while True:
-    ret, frame = camera.read()      # 读取每一帧
-    if count < 15:
-        count += 1
-    else:
-        fr.recognition(frame)
-        count = 0
-    cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
+def main():
+    camera = cv2.VideoCapture(CAMERA)
+    fr = FaceRecognition(known_folder="faces/", callback=callback)
+    count = 0
+    while True:
+        ret, frame = camera.read()      # 读取每一帧
+        if count < 15:
+            count += 1
+        else:
+            fr.recognition(frame)
+            count = 0
+        cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
-    # 检测键盘，发现按下 q 键 退出循环
-    if cv2.waitKey(1) == ord('q'):
-        break
-fr.close()
-camera.release()                         # 释放摄像头
-cv2.destroyAllWindows()                 # 关闭所有窗口
+        # 检测键盘，发现按下 q 键 退出循环
+        if cv2.waitKey(1) == ord('q'):
+            break
+    fr.close()
+    camera.release()                         # 释放摄像头
+    cv2.destroyAllWindows()                 # 关闭所有窗口
+
+
+if __name__ == '__main__':
+    sys.exit(main())
