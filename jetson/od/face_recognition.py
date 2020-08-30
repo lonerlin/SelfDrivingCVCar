@@ -5,16 +5,54 @@
 # @Software  :PyCharm
 
 import face_recognition
-import cv2
-import numpy as np
 import os
 import re
+import threading
+import time
+import numpy as np
+from queue import Queue
+import copy
 
 
 class FaceRecognition:
-    def __init__(self, known_folder):
+
+    def __init__(self, known_folder, callback):
+        self._q_send = Queue(1)
+        self._callback = callback
+        self._known_folder = known_folder
+        self.recognition_thread = MultiFaceRecognition(self._q_send, self._callback, self._known_folder)
+        self.recognition_thread.start()
+
+    def recognition(self, frame):
+
+        if not self._q_send.full():
+            self._q_send.put(frame)
+        else:
+            print("请减慢检测速度")
+
+    def close(self):
+        self._q_send.put("stop")
+
+
+class MultiFaceRecognition(threading.Thread):
+
+    def __init__(self, q_receive, callback, known_folder):
+        threading.Thread.__init__(self)
+        self.q_receive = q_receive
+        self.callback = callback
         self.known_people_folder = known_folder
         self.known_face_names, self.known_face_encodings = self._scan_known_people()
+        print("init_finish.")
+
+    def run(self):
+        while True:
+            if not self.q_receive.empty():
+                brg_image = self.q_receive.get()
+                if type(brg_image) == np.ndarray:
+                    faces = self.multi_recognition(brg_image)
+                    self.callback(faces)
+                else:
+                    break
 
     def _scan_known_people(self):
         known_names = []
@@ -22,7 +60,7 @@ class FaceRecognition:
 
         for file in self._image_files_in_folder(self.known_people_folder):
             basename = os.path.splitext(os.path.basename(file))[0]
-            print(basename)
+            # print(basename)
             img = face_recognition.load_image_file(file)
             encodings = face_recognition.face_encodings(img)
 
@@ -40,7 +78,7 @@ class FaceRecognition:
     def _image_files_in_folder(self, folder):
         return [os.path.join(folder, f) for f in os.listdir(folder) if re.match(r'.*\.(jpg|jpeg|png)', f, flags=re.I)]
 
-    def recognition(self, image, render_image=None):
+    def multi_recognition(self, image):
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_frame = image[:, :, ::-1]
@@ -63,14 +101,13 @@ class FaceRecognition:
             # if matches[best_match_index]:
             #     name = self.known_face_names[best_match_index]
 
-            if render_image:
-                # Draw a box around the face
-                cv2.rectangle(render_image, (left, top), (right, bottom), (0, 0, 255), 2)
-
-                # Draw a label with a name below the face
-                cv2.rectangle(render_image, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-                font = cv2.FONT_HERSHEY_DUPLEX
-                cv2.putText(render_image, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            # if render_image:
+            #     # Draw a box around the face
+            #     cv2.rectangle(render_image, (left, top), (right, bottom), (0, 0, 255), 2)
+            #
+            #     # Draw a label with a name below the face
+            #     cv2.rectangle(render_image, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            #     font = cv2.FONT_HERSHEY_DUPLEX
+            #     cv2.putText(render_image, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         return face_list
-
