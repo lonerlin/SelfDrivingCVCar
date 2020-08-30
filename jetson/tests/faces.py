@@ -15,14 +15,14 @@ CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个�
 
 camera = cv2.VideoCapture(CAMERA)
 
-fr = FaceRecognition(known_folder="\\faces\\")
+fr = FaceRecognition(known_folder="faces/")
 
 while True:
     ret, frame = camera.read()      # 读取每一帧
     face_list = fr.recognition(frame)
     if face_list:
         for f in face_list:
-            print(f.name, f.top, f.left)
+            print(f[0], f[1], f[2])
 
     cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 

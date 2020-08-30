@@ -14,7 +14,7 @@ import re
 class FaceRecognition:
     def __init__(self, known_folder):
         self.known_people_folder = known_folder
-        self.known_names, self.known_face_encodings = self._scan_known_people()
+        self.known_face_names, self.known_face_encodings = self._scan_known_people()
 
     def _scan_known_people(self):
         known_names = []
@@ -22,6 +22,7 @@ class FaceRecognition:
 
         for file in self._image_files_in_folder(self.known_people_folder):
             basename = os.path.splitext(os.path.basename(file))[0]
+            print(basename)
             img = face_recognition.load_image_file(file)
             encodings = face_recognition.face_encodings(img)
 
