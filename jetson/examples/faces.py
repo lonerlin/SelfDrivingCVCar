@@ -11,14 +11,17 @@ import cv2
 import time
 sys.path.append("..")
 from od.face_recognition import FaceRecognition
+from audio.say import Say
 
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
+voice = Say()
 
 def callback(faces):
     if faces:
         for f in faces:
             print("您好！{}".format(f[0]))
+        voice.say("发现目标林老头")
     else:
         print("unknown")
 
@@ -31,7 +34,7 @@ def main():
     while True:
         begin = time.perf_counter()
         ret, frame = camera.read()      # 读取每一帧
-        if count < 15:
+        if count < 100:
             count += 1
         else:
             fr.recognition(frame)
