@@ -11,7 +11,8 @@ import threading
 import time
 import numpy as np
 from queue import Queue
-from multiprocessing import Process,Queue
+from multiprocessing import Process  # ,Queue
+from queue import Queue
 
 
 class FaceRecognition:
@@ -35,10 +36,10 @@ class FaceRecognition:
             self._q_send.put("stop")
 
 
-class MultiFaceRecognition(Process):
+class MultiFaceRecognition(threading.Thread):
 
     def __init__(self, q_receive, callback, known_folder):
-        super(MultiFaceRecognition, self).__init__()
+        super().__init__()
         self.q_receive = q_receive
         self.callback = callback
         self.known_people_folder = known_folder
@@ -48,13 +49,11 @@ class MultiFaceRecognition(Process):
     def run(self):
         while True:
             if not self.q_receive.empty():
-                print("test begin")
                 brg_image = self.q_receive.get()
-                print(type(brg_image))
+
                 if type(brg_image) == np.ndarray:
-                    # faces = self.multi_recognition(brg_image)
-                    # print(faces)
-                    # self.callback(faces)
+                    faces = self.multi_recognition(brg_image)
+                    self.callback(faces)
                     pass
                 else:
                     break
@@ -94,7 +93,7 @@ class MultiFaceRecognition(Process):
         face_locations = face_recognition.face_locations(rgb_frame)
         face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
         face_list = []
-        print("recognition begin")
+        # print("recognition begin")
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding)

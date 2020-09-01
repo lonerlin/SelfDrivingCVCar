@@ -8,6 +8,7 @@
 """
 import sys
 import cv2
+import time
 sys.path.append("..")
 from od.face_recognition import FaceRecognition
 
@@ -17,7 +18,7 @@ CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个�
 def callback(faces):
     if faces:
         for f in faces:
-            print(f[0], f[1], f[2])
+            print("您好！{}".format(f[0]))
     else:
         print("unknown")
 
@@ -26,7 +27,9 @@ def main():
     camera = cv2.VideoCapture(CAMERA)
     fr = FaceRecognition(known_folder="faces/", callback=callback)
     count = 0
+    begin = 0
     while True:
+        begin = time.perf_counter()
         ret, frame = camera.read()      # 读取每一帧
         if count < 15:
             count += 1
@@ -35,6 +38,8 @@ def main():
             count = 0
         cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
+        frame_rate = 1 / (time.perf_counter() - begin)
+        # print("frame_rate:{}".format(frame_rate))
         # 检测键盘，发现按下 q 键 退出循环
         if cv2.waitKey(1) == ord('q'):
             break
