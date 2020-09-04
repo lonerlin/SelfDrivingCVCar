@@ -106,7 +106,7 @@ class CarSerial:
         """
         tmp_str = "2"
         tmp_str += str(abs(angle)).zfill(3)
-        tmp_str += "2090"
+        tmp_str += "2090\n"
         self._write(tmp_str)
 
 
