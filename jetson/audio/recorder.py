@@ -11,7 +11,10 @@ import wave
 
 
 class Recorder:
-    def __init__(self, chunk=1024, channels=1, rate=64000):
+    """
+        提供一个多线程的录音程序，改程序可以随时空录音的开始和暂停
+    """
+    def __init__(self, chunk=1024, channels=1, rate=16000):
         self.CHUNK = chunk
         self.FORMAT = pyaudio.paInt16
         self.CHANNELS = channels

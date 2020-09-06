@@ -42,7 +42,7 @@ def record(filename, record_seconds):
     wf.close()
 
 
-def play(filename):
+def play_wav(filename):
 
     wf = wave.open(filename, 'rb')
     # instantiate PyAudio (1)
@@ -69,10 +69,11 @@ def play(filename):
     p.terminate()
 
 
-def simple():
+def play_mp3(file_path):
     import simpleaudio as sa
     from pydub import AudioSegment
     from pydub import playback
-    mp3 = AudioSegment.from_file("09.mp3", format="mp3")
+    mp3 = AudioSegment.from_file(file_path, format="mp3")
     print(mp3.duration_seconds)
     playback.play(mp3)
+
