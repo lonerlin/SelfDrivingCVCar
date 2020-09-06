@@ -8,6 +8,8 @@ import pyaudio
 import time
 import threading
 import wave
+import os
+import sys
 
 
 class Recorder:
@@ -21,6 +23,7 @@ class Recorder:
         self.RATE = rate
         self._running = True
         self._frames = []
+
 
     def start(self):
         threading.Thread(target=self.__recording).start()
@@ -64,5 +67,6 @@ if __name__ == '__main__':
     filename = input("please input path and file name:")
     input("请按任意键开始：")
     recoder.start()
+    time.sleep(1)
     input("请按任意键停止：")
     recoder.save(filename)

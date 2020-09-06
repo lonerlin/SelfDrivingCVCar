@@ -44,3 +44,5 @@ class ASR:
         else:
             print("error{}".format(s))
             self._error = True
+            return ""
+
