@@ -99,14 +99,16 @@ class CarSerial:
         """
         self._write(self._build_motors_string(int(left), int(right)))
 
-    def drive_servo(self, angle):
+    def drive_servo(self, angle, servo_id=0):
         """
         控制舵机的转动
+        :param servo_id: 舵机编号
         :param angle: 舵机转动的角度
         """
         tmp_str = "2"
         tmp_str += str(abs(angle)).zfill(3)
-        tmp_str += "2090\n"
+        tmp_str += str(abs(servo_id)).zfill(4)
+        tmp_str += "\n"
         self._write(tmp_str)
 
 
