@@ -8,7 +8,7 @@ def callback(message):
     print(message)
 
 
-serial = GenericSerial(port='COM4', digital_callback=callback)
+serial = GenericSerial(port='COM5', digital_callback=callback)
 
 while True:
     serial.drive_motor(123, -234)
