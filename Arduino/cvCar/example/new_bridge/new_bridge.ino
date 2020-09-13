@@ -19,7 +19,11 @@ int start_angle1=0;
 int start_angle2=0;
 int left,right;
 String inStr="";
-bool is_Send=false;
+bool is_Send=true;
+
+int buttonPin1=2
+int buttonPin2=3
+
 
 Servo servo1;
 Servo serov2;
@@ -37,6 +41,8 @@ void setup() {
    servo1.write(0);
    serov2.attach( 10, 600, 2400 );
    serov2.write(0);
+   pinMode(buttonPin1,INPUT);
+   pinMode(buttonPin2,INPUT);
 }
 
 void loop() {
@@ -57,7 +63,12 @@ void loop() {
       
       
     }
+    decode_message();
+    delay(5);
     
+}
+void decode_message()
+{
     //如果传送出错，立刻停止 
     if(inStr!="" && inStr.length()==8 )
     {
@@ -117,11 +128,7 @@ void loop() {
        }
        inStr="";
     }
-    
-    delay(5);
-    
- }
-
+}
 //控制舵机的转向
 //servo:舵机对象
 //start_angle:开始角度
@@ -143,4 +150,29 @@ void servo_move(Servo servo,int start_angle,int end_angle){
   }
 
 
+}
+//检查按钮状态的的函数，有需要时在loop中调用
+void checkButton()
+{
+    if(debounce(buttonPin1,5))Serial.println("30000011");
+    if(debounce(buttonPin2,5))Serial.println("30000021");
+}
+//去抖函数，用于检查引脚状态
+bool debounce(int pin,int debounceDelay)
+{
+    bool state;
+    bool previousState;
+    pinMode(pin, INPUT);
+    previousState=digitalRead(pin);
+    for(int counter=0;counter<debounceDelay;counter++)
+    {
+      delay(1);
+      state=digitalRead(pin);
+      if(state!=previousState)
+        {
+           counter=0;
+           previousState=state;
+        }
+     }
+    return state;
 }
