@@ -109,6 +109,7 @@ class CarSerial:
         tmp_str += str(abs(angle)).zfill(3)
         tmp_str += str(abs(servo_id)).zfill(4)
         tmp_str += "\n"
+        print("servo_info:{}".format(tmp_str))
         self._write(tmp_str)
 
 

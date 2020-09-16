@@ -15,18 +15,18 @@
 #define RightDIRPin 7        //右方向针脚
 #define RightPWMPin 6        //右马达PWM
 int angle = 0;
-int start_angle1=0;
-int start_angle2=0;
+int start_angle1=90;
+int start_angle2=90;
 int left,right;
 String inStr="";
 bool is_Send=true;
 
-int buttonPin1=2
-int buttonPin2=3
+int buttonPin1=2;
+int buttonPin2=3;
 
 
 Servo servo1;
-Servo serov2;
+Servo servo2;
 MotorControl mc(LeftDIRPin,LeftPWMPin,RightDIRPin,RightPWMPin);
 
 void setup() {
@@ -39,8 +39,8 @@ void setup() {
 
    servo1.attach( 9, 600, 2400 );
    servo1.write(0);
-   serov2.attach( 10, 600, 2400 );
-   serov2.write(0);
+   servo2.attach( 10, 600, 2400 );
+   servo2.write(0);
    pinMode(buttonPin1,INPUT);
    pinMode(buttonPin2,INPUT);
 }
@@ -93,7 +93,7 @@ void decode_message()
             Serial.print("angle:");
             Serial.println(angle);
           }
-          if (instr.substring(7,7).toInt()==0)
+          if (inStr.substring(7,8).toInt()==0)
           {
             servo_move(servo1,start_angle1,angle);
             start_angle1=angle;
