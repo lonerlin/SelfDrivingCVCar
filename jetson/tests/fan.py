@@ -26,8 +26,8 @@ def servo_ctroller(persons):
     global angle
     if len(persons) == 1:
         person = persons[0]
-        offset = person.center - OD_CAMERA_WIDTH/2
-        if abs(person.center - OD_CAMERA_WIDTH/2) > 10:
+        offset = person.center[0] - OD_CAMERA_WIDTH/2
+        if abs(offset) > 10:
             if offset < 0 :
                 if angle > 45:
                     angle -= 4
