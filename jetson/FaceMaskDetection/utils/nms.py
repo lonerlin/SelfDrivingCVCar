@@ -55,5 +55,5 @@ def single_class_non_max_suppression(bboxes, confidences, conf_thresh=0.2, iou_t
         idxs = np.delete(idxs, need_to_be_deleted_idx)
 
     # if the number of final bboxes is less than keep_top_k, we need to pad it.
-    # TODO
+    # TO
     return conf_keep_idx[pick]

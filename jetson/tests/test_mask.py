@@ -1,6 +1,8 @@
 import cv2
 import sys
+import os
 sys.path.append('..')
+sys.path.append('../FaceMaskDetection/')
 from cv.show_images import ShowImage
 import time
 from cv.image_init import ImageInit
@@ -12,8 +14,10 @@ freq = cv2.getTickFrequency()
 show_image = ShowImage()
 
 init = ImageInit(260, 260)
-j_path = '/home/ailab/SelfDrivingCVCar/jetson/FaceMaskDetection/models/face_mask_detection.json'
-w_path = '/home/ailab/SelfDrivingCVCar/jetson/FaceMaskDetection/models/face_mask_detection.h5'
+j_path = os.path.abspath(os.path.dirname(os.getcwd())) + '/FaceMaskDetection/models/face_mask_detection.json'
+w_path = os.path.abspath(os.path.dirname(os.getcwd())) + '/FaceMaskDetection/models/face_mask_detection.hdf5'
+
+
 mask = MaskDetect(json_path=j_path, weight_path=w_path, width=LINE_CAMERA_WIDTH, height=LINE_CAMERA_HEIGHT)
 
 while True:
