@@ -4,14 +4,16 @@ from utils.anchor_generator import generate_anchors
 from utils.anchor_decode import decode_bbox
 from utils.nms import single_class_non_max_suppression
 from load_model.keras_loader import load_keras_model, keras_inference
+import os
 
 
 class MaskDetect:
 
-    def __init__(self, width=320, height=240):
+    def __init__(self, json_path, weight_path, width=320, height=240):
         self.image_width = width
         self.image_height = height
-        self.model = model = load_keras_model('models/face_mask_detection.json', 'models/face_mask_detection.hdf5')
+        self.model = model = load_keras_model(json_path,
+                                              weight_path)
         # anchor configuration
         feature_map_sizes = [[33, 33], [17, 17], [9, 9], [5, 5], [3, 3]]
         anchor_sizes = [[0.04, 0.056], [0.08, 0.11], [0.16, 0.22], [0.32, 0.45], [0.64, 0.72]]
@@ -96,6 +98,7 @@ class MaskDetect:
             cv2.rectangle(image, (idx[2], idx[3]), (idx[4], idx[5]), color, 2)
             cv2.putText(image, "%s: %.2f" % (self.id2class[idx[0]], idx[1]), (idx[2] + 2, idx[3] - 2),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, color)
+            print("render")
 
     def detect(self, image, render_image=None):
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
