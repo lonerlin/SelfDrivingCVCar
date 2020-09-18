@@ -8,12 +8,21 @@ import os
 
 
 class MaskDetect:
-
-    def __init__(self, json_path, weight_path, width=320, height=240):
+    """
+    口罩检测模型，SSD
+    Keras，tensorflow
+    """
+    def __init__(self, json_path, weight_path, width=260, height=260):
+        """
+        图像大小是260*260,其他尺寸估计需要重新训练模型
+        :param json_path: 结构文件路径
+        :param weight_path: 权重文件路径
+        :param width: 260
+        :param height: 260
+        """
         self.image_width = width
         self.image_height = height
-        self.model = model = load_keras_model(json_path,
-                                              weight_path)
+        self.model = load_keras_model(json_path, weight_path)
         # anchor configuration
         feature_map_sizes = [[33, 33], [17, 17], [9, 9], [5, 5], [3, 3]]
         anchor_sizes = [[0.04, 0.056], [0.08, 0.11], [0.16, 0.22], [0.32, 0.45], [0.64, 0.72]]

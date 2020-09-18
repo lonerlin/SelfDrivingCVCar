@@ -1,10 +1,6 @@
-# _*_coding:utf-8 _*_
-# @Time　　:2020/8/30 0030   上午 11:12
-# @Author　 : Loner Lin
-# @File　　  :faces.py
-# @Software  :PyCharm
+
 """
-    本例演示了如何利用OPEN CV打开摄像头，并显示视频窗口。
+    主程序
 """
 import sys
 import cv2
