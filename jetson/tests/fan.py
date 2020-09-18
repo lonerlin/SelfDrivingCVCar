@@ -20,14 +20,18 @@ recognition = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAM
 # 新建一个计时器对象，用于程序结束的计时，设置时间为60秒
 timer = CarTimer(interval=1)
 timer2 = CarTimer(interval=1)
+timer3 = CarTimer(interval=1)
+
 angle = 90
 pre_angle = angle
 direct = True
 
-def _map( x, inMin, inMax, outMin, outMax):
+
+def _map(x, inMin, inMax, outMin, outMax):
     return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
-def servo_ctroller(persons):
+
+def servo_controller(persons):
     global angle
     global direct
     if timer2.timeout():
@@ -50,6 +54,18 @@ def servo_ctroller(persons):
         timer2.restart()
 
 
+def motor_controller(persons):
+    if timer3.timeout():
+        max_width = 0
+        for person in persons:
+            if person.width > max_width:
+                max_width = person.width
+        max_width = 400 if max_width > 400 else max_width
+        max_width = 50 if max_width < 50 else max_width
+        speed = _map(max_width, 50, 400, 150, 80)
+        serial.drive_motor(int(speed), int(speed))
+        timer3.restart()
+
 # 计时没有结束之前一直循环
 while True:
     # get_objects函数返回的是包含0个以上的Object对象列表，
@@ -64,9 +80,10 @@ while True:
     targets = recognition.get_objects()
     persons = [person for person in targets if person.class_id == 1]
     if persons:
-        serial.drive_motor(100, 100)
+
         timer.restart()
-        servo_ctroller(persons)
+        motor_controller(persons)
+        servo_controller(persons)
     else:
         if timer.timeout():
             serial.drive_motor(0, 0)
