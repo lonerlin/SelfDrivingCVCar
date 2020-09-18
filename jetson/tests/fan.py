@@ -20,22 +20,19 @@ recognition = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAM
 # 新建一个计时器对象，用于程序结束的计时，设置时间为60秒
 timer = CarTimer(interval=1)
 angle = 90
+pre_angle = angle
 
+def _map( x, inMin, inMax, outMin, outMax):
+    return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
 def servo_ctroller(persons):
     global angle
     if len(persons) == 1:
         person = persons[0]
-        offset = person.center[0] - OD_CAMERA_WIDTH/2
-        if abs(offset) > 10:
-            if offset < 0 :
-                if angle > 45:
-                    angle -= 4
-                    serial.drive_servo(angle)
-            else:
-                if angle < 135:
-                    angle += 4
-                    serial.drive_servo(angle)
+        offset =_map(int(person.center[0]), 0, OD_CAMERA_WIDTH, 45, 135)
+        if abs(offset-angle) > 4:
+            angle = offset
+            serial.drive_servo(angle)
     else:
         if angle < 45:
             angle += 4
