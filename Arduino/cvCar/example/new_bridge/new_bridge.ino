@@ -52,8 +52,8 @@ void loop() {
       //Serial.println(inChar);
       
       if (isDigit(inChar)) {
-        // 如果是0-9那么并入字符串中:
-      inStr += (char)inChar;
+      inStr += (char)inChar;        // 如果是0-9那么并入字符串中:
+
       delay(1);
       }
       // 换行符表示结束
@@ -95,13 +95,15 @@ void decode_message()
           }
           if (inStr.substring(7,8).toInt()==0)
           {
-            servo_move(servo1,start_angle1,angle);
-            start_angle1=angle;
+            //servo_move(servo1,start_angle1,angle);
+           // start_angle1=angle;
+           servo1.write(angle);
           }
           else
           {
-            servo_move(servo2,start_angle2,angle);
-            start_angle2=angle;
+            //servo_move(servo2,start_angle2,angle);
+            //start_angle2=angle;
+            servo2.write(angle);
           }
        }
        else

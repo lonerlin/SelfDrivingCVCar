@@ -3,7 +3,7 @@ import microbit
 import DFDriver
 import DFMotor
 import DFServo
-
+import math
 uart.init(baudrate=115200)
 stop = False
 rs = ""
@@ -11,6 +11,7 @@ motor = DFMotor()
 DFServoInit = 0
 S1 = DFServo(1)
 S1.angle(90)
+t=""
 while True:
     if uart.any():
         rs = str(uart.readline())
