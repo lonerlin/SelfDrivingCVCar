@@ -29,18 +29,30 @@ def callback(faces):
     else:
         print("unknown")
 
+
 def _map(x, inMin, inMax, outMin, outMax):
 
     return int((x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin)
-def get_face(frame,face_info):
-    x1 =_map(face_info[2],0,detect_width,0,camera_width)
-    x2 = _map(face_info[4],0,detect_width,0,camera_width)
-    y1 = _map(face_info[3],0,detect_width,0,camera_height)
-    y2 = _map(face_info[5],0,detect_width,0,camera_height)
+
+
+def get_face(frame, face_info):
+    x1 =_map(face_info[2], 0, detect_width, 0, camera_width)
+    x2 = _map(face_info[4], 0, detect_width, 0, camera_width)
+    y1 = _map(face_info[3], 0, detect_width, 0, camera_height)
+    y2 = _map(face_info[5], 0, detect_width, 0, camera_height)
     return frame[x1:x2, y1:y2]
-
-
     return image
+
+
+def callback(faces):
+    if faces:
+        for f in faces:
+            print("您好！{}".format(f[0]))
+        # voice.say("发现目标林老头")
+    else:
+        print("unknown")
+
+
 def main():
     detect = MaskDetect(json_path=j_path, weight_path=w_path)
     camera = cv2.VideoCapture(CAMERA)
@@ -58,7 +70,8 @@ def main():
             if no_masks:
                 for one in no_masks:
                     re_image = get_face(frame,one)
-                    cv2.imshow("test",re_image)
+                    fr.recognition(re_image)
+                    # cv2.imshow("test",re_image)
 
         cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
