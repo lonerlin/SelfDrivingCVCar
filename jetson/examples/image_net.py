@@ -9,7 +9,9 @@ net = ImageNet()
 while True:
     ret, frame = camera.read()          # 读取每一帧
     cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
+
     print(net.recognition(frame))
+
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
         break
