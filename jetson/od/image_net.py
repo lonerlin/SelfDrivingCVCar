@@ -12,6 +12,11 @@ class ImageNet:
         self.class_chinese = ""
 
     def recognition(self, image):
+        """
+            图像分类，返回最接近的类的信息
+        :param image: 输入的图像
+        :return: 返回识别信息元组(ID，置信区间)
+        """
         cv2.imwrite("/dev/shm/image_net.jpg", image)
         time.sleep(0.01)
         img, width, height = jetson.utils.loadImageRGBA("/dev/shm/image_net.jpg")
@@ -20,3 +25,10 @@ class ImageNet:
         self.class_chinese = self.chinese[int(self.class_idx)]
         return self.class_idx, self.confidence, self.class_desc, self.class_chinese
 
+    @staticmethod
+    def put_text(image, text):
+        cv2.putText(image, "i:" + str(text), (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
+        """           
+        cv2.putText(图像, 文字, (x, y), 字体, 大小, (b, g, r), 宽度)
+        """
