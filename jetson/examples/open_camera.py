@@ -9,6 +9,7 @@ camera = cv2.VideoCapture(CAMERA)
 
 while True:
     ret, frame = camera.read()          # 读取每一帧
+    print(frame.shape)
     cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
     # 检测键盘，发现按下 q 键 退出循环

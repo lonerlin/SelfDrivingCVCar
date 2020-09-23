@@ -8,9 +8,10 @@ import os
 import time
 sys.path.append("..")
 sys.path.append('../FaceMaskDetection/')
+from cv.show_images import ShowImage
 from FaceMaskDetection.mask_detect import MaskDetect
 from od.face_recognition import FaceRecognition
-from audio.say import Say
+# from audio.say import Say
 j_path = os.path.abspath(os.path.dirname(os.getcwd())) + '/FaceMaskDetection/models/face_mask_detection.json'
 w_path = os.path.abspath(os.path.dirname(os.getcwd())) + '/FaceMaskDetection/models/face_mask_detection.hdf5'
 detect_width = 260
@@ -19,13 +20,13 @@ camera_width = 640
 camera_height = 480
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
-voice = Say()
-
+# voice = Say()
+sm = ShowImage(160, 160)
 def callback(faces):
     if faces:
         for f in faces:
             print("您好！{}".format(f[0]))
-        voice.say("发现目标林老头")
+        # voice.say("发现目标林老头")
     else:
         print("unknown")
 
@@ -71,7 +72,7 @@ def main():
                 for one in no_masks:
                     re_image = get_face(frame,one)
                     fr.recognition(re_image)
-                    # cv2.imshow("test",re_image)
+                    sm.show(re_image,"image")
 
         cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
