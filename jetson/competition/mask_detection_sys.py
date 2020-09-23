@@ -21,7 +21,7 @@ camera_height = 480
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
 # voice = Say()
-sm = ShowImage()
+
 def callback(faces):
     if faces:
         for f in faces:
@@ -41,8 +41,8 @@ def get_face(frame, face_info):
     x2 = _map(face_info[4], 0, detect_width, 0, camera_width)
     y1 = _map(face_info[3], 0, detect_width, 0, camera_height)
     y2 = _map(face_info[5], 0, detect_width, 0, camera_height)
-    return frame[x1:x2, y1:y2]
-    return image
+    return frame[y1:y2, x1:x2]
+
 
 
 def callback(faces):
@@ -58,7 +58,7 @@ def main():
     detect = MaskDetect(json_path=j_path, weight_path=w_path)
     camera = cv2.VideoCapture(CAMERA)
     fr = FaceRecognition(known_folder="faces/", callback=callback)
-
+    cv2.namedWindow("re_image")
     count = 0
     begin = 0
     while True:
@@ -70,9 +70,10 @@ def main():
             no_masks = [one for one in faces if one[0] == 1]
             if no_masks:
                 for one in no_masks:
-                    re_image = get_face(frame,one)
+
+                    re_image = get_face(frame, one)
                     fr.recognition(re_image)
-                    sm.show(re_image,"image")
+                    cv2.imshow("re_image", re_image)
 
         cv2.imshow("testWindow", frame)     # 把帧显示在名字为testWindow的窗口中
 
