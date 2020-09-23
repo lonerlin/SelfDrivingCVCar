@@ -21,7 +21,7 @@ camera_height = 480
 CAMERA = '/dev/video0'      # USB摄像头，如果有多个摄像头，各个摄像头设备文件就是video0，video1,video2等等
 
 # voice = Say()
-sm = ShowImage(160, 160)
+sm = ShowImage()
 def callback(faces):
     if faces:
         for f in faces:
@@ -65,7 +65,7 @@ def main():
         begin = time.perf_counter()
         ret, frame = camera.read()      # 读取每一帧
         test_frame = cv2.resize(frame, (detect_width, detect_height))
-        faces = detect(test_frame)
+        faces = detect.detect(test_frame)
         if faces:
             no_masks = [one for one in faces if one[0] == 1]
             if no_masks:
