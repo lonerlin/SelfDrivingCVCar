@@ -38,7 +38,7 @@ class Object:
         self.top = detection[4]
         self.bottom = detection[5]
         self.area = detection[6]
-        self.center = detection[6]
+        self.center = detection[7]
         self.width = self.right - self.left
         self.height = self.bottom - self.top
 
