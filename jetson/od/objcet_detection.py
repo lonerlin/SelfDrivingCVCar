@@ -1,6 +1,6 @@
 import jetson.inference
 import jetson.utils
-from multiprocessing import Process,Pipe
+from multiprocessing import Process, Pipe
 import time
 
 
