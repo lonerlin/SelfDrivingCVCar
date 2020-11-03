@@ -46,7 +46,7 @@ void setup() {
 }
 
 void loop() {
-   
+    inStr="";
     while (Serial.available()>0){
       int inChar = Serial.read();
       //Serial.println(inChar);
@@ -128,7 +128,7 @@ void decode_message()
             Serial.println(right);
          }
        }
-       inStr="";
+
     }
 }
 //控制舵机的转向

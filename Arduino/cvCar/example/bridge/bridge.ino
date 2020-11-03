@@ -36,7 +36,7 @@ void setup() {
 }
 
 void loop() {
-   
+    inStr="";
     while (Serial.available()>0){
       int inChar = Serial.read();
       //Serial.println(inChar);
@@ -103,7 +103,7 @@ void loop() {
             Serial.println(right);
          }
        }
-       inStr="";
+
     }
     
     delay(5);
