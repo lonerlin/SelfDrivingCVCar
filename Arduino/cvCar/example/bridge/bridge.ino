@@ -32,7 +32,7 @@ void setup() {
   while(!Serial){;}
 
    servo1.attach( 9, 600, 2400 );
-   servo1._write(90);
+   servo1.write(90);
 }
 
 void loop() {
@@ -120,12 +120,12 @@ void servo_move(Servo servo,int start_angle,int end_angle){
   
   if(start_angle<end_angle){
     for(int i=start_angle;i<=end_angle;i=i+2){
-      servo._write(i);
+      servo.write(i);
       delay(20);
     }
   }else{
     for(int i=start_angle;i>=end_angle;i=i-2){
-      servo._write(i);
+      servo.write(i);
       delay(20);
     }
   }
