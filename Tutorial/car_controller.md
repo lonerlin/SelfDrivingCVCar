@@ -170,7 +170,7 @@ class BaseControl:
         self.delay_time = delay_time
 ```
 它提供了三个属性，分别是左右轮速度，执行时间。使用group方法时，你必须先构建一个存放BaseControl实例的列表，把该列表作为group的
-输入参数。group会根据动作添加的先后顺序，很执行时间，执行相应的动作。我们看一下具体的实例：
+输入参数。group会根据动作添加的先后顺序，按执行时间，执行相应的动作。我们看一下具体的实例：
 ```python
 
 ...
