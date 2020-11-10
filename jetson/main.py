@@ -128,7 +128,7 @@ while True:
 
     # # 找到斑马线
     # if fzc.find(image):
-    #     ctrl.pause(5)
+    #     ctrl.stop(5)
     #     ctrl.go_straight(8)
     #     section = 1
     #
