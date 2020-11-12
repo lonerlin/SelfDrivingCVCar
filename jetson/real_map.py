@@ -84,15 +84,7 @@ while True:
         p_offset = offset
     ctrl.follow_line(offset)
 
-    # 物体探测
-    rc.get_objects()
-    #
-    if fi.intersection_number == 1 and rc.object_appeared(1, object_width_threshold=30, delay_time=10): # 看见人的处理程序
-        ctrl.stop(5)
-    #
-    # if fi.intersection_number == 3 and rc.object_appeared(44, object_width=58, delay_time=10):      # 看见障碍物的处理程序
-    #     ctrl.bypass_obstacle(0.8, 2.4)
-    #
+
     # 路口处理程序
     if fi.is_intersection(image,  render_image=line_image):
         if fi.intersection_number == 1:
@@ -106,10 +98,19 @@ while True:
         if fi.intersection_number == 3:
             ctrl.go_straight(0.5)
 
+     # 物体探测
+    rc.get_objects()
+    #
+    if fi.intersection_number == 1 and rc.object_appeared(1, object_width_threshold=30, delay_time=10):  # 看见人的处理程序
+        ctrl.stop(5)
+    #
+    # if fi.intersection_number == 3 and rc.object_appeared(44, object_width=58, delay_time=10):      # 看见障碍物的处理程序
+    #     ctrl.bypass_obstacle(0.8, 2.4)
+    #
 
     # 找到斑马线
 
-    if fzc.find(image):
+    if fi.intersection_number == 3 and fzc.find(image):
         ctrl.stop(5)
         ctrl.go_straight(8)
         section = 1
@@ -121,7 +122,9 @@ while True:
     #         section += 1
     #
 
-
+    # if section == 2:
+    #     if rc.object_appeared(13,object_width_threshold=80):
+    #         ctrl.stop()
 
     # 这个是动作的实际执行程序，每一帧必须调用
     ctrl.update()
