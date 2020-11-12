@@ -34,6 +34,7 @@ class CarSerial:
 
             t = threading.Thread(target=self._listen, daemon=True)
             t.start()
+        self.drive_motor(0, 0)
 
     def _write(self, text):
         """
