@@ -13,8 +13,8 @@ from car.car_timer import CarTimer
 from cv.show_images import ShowImage
 
 # region 设置参数
-LINE_CAMERA = '/dev/video0'      # 巡线摄像头
-OD_CAMERA = '/dev/video1'        # 物体检测摄像头
+LINE_CAMERA = '/dev/video1'      # 巡线摄像头
+OD_CAMERA = '/dev/video0'        # 物体检测摄像头
 SERIAL = "/dev/ttyACM0"          # 串口
 
 LINE_CAMERA_WIDTH = 320          # 巡线视频高度
@@ -32,7 +32,7 @@ p_offset = 0
 rc = Recognition(device=OD_CAMERA, width=OD_CAMERA_WIDTH, height=OD_CAMERA_HEIGHT, frequency=20)
 
 # 串口通信对象
-serial = CarSerial(port=SERIAL, receive=True)
+serial = CarSerial(port=SERIAL, receive=False)
 # 小车控制器
 ctrl = CarController(car_serial=serial, base_speed=80)
 
@@ -46,7 +46,7 @@ img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=250, kerne
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
-fi = FindIntersection(radius=150, threshold=3, repeat_count=2, delay_time=5)
+fi = FindIntersection(radius=150, threshold=3, repeat_count=2, delay_time=3)
 # 寻找路障对象
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
 # 寻找斑马线对象
@@ -60,8 +60,8 @@ si = ShowImage()
 # endregion
 
 while True:
-    # 帧计时开始
-    timer.restart()
+    # # 帧计时开始
+    # timer.restart()
 
     # 通过摄像头读入一帧
     ret, frame = camera.read()
@@ -86,32 +86,33 @@ while True:
 
     # 物体探测
     rc.get_objects()
-
-    if fi.intersection_number == 1 and rc.object_appeared(1, object_width=40, delay_time=10):  # 看见人的处理程序
-        ctrl.stop(3)
-
-    if fi.intersection_number == 3 and rc.object_appeared(44, object_width=58, delay_time=10):      # 看见障碍物的处理程序
-        ctrl.bypass_obstacle(0.8, 2.4)
-
+    #
+    if fi.intersection_number == 1 and rc.object_appeared(1, object_width_threshold=30, delay_time=10): # 看见人的处理程序
+        ctrl.stop(5)
+    #
+    # if fi.intersection_number == 3 and rc.object_appeared(44, object_width=58, delay_time=10):      # 看见障碍物的处理程序
+    #     ctrl.bypass_obstacle(0.8, 2.4)
+    #
     # 路口处理程序
     if fi.is_intersection(image,  render_image=line_image):
         if fi.intersection_number == 1:
-            qf_line.direction=True
-            ctrl.turn(True, 1)
+            qf_line.direction = True
+            ctrl.turn(False, 1)
 
         if fi.intersection_number == 2:
-            qf_line.direction=False
-            ctrl.turn(False,1)
+            qf_line.direction = False
+            ctrl.turn(False, 1)
 
-        if fi.intersection_number == 5:
+        if fi.intersection_number == 3:
             ctrl.go_straight(0.5)
 
 
-    # # 找到斑马线
-    # if fzc.find(image):
-    #     ctrl.pause(5)
-    #     ctrl.go_straight(8)
-    #     section = 1
+    # 找到斑马线
+
+    if fzc.find(image):
+        ctrl.stop(5)
+        ctrl.go_straight(8)
+        section = 1
 
     # 找到障碍物
     # if section == 1:
@@ -129,9 +130,9 @@ while True:
     # 录像
     # vw._write(line_image)
 
-    # 打印帧速率
-    frame_rate_calc = 1 / timer.duration()
-    print("frame_rate:", frame_rate_calc)
+    # # 打印帧速率
+    # frame_rate_calc = 1 / timer.duration()
+    # print("frame_rate:", frame_rate_calc)
 
     # 检测键盘，发现按下 q 键 退出循环
     if cv2.waitKey(1) == ord('q'):
