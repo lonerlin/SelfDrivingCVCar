@@ -32,6 +32,7 @@ class Recognition(Base):
         self.conn1.close()
 
         self.__timer = CarTimer()
+        self.objects_list = []
 
     def get_objects(self):
         """
@@ -40,10 +41,11 @@ class Recognition(Base):
         """
         detections = self.conn2.recv()
         if len(detections) > 0:
-            return Object.get_list(detections)
+            self.objects_list = Object.get_list(detections)
 
         else:
-            return []
+            self.objects_list = []
+        return self.objects_list
 
     def object_appeared(self, appeared_id, object_width_threshold=60, delay_time=10):
         """
@@ -54,13 +56,14 @@ class Recognition(Base):
         :param delay_time:两次检测时间间隔（避免重复检测到同一对象）
         :return:当目标对象出现并符合设定的条件返回TRUE，否则返回FALSE
         """
-        objs = self.get_objects()     # 写在这里是为了对象检测窗口不卡住，否则可以写在下面的判断里
+
         self.__timer.interval = delay_time
         if self.__timer.timeout():
-            for obj in objs:
-                if obj.class_id == appeared_id and obj.width > object_width_threshold:
-                    self.__timer.start_time = time.perf_counter()
-                    return True
+            if self.objects_list:
+                for obj in self.objects_list:
+                    if obj.class_id == appeared_id and obj.width > object_width_threshold:
+                        self.__timer.start_time = time.perf_counter()
+                        return True
         return False
 
     def close(self):
