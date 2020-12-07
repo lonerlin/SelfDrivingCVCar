@@ -46,11 +46,11 @@ img_init = ImageInit(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, threshold=250, kerne
 # 巡线对象
 qf_line = FollowLine(LINE_CAMERA_WIDTH, LINE_CAMERA_HEIGHT, direction=False, threshold=5)
 # 寻找路口对象
-fi = FindIntersection(radius=150, threshold=5, repeat_count=2, delay_time=3)
+fi = FindIntersection(radius=150, threshold=7, repeat_count=2, delay_time=3)
 # 寻找路障对象
 fr = FindRoadblock(0, 200, 134, 255, 202, 255, 0.05)
 # 寻找斑马线对象
-fzc = FindZebraCrossing(threshold=4, floor_line_count=4)
+fzc = FindZebraCrossing(threshold=4, floor_line_count=4, delay_time=20)
 # 保存视频对象
 # vw = VideoWriter("video/" + time.strftime("%Y%m%d%H%M%S"), 320, 240)
 # 一个计时器，用于计算帧速
@@ -86,12 +86,14 @@ while True:
 
 
     # 路口处理程序
-    if fi.is_intersection(image,  render_image=line_image):
+    if fi.is_intersection(image,  render_image=line_image,angle=40):
         if fi.intersection_number == 1:
-
             ctrl.turn(False, 0.5)
 
+
+
         if fi.intersection_number == 2:
+            
             ctrl.turn(False, 0.3)
 
         if fi.intersection_number >= 3:
@@ -103,8 +105,12 @@ while True:
     if fi.intersection_number == 1 and rc.object_appeared(1, object_width_threshold=25, delay_time=10):  # 看见人的处理程序
         ctrl.stop(5)
 
-    if rc.object_appeared(44, object_width_threshold=80, delay_time=10):      # 看见障碍物水瓶的处理程序
-        ctrl.bypass_obstacle(0.8, 1.7)
+    if rc.object_appeared(44, object_width_threshold=75, delay_time=10):      # 看见障碍物水瓶的处理程序
+        ctrl.bypass_obstacle(0.8, 2.2)
+        ctrl.go_straight(3.3)
+        section=2
+
+
 
     # 找到斑马线
     if fi.intersection_number >= 3 and fzc.find(image):
@@ -119,9 +125,8 @@ while True:
     #         section += 1
     #
 
-    if section == 1:
-        if rc.object_appeared(13, object_width_threshold=60):
-            ctrl.stop()
+    if section == 2 and rc.object_appeared(13, object_width_threshold=80):
+        ctrl.stop()
 
     # 这个是动作的实际执行程序，每一帧必须调用
     ctrl.update()

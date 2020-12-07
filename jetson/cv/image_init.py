@@ -10,7 +10,7 @@ class ImageInit(Base):
     """
     提供一个图像初始化类，把摄像头读取的帧处理成可供系统进一步使用的二值图。
     """
-    def __init__(self, width=320, height=240, convert_type="BINARY", threshold=250, bitwise_not=False,
+    def __init__(self, width=320, height=240, convert_type="BINARY", threshold=255, bitwise_not=False,
                  kernel_type=(3, 3), iterations=2):
         """
             本函数用于对图像进行大小，灰度，二值，反转等转换。默认输入为灰度，如果需要转换为二值图，需输入阈值，如果需要反转需
