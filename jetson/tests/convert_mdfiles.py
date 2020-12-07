@@ -13,7 +13,7 @@ sys.path.append("..")
 
 def convert_docx():
     source_path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
-    target_path = "H:\\doc\\Tutorial"
+    target_path = "E:\\doc\\Tutorial"
 
     print("source_path:{}".format(source_path))
     print("target_path:{}".format(target_path))
@@ -26,7 +26,7 @@ def convert_docx():
     file_list = get_files(target_path, ".md")
     for file_name in file_list:
         replace(file_name, "https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/",
-                "H:\\doc\\Tutorial\\pic\\")
+                "E:\\doc\\Tutorial\\pic\\")
         pypandoc.convert_file(file_name, "docx", outputfile=os.path.splitext(file_name)[0] + ".docx")
         print("转换{}文件为word文档".format(file_name))
 
@@ -68,7 +68,7 @@ def buildAll(target_path):
     f.close()
     pypandoc.convert_file(target_path + "\\all.md", "docx", outputfile=target_path + "\\all.docx")
     print("写入单独一个文件all.docx")
-    replace(target_path + "\\all.md", "H:\\doc\\Tutorial\\pic\\", "pic/")
+    replace(target_path + "\\all.md", "E:\\doc\\Tutorial\\pic\\", "pic/")
     print("替换all.md文件的图片为相对路径。")
 
 
