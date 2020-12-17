@@ -1,10 +1,13 @@
+# 使用PCA9685芯片驱动直流电机，实例
 import sys
 import time
-from car.car_pca9685 import PCA9685
-
 sys.path.append("..")
 
+from car.car_pca9685 import PCA9685
+
 i2c = PCA9685(debug=True)
+# PCA9685原本用于驱动舵机，刷新频率是50HZ，50HZ驱动直流马达，马达会咔咔声，因为频率太低，使用500HZ能正常驱动。
+i2c.setPWMFreq(500)
 
 print("start")
 time.sleep(1)      # 等待一秒
