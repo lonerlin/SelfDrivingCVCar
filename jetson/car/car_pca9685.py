@@ -112,6 +112,9 @@ class PCA9685:
         pulse = int(pulse * 4096 / 20000)  # PWM frequency is 50HZ,the period is 20000us
         self.setPWM(channel, 0, pulse)
 
+    def _map(self, x, in_min=0, in_max=180, out_min=500, out_max=2500):
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
     def setMotoPluse(self, channel, pulse):
         """
         设置驱动马达的脉冲
@@ -124,6 +127,17 @@ class PCA9685:
         else:
             self.setPWM(channel, 0, pulse)
 
+    def set_servo_angle(self, channel, angle):
+        """
+        设置舵机角度
+        :param channel:舵机的通道（4~15)
+        :param angle: 角度（0~180)
+        :return:
+        """
+        angle = 0 if angle < 0 else angle
+        angle = 180 if angle > 180 else angle
+        self.setServoPulse(channel, self._map(angle))
+
     def drive_motor(self, left, right):
         """
             输入马达速度，驱动马达前进
@@ -131,7 +145,7 @@ class PCA9685:
         :param left: 左马达速度（-255,255）
         :param right: 右马达速度（-255,255）
         """
-        if left != self._pre_left:
+        if abs(left - self._pre_left) > 2:
             if left >= 0:
                 self.setMotoPluse(0, 0)
             else:
@@ -139,7 +153,7 @@ class PCA9685:
             self.setMotoPluse(1, int(abs(left)*4095/255))
             self._pre_left = left
 
-        if right != self._pre_right:
+        if abs(right - self._pre_right) > 2:
             if right >= 0:
                 self.setMotoPluse(2, 0)
             else:
