@@ -28,6 +28,12 @@ class PCA9685:
     __ALLLED_OFF_H = 0xFD
 
     def __init__(self, address=0x40, frequency=50, debug=False):
+        """
+        初始化对象
+        :param address: i2c地址
+        :param frequency: PWM频率，默认50用于驱动舵机，如果驱动电机最好改为500HZ以上。
+        :param debug: 是否显示调试信息。
+        """
         self.bus = smbus.SMBus(1)
         self.address = address
         self.debug = debug
@@ -39,7 +45,7 @@ class PCA9685:
             print("Resetting PCA9685")
         self.write(self.__MODE1, 0x00)
         self.setPWMFreq(self.frequency)
-        
+
     def write(self, reg, value):
         """
         Writes an 8-bit value to the specified register/address
@@ -96,13 +102,13 @@ class PCA9685:
         :param off:
         :return:
         """
+        if self.debug:
+            print("channel: %d  LED_ON: %d LED_OFF: %d" % (channel, on, off))
+
         self.write(self.__LED0_ON_L + 4 * channel, on & 0xFF)
         self.write(self.__LED0_ON_H + 4 * channel, on >> 8)
         self.write(self.__LED0_OFF_L + 4 * channel, off & 0xFF)
         self.write(self.__LED0_OFF_H + 4 * channel, off >> 8)
-        if self.debug:
-            # print("channel: %d  LED_ON: %d LED_OFF: %d" % (channel, on, off))
-            pass
 
     def setServoPulse(self, channel, pulse):
         """
@@ -136,6 +142,8 @@ class PCA9685:
         :param angle: 角度（0~180)
         :return:
         """
+        if self.debug:
+            print("设置 {} 通道，舵机转动 {} 角度。".format(channel, angle))
         angle = 0 if angle < 0 else angle
         angle = 180 if angle > 180 else angle
         self.setServoPulse(channel, self._map(angle))
@@ -147,6 +155,9 @@ class PCA9685:
         :param left: 左马达速度（-255,255）
         :param right: 右马达速度（-255,255）
         """
+        if self.debug:
+            print("设置左马达速度：{}，设置右马达速度：{}".format(left, right))
+
         if abs(left - self._pre_left) > 2:
             if left >= 0:
                 self.setMotoPluse(0, 0)
