@@ -27,17 +27,19 @@ class PCA9685:
     __ALLLED_OFF_L = 0xFC
     __ALLLED_OFF_H = 0xFD
 
-    def __init__(self, address=0x40, debug=False):
+    def __init__(self, address=0x40, frequency=50, debug=False):
         self.bus = smbus.SMBus(1)
         self.address = address
         self.debug = debug
         self._pre_left = -1000
         self._pre_right = -1000
+        self.frequency = frequency
 
         if self.debug:
             print("Resetting PCA9685")
         self.write(self.__MODE1, 0x00)
-        self.setPWMFreq(50)
+        self.setPWMFreq(self.frequency)
+        
     def write(self, reg, value):
         """
         Writes an 8-bit value to the specified register/address
