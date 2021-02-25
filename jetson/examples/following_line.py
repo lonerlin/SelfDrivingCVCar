@@ -30,7 +30,11 @@ init = ImageInit(width=320, height=240, convert_type="BINARY", threshold=120, bi
 fl = FollowLine(width=320, height=240, threshold=15, direction=False)
 
 # 串口类，此类最好不要直接使用，而是通过CarController来对车子进行控制
-serial = CarSerial(SERIAL, receive=True)
+#serial = CarSerial(SERIAL, receive=True)
+
+from car.car_pca9685 import PCA9685
+serial = PCA9685(frequency=500)
+
 # 此类并没有实现PID控制，而是简单的使用了比例这个参数。（现在这么简单的地图还无需用到PID）
 # 如果需要使用PID可以直接调用car目录下的pid类，同时把此类的比例参数设置为1
 ctrl = CarController(serial, proportional=0.4)
