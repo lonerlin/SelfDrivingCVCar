@@ -187,7 +187,7 @@ class PCA9685:
             speed = 255
         self.setMotoPluse(channel, int(abs(speed) * 4095 / 255))
 
-        
+
 if __name__ == '__main__':
 
     pwm = PCA9685(0x40, debug=True)
