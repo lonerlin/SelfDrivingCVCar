@@ -174,9 +174,9 @@ class PCA9685:
             self.setMotoPluse(3, int(abs(right)*4095/255))
             self._pre_right = right
 
-    def drive_one_Motor(self, channel, speed):
+    def drive_one_motor(self, channel, speed):
         """
-        驱动一个点击，
+        驱动一个点击，没有方向，接一个通道，另一根线接地
         :param channel: 通道(0~15)
         :param speed: 速度（0~255）
         :return:
@@ -186,7 +186,7 @@ class PCA9685:
         if speed > 255:
             speed = 255
         self.setMotoPluse(channel, int(abs(speed) * 4095 / 255))
-
+    
 
 if __name__ == '__main__':
 
