@@ -1,5 +1,7 @@
 # 自动驾驶视觉小车
 
+## (因github经常访问不了，本项目已经搬迁到国内服务器：https://gitee.com/lonerlin/cvcar)
+
 利用OpenCV和深度神经网络，实现一个功能简单的自动驾驶小车，最大的特点就是无需服务器，所有任务由小车自行解决。   
 
 [![main](https://github.com/lonerlin/SelfDrivingCVCar/blob/testing/Tutorial/pic/main.png)](https://www.bilibili.com/video/BV12v411v7hy/)   
